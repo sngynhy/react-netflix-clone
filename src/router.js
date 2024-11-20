@@ -1,5 +1,5 @@
 import React from "react";
-import {Routes, Route, Link} from 'react-router-dom'
+import {Routes, Route} from 'react-router-dom'
 import Home from 'pages/Home'
 import MovieDetail from "pages/MovieDetail";
 
@@ -8,7 +8,8 @@ function Router () {
         <div>
             <Routes>
                 <Route index element={<Home />} />
-                <Route path="/movie/:id" element={<MovieDetail />} />
+                <Route path="/movie-detail/:id" element={<MovieDetail />} />
+                <Route path="/movie-detail" element={<MovieDetail />} />
             </Routes>
         </div>
     )
