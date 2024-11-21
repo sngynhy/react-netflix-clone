@@ -7,7 +7,7 @@ import { BrowserRouter } from "react-router-dom"; // 🚕🚗 브라우저 라�
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <BrowserRouter> {/** 🚕🚗 */}
+    <BrowserRouter basename='moive-app'> {/** 🚕🚗 basename은 gh-pages를 위한 설정 */}
       <App />
     </BrowserRouter>
   </React.StrictMode>

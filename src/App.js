@@ -1,10 +1,15 @@
 import Router from "./router";
 
+import LoadingProvider from 'context/LoadingContext'
+import LoadingOverlay from "components/ui/LoadingOverlay";
+
 function App() {
   return (
-    <div className="App">
-      <Router />
-    </div>
+    // 📍 context 사용
+    <LoadingProvider>
+        <LoadingOverlay />
+        <Router />
+    </LoadingProvider>
   );
 }
 
