@@ -1,40 +1,65 @@
-import React, {useState, useEffect, useContext} from 'react'
+import React, {useState, useEffect, useContext, useRef} from 'react'
 import Movie from 'components/Movie'
 import axios from 'axios'
-
-import MovieContext from 'context/MovieContext'
 import useLoading from 'hooks/useLoading'
+
+const API_KEY = process.env.REACT_APP_MOVIE_API_KEY;
+const API_TOKEN = process.env.REACT_APP_MOVIE_API_TOKEN
+const BASE_URL = `https://api.themoviedb.org/3`;
+
+const options = {
+    method: 'GET',
+    headers: {
+      accept: 'application/json',
+      Authorization: 'Bearer ' + API_TOKEN
+    }
+}
+const NOWPLAYING_URL = `${BASE_URL}/movie/now_playing?api_key=${API_KEY}&language=ko&page=1`
 
 function Home () {
     // 📍 custom hook 사용
     const { activeLoading, deactiveLoading } = useLoading();
-
     const [movieList, setMovieList] = useState([])
-
-    // const { movieData } = useContext(MovieContext)
-
-    useEffect(() => { // api를 호출하여 데이터 가져올 시 한 번만 실행
-        console.log('useEffect')
+    
+    const hasFetched = useRef(false); // StrictMode로 인해 렌더링이 2번 실행되어 api가 두번 호출되는 것을 방지
+    useEffect(() => { 
         activeLoading()
-        getMovieList()
+        if (!hasFetched.current) {
+            hasFetched.current = true; // 실행 상태를 기록
+            getMovieList();
+        }
     }, [])
-
+    
+    const [nowPlaying, setNowPlaying] = useState([])
     async function getMovieList () {
-        const url = `https://yts.mx/api/v2/list_movies.json?minimum_rating=8&sort_by=year`
-        // const url = `https://yts.mx/api/v2/list_movies.json`
-        await axios.get(url).then(res => setMovieList(res.data.data.movies))
-
-        // const res = await fetch(url)
-        // const json = await res.json()
-        // setMovieList(json.data.movies)
-        // setLoading(false)
-        deactiveLoading()
+        try {
+            await axios.get(NOWPLAYING_URL, options).then(res => setNowPlaying(res.data.results))
+        } catch (err) {
+            console.log('API 호출 실패', err)
+        } finally {
+            deactiveLoading()
+        }
     }
 
     return (
         <div>
-            <h1>The Movies! {`(${movieList.length})`}</h1>
-            <div>{movieList.map(movie => <Movie key={movie.id} id={movie.id} poster={movie.medium_cover_image} title={movie.title} summary={movie.summary} genres={movie.genres} />)}</div>
+            <h1>현재 상영작 {`(${nowPlaying.length})`}</h1>
+            <div>
+                {
+                    nowPlaying.map(movie => {
+                    return <Movie
+                        key={movie.id}
+                        id={movie.id}
+                        title={movie.title}
+                        originTitle={movie.original_title}
+                        overview={movie.overview}
+                        poster={movie.poster_path}
+                        genre={movie.genre_ids}
+                        voteAvg={movie.vote_average}
+                        voteCnt={movie.vote_count} />
+                    })
+                }
+            </div>
         </div>
     )
 }

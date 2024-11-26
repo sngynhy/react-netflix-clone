@@ -5,11 +5,11 @@
             "components/*": ["components/*"],
             "assets/*": ["assets/*"],
             "pages/": ["pages/*"],
-            "style/": ["style/*"]
+            "style/": ["style/*"],
+            "api/": ["api/*"]
         }
     },
     "include": [
        "src"
     ]
  }
- 
