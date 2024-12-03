@@ -2,11 +2,9 @@ import React, {useState, useRef} from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import FocusModal from './layout/modal/FocusModal'
+import FocusModal from './modal/FocusModal'
 
-const POSTER_URL = `https://image.tmdb.org/t/p/original/`
-
-const MovieList = styled.ul`
+const Wrapper = styled.ul`
     display: flex;
     list-style: none;
     padding: 0;
@@ -25,31 +23,40 @@ const Poster = styled.li`
         cursor: pointer;
         width: 215px;
     }
+    & > .fadeIn {
+        opacity: 0;
+        transition: 0.5s;
+    }
+    & > img:hover + .fadeIn {
+        opacity: 1;
+    }
 `
 
-function Movie (props) {
+function SliderContents (props) {
     const {id, ...detail} = props
+    console.log('Movie > props', props);
     const [modalActive, setModalActive] = useState(false)
     const posterRef = useRef(null)
-    function openModal () {
-        setTimeout(() => {
-            setModalActive(true)
-        }, 1000)
-    }
+    const POSTER_URL = `https://image.tmdb.org/t/p/original` + detail.poster
     return (
-        <MovieList>
+        <Wrapper>
             <Poster ref={posterRef} onMouseEnter={() => setModalActive(true)} onMouseLeave={() => setModalActive(false)}>
-            {/* <Poster ref={posterRef} onClick={openModal} onMouseLeave={() => setModalActive(false)}> */}
-                <img src={POSTER_URL + detail.poster} alt="포스터" />
-                {modalActive && <FocusModal id={id} detail={detail} left={0} top={0} />}
+            {/* <Poster ref={posterRef}> */}
+                <img loading="lazy" src={POSTER_URL} alt="포스터" />
+                <div className="fadeIn">
+                    {modalActive && <FocusModal id={id} detail={detail} /> }
+                    {/* <FocusModal id={id} detail={detail} /> */}
+                </div>
+                {/* {modalActive && <FocusModal id={id} detail={detail} left={0} top={0} />} */}
+
                 {/* {<Link to={`/movie-detail/${id}`}><img src={POSTER_URL + poster} /></Link>} */}
                 {/* <h2><Link to='/movie-detail' state={{ title, overview, poster, genres }}>{title} ({originTitle})</Link></h2> */}
             </Poster>
-        </MovieList>
+        </Wrapper>
     )
 }
 
-// Movie.prototype = {
+// SliderContents.prototype = {
 //     id: PropTypes.number.isRequired,
 //     title: PropTypes.string.isRequired,
 //     originTitle: PropTypes.string.isRequired,
@@ -61,8 +68,8 @@ function Movie (props) {
 // }
 
 // 기본값 지정
-// Movie.defaultProps = {
+// SliderContents.defaultProps = {
 //     voteAvg: 0,
 //     voteCnt: 0,
 // }
-export default Movie
+export default SliderContents

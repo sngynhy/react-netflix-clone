@@ -1,4 +1,9 @@
-export function getGenresById (data, genres) {
+export const getGenresById = (data, genres) => {
     // 장르의 id값으로 name 추출
-    return data.map(el => genres.find(g => g.id === el).name)
+    // console.log('getGenresById', data, genres)
+    return data.reduce((acc, curr) => {
+        const find = genres.find(g => g.id === curr)
+        if (find) acc.push(find.name)
+        return acc
+    }, [])
 }

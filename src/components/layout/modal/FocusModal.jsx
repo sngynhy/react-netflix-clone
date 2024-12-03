@@ -9,12 +9,9 @@ import { fetchVideo } from "api/movieApi";
 import { getGenresById } from "utils/CommonFunction";
 
 const Wrapper = styled.div`
-    // border: 3px solid white;
-    border: none;
+    border: 1px solid white;
     position: absolute;
-    z-index: 2;
-    top: ${props => props.top};
-    left: ${props => props.left};
+    top: 0px;
 `
 const PreviewPlayer = styled.div`
     width: 382px;
@@ -34,17 +31,16 @@ const PreviewInfo = styled.div`
         list-style: none;
         padding: 0;
         display: flex;
+        margin-top: 5px;
     }
     & div > ul > li {
-        margin-right: 5px;
+        margin-right: 8px;
     }
 `
 
 function FocusModal (props) {
-    const { id, detail, left, top } = props
-    
-    // 캐시된 데이터 가져오기
-    const queryClient = useQueryClient();
+    const { id, detail } = props
+    const queryClient = useQueryClient(); // 캐시된 데이터 가져오기
     const genres = queryClient.getQueryData(['genres']); // 'genres' 키로 데이터 조회
     const genre = getGenresById(detail.genre, genres)
 
@@ -53,12 +49,17 @@ function FocusModal (props) {
         queryFn: fetchVideo,
         select: data => data.find(el => el.type === 'Trailer').key
     })
-    const URL = `https://youtube.com/embed/${key}?autoplay=1&mute=1&controls=0&fs=0&modestbranding=0&rel=0&loop=3`
+    // key값으로 유튜브 예고편 영상 URL 설정
+    const URL = `https://youtube.com/embed/${key}?autoplay=1&mute=1&controls=0&fs=0&modestbranding=0&rel=0&loop=1`
     
     const [like, setLike] = useState(false)
+    function liked () {
+        setLike(prev => !prev)
+        // 추가) store에 like 콘텐츠 id 추가
+    }
 
     return (
-        <Wrapper top={top}>
+        <Wrapper>
             <PreviewPlayer>
                 <iframe src={URL} width="100%" height="100%" title="preview" style={{border: 'none'}}></iframe>
             </PreviewPlayer>
@@ -66,13 +67,13 @@ function FocusModal (props) {
                 <div>
                     <FaCirclePlay />
                     <GoPlusCircle />
-                    {like ? <AiFillLike onClick={() => setLike(true)} /> : <AiOutlineLike onClick={() => setLike(false)} />}
+                    {like ? <AiFillLike onClick={liked} /> : <AiOutlineLike onClick={liked} />}
                     <ImEnlarge2 style={{float: 'right'}} />
                 </div>
                 <div>
-                    <span>{detail.title}</span>
+                    <span style={{fontSize: '22px'}}>{detail.title}</span>
                     <span style={{marginLeft: '8px'}}>⭐{detail.voteAvg}</span>
-                    <ul>{genre.map(el => <li>{el}</li>)}</ul>
+                    <ul>{genre.map((el, i) => <li key={i}>{el}</li>)}</ul>
                 </div>
             </PreviewInfo>
         </Wrapper>
