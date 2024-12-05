@@ -1,10 +1,10 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from "styled-components";
 import { useQuery } from '@tanstack/react-query';
-import { fetchGenres, fetchNetflixOriginal, fetchNowplayingMovie, fetchPopularMovie, fetchTopratedMovie, fetchUpcommingMovie } from '../api/movieApi';
+import { fetchGenres, fetchNetflixOriginal } from 'api/movieApi';
 import LoadingOverlay from 'components/ui/LoadingOverlay';
 import Slider from 'components/layout/Slider';
-// import { useMovieStore } from 'stores/movieStore';
+import { useMovieStore } from 'stores/movieStore';
 
 const Wrapper = styled.div`
 
@@ -36,14 +36,17 @@ const Container = styled.div`
 
 function Home () {
 
-    const {data: genres} = useQuery({ queryKey: ['genres'], queryFn: fetchGenres })
-    // const {data: nowPlaying, isLoading: nowPlayingLoading, error: nowPlayingError} = useQuery({ queryKey: ['nowPlaying'], queryFn: fetchNowplaying })
-    // const {data: popluar, isLoading: popluarLoading, error: popluarError} = useQuery({ queryKey: ['popluar'], queryFn: fetchPopular })
-    // const {data: topRated, isLoading: topRatedLoading, error: topRatedError} = useQuery({ queryKey: ['topRated'], queryFn: fetchToprated })
-    // const {data: netflix, isLoading: netflixLoading, error: netflixError} = useQuery({ queryKey: ['netflix'], queryFn: fetchNetflixOriginal })
-
-    // if (nowPlayingLoading || popluarLoading || topRatedLoading || netflixLoading) return <LoadingOverlay />;
-    // if (nowPlayingError || popluarError || topRatedError || netflixError) return <p>Error occurred!</p>;
+    
+    const {data: genres, isLoading: genreLoading} = useQuery({ queryKey: ['genres'], queryFn: fetchGenres })
+    const {data: netflix, isLoading: netflixLoading, error: netflixError} = useQuery({ queryKey: ['netflix'], queryFn: fetchNetflixOriginal })
+    
+    if (netflixLoading) return <LoadingOverlay />;
+    if (netflixError) return <p>Error occurred! {netflixError.message}</p>;
+    
+    // const {genres, setGenres} = useMovieStore() // zustand
+    // useEffect(() => {
+    //     if (!!genreLoading) setGenres(genreList)
+    // }, [genreLoading])
 
 
     return (
@@ -57,7 +60,7 @@ function Home () {
   
                 <div>
                     {/* <Slider data={netflix.slice(0, 10)} /> */}
-                    {/* <Slider name="Netflix Original" data={netflix} /> */}
+                    <Slider name="Netflix Original" data={netflix} />
                 </div>
 
                 <div>

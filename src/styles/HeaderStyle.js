@@ -29,6 +29,12 @@ export const NavItem = styled.li`
         font-size: 17px;
     }
 `
+export const CategoryText = styled.span`
+    border-bottom: ${props => props.selected ? '2px solid red;' : 'none;'}
+    &:hover {
+        color: #b3b3b3;
+    }
+`
 export const Account = styled.button`
     float: right;
     padding: 8px 16px;
@@ -47,14 +53,15 @@ export const Account = styled.button`
 `
 export const SearchBox = styled.div`
     border: ${props => props.open ? '1px solid white' : 'none'};
-    height: 30px;
+    height: 34px;
     display: flex;
     align-items: center;
+    vertical-align: middle;
     & > input {
         background: rgba(0, 0, 0, 0);
         border: none;
         outline: none;
-        padding: 8px;
+        padding: 10px;
         color: white;
     }
 `

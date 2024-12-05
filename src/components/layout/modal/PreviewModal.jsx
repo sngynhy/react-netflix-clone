@@ -38,10 +38,11 @@ const PreviewInfo = styled.div`
     }
 `
 
-function FocusModal (props) {
+function PreviewModal (props) {
     const { id, detail } = props
     const queryClient = useQueryClient(); // 캐시된 데이터 가져오기
-    const genres = queryClient.getQueryData(['genres']); // 'genres' 키로 데이터 조회
+    const genres = queryClient.getQueryData(['genres']) // 'genres' 키로 데이터 조회
+    console.log('genres', genres)
     const genre = getGenresById(detail.genre, genres)
 
     const {data: key} = useQuery({
@@ -53,7 +54,7 @@ function FocusModal (props) {
     const URL = `https://youtube.com/embed/${key}?autoplay=1&mute=1&controls=0&fs=0&modestbranding=0&rel=0&loop=1`
     
     const [like, setLike] = useState(false)
-    function liked () {
+    const liked = () => {
         setLike(prev => !prev)
         // 추가) store에 like 콘텐츠 id 추가
     }
@@ -83,4 +84,4 @@ function FocusModal (props) {
 // 찜하기
 // 좋아요
 // 상세 정보
-export default FocusModal
+export default PreviewModal

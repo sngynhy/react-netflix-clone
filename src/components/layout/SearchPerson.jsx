@@ -2,7 +2,7 @@ import React, {useState, useRef} from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import FocusModal from './modal/FocusModal'
+import PreviewModal from './modal/PreviewModal'
 
 const Wrapper = styled.ul`
     list-style: none;
@@ -38,7 +38,7 @@ function SearchPerson (props) {
         <Wrapper id="person-list">
             <Profile ref={profileRef} url={PROFILE_URL} onMouseEnter={() => setModalActive(true)} onMouseLeave={() => setModalActive(false)}>
                 {/* <div className="fadeIn">
-                    {modalActive && <FocusModal id={id} detail={detail} /> }
+                    {modalActive && <PreviewModal id={id} detail={detail} /> }
                 </div> */}
             </Profile>
             <div>{detail.name}</div>
