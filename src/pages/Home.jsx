@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import styled from "styled-components";
 import { useQuery } from '@tanstack/react-query';
-import { fetchGenres, fetchNetflixOriginal } from 'api/movieApi';
+import { fetchContentDetails, fetchNetflixOriginal } from 'api/movieApi';
 import LoadingOverlay from 'components/ui/LoadingOverlay';
 import Slider from 'components/layout/Slider';
-import { useMovieStore } from 'stores/movieStore';
+// import { useMovieStore } from 'stores/movieStore';
 
 const Wrapper = styled.div`
-
 `
 
 const MainCover = styled.div`
@@ -36,18 +35,10 @@ const Container = styled.div`
 
 function Home () {
 
-    
-    const {data: genres, isLoading: genreLoading} = useQuery({ queryKey: ['genres'], queryFn: fetchGenres })
     const {data: netflix, isLoading: netflixLoading, error: netflixError} = useQuery({ queryKey: ['netflix'], queryFn: fetchNetflixOriginal })
-    
+
     if (netflixLoading) return <LoadingOverlay />;
     if (netflixError) return <p>Error occurred! {netflixError.message}</p>;
-    
-    // const {genres, setGenres} = useMovieStore() // zustand
-    // useEffect(() => {
-    //     if (!!genreLoading) setGenres(genreList)
-    // }, [genreLoading])
-
 
     return (
         <Wrapper>

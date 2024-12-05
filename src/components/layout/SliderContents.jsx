@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import PreviewModal from './modal/PreviewModal'
+import { getContentImg } from 'utils/CommonFunction'
 
 const Wrapper = styled.div`
     display: flex;
@@ -35,19 +36,12 @@ function SliderContents (props) {
     // console.log('Movie > props', props);
     const [openPreviewmodal, setOpenPreviewmodal] = useState(false)
     const posterRef = useRef(null)
-    const POSTER_URL = `https://image.tmdb.org/t/p/original` + detail.poster
     
     return (
-        // <div style={{border: 'none'}}>
-        //     <div style={{marginRight: '8px'}}>
-        //         <img loading="lazy" src={POSTER_URL} alt="포스터" style={{width: '200px'}} />
-        //     </div>
-        // </div>
-
         <Wrapper>
             <Poster ref={posterRef} onMouseEnter={() => setOpenPreviewmodal(true)} onMouseLeave={() => setOpenPreviewmodal(false)}>
             {/* <Poster ref={posterRef}> */}
-                <img loading="lazy" src={POSTER_URL} alt="포스터" />
+                <img loading="lazy" src={getContentImg(detail.poster)} alt="포스터" />
                 {/* <div className="fadeIn"> */}
                     {/* {openPreviewmodal && <PreviewModal id={id} detail={detail} /> } */}
                     {/* <PreviewModal id={id} detail={detail} /> */}

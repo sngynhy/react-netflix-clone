@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import PreviewModal from './modal/PreviewModal'
+import { getContentImg } from 'utils/CommonFunction'
 
 const Wrapper = styled.ul`
     list-style: none;
@@ -32,11 +33,10 @@ function SearchPerson (props) {
     // console.log('SearchPerson > props', id, detail);
     const [modalActive, setModalActive] = useState(false)
     const profileRef = useRef(null)
-    const PROFILE_URL = `https://image.tmdb.org/t/p/original` + detail.profile
 
     return (
         <Wrapper id="person-list">
-            <Profile ref={profileRef} url={PROFILE_URL} onMouseEnter={() => setModalActive(true)} onMouseLeave={() => setModalActive(false)}>
+            <Profile ref={profileRef} url={getContentImg(detail.profile)} onMouseEnter={() => setModalActive(true)} onMouseLeave={() => setModalActive(false)}>
                 {/* <div className="fadeIn">
                     {modalActive && <PreviewModal id={id} detail={detail} /> }
                 </div> */}

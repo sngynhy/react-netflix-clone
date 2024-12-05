@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import styled from "styled-components";
 import { useQuery } from '@tanstack/react-query';
-import { fetchGenres, fetchNetflixOriginal, fetchNowplaying, fetchPopular, fetchToprated, fetchUpcomming } from 'api/movieApi';
+import { fetchGenres, fetchNetflixOriginal, fetchNowplaying, fetchPopular, fetchToprated, fetchupcoming } from 'api/movieApi';
 import LoadingOverlay from 'components/ui/LoadingOverlay';
 import Slider from 'components/layout/Slider';
 // import { useMovieStore } from 'stores/movieStore';

@@ -1,34 +1,49 @@
 import { useQuery } from "@tanstack/react-query";
-import { fetchNowplayingMovie, fetchPopularMovie, fetchTopratedMovie, fetchUpcommingMovie,
-    fetchAiringTodayTV, fetchOnTheAirTV, fetchPopularTV, fetchTopratedTV } from 'api/movieApi';
+import { fetchCreditDetails, fetchContents, fetchSimilarContents, fetchVideo } from "api/movieApi";
 
-export const movieQueryKey_nowplaying = 'movieNowPlaying'
-export const movieQueryKey_popular = 'moviePopular'
-export const movieQueryKey_topRated = 'movieTopRated'
-export const movieQueryKey_upcomming = 'movieUpcomming'
-
-export const tvQueryKey_airingToday = 'tvAiringToday'
-export const tvQueryKey_onTheAir = 'tvOnTheAir'
-export const tvQueryKey_popular = 'tvPopular'
-export const tvQueryKey_topRated = 'tvTopRated'
-
-const map = new Map()
-
-map.set(movieQueryKey_nowplaying, fetchNowplayingMovie)
-map.set(movieQueryKey_popular, fetchPopularMovie)
-map.set(movieQueryKey_topRated, fetchTopratedMovie)
-map.set(movieQueryKey_upcomming, fetchUpcommingMovie)
-
-map.set(tvQueryKey_airingToday, fetchAiringTodayTV)
-map.set(tvQueryKey_onTheAir, fetchOnTheAirTV)
-map.set(tvQueryKey_popular, fetchPopularTV)
-map.set(tvQueryKey_topRated, fetchTopratedTV)
-
-export const useReactQuery = (props) => {
-    const { key } = props
+export const useContentsQueryKey = {
+    movie: {
+        type: 'movie',
+        nowPlaying: 'now_playing',
+        topRated: 'top_rated',
+        popular: 'popular',
+        upcoming: 'upcoming',
+    },
+    tv: {
+        type: 'tv',
+        onTheAir: 'on_the_air',
+        airingToday: 'airing_today',
+        topRated: 'top_rated',
+        popular: 'popular',
+    }
+}
+export const useConetentsQuery = (props) => {
+    const { key, type, content } = props
     return useQuery({
-        queryKey: [key],
-        queryFn: map.get(key),
+        queryKey: [key, type, content],
+        queryFn: fetchContents,
         select: data => data.filter(el => el.backdrop_path !== null && el.poster !== null)
+    })
+}
+export const useCrditDetailsQuery = (props) => {
+    const { type, id } = props
+    return useQuery({
+        queryKey: [id + '_cast', type],
+        queryFn: fetchCreditDetails,
+    })
+}
+export const useSimilarContetnsQuery = (props) => {
+    const { type, id } = props
+    return useQuery({
+        queryKey: [id + "_similar", type, id],
+        queryFn: fetchSimilarContents
+    })
+}
+export const useVideoQuery = (props) => {
+    const { type, id } = props
+    return useQuery({
+        queryKey: [id + "_video", type, id],
+        queryFn: fetchVideo,
+        select: data => data.find(el => el.type === 'Trailer').key
     })
 }

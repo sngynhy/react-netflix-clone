@@ -1,9 +1,8 @@
 import styled from "styled-components";
 
 export const Wrapper = styled.div`
-    height: 5rem;
+    height: 4rem;
     width: 100%;
-    line-height: 3rem;
     background: transparent;
     background-image: linear-gradient(180deg,rgba(0,0,0,.7) 10%,transparent);
     position: fixed;

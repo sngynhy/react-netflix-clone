@@ -10,8 +10,6 @@ import { RxTriangleRight } from "react-icons/rx";
 
 const Wrapper = styled.div`
     width: 100%;
-    // position: absolute;
-    // z-index: 0;
 `
 const Container = styled.div`
     width: 100%;
@@ -27,17 +25,24 @@ function Search (props) {
     const { state } = useLocation()
     const keyword = state.keyword
 
-    const queryClient = useQueryClient();
-
-    const {data: result, isLoading: isLoading, error: error } = useQuery({
-        // queryKey: ["search", keyword, queryClient], // 인자로 queryClient도 넘겨줌
-        queryKey: ["search", keyword],
+    const {data: movieResult, isLoading: movieIsLoading, error: movieError } = useQuery({
+        queryKey: ["search", 'movie', keyword],
         queryFn: fetchSearchBykeyword,
         // select: data => data.filter(el => el.backdrop_path !== null && el.poster !== null)
     })
-    console.log('result', result)
-    if (isLoading) return <LoadingOverlay />;
-    if (error) return <p>Error occurred! {error.message}</p>;
+    const {data: tvResult, isLoading: tvIsLoading, error: tvError } = useQuery({
+        queryKey: ["search", 'tv', keyword],
+        queryFn: fetchSearchBykeyword,
+        // select: data => data.filter(el => el.backdrop_path !== null && el.poster !== null)
+    })
+    const {data: personResult, isLoading: personIsLoading, error: personError } = useQuery({
+        queryKey: ["search", 'person', keyword],
+        queryFn: fetchSearchBykeyword,
+        // select: data => data.filter(el => el.backdrop_path !== null && el.poster !== null)
+    })
+
+    if (movieIsLoading || tvIsLoading || personIsLoading) return <LoadingOverlay />;
+    if (movieError || tvError || personError) return <p>Error occurred!</p>;
     
     return (
         <Wrapper>
@@ -51,7 +56,7 @@ function Search (props) {
                         </div> */}
                     </h2>
                     <div style={{display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)'}}>
-                        {result.movie.length !== 0 ? result?.movie && result.movie.map((el, i) => {
+                        {movieResult.length !== 0 ? movieResult.map(el => {
                                 if (el.poster_path) return <SearchContents
                                                             key={el.id}
                                                             id={el.id}
@@ -70,7 +75,7 @@ function Search (props) {
 
                     <h2><RxTriangleRight /><div style={{display: 'inline-block'}}>TV</div></h2>
                     <div style={{display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)'}}>
-                        {result.tv.length !== 0 ? result.tv.map((el, i) => {
+                        {tvResult.length !== 0 ? tvResult.map(el => {
                                 if (el.poster_path) return <SearchContents
                                                             key={el.id}
                                                             id={el.id}
@@ -88,7 +93,7 @@ function Search (props) {
 
                     <h2><RxTriangleRight /> 인물</h2>
                     <div style={{display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)'}}>
-                        {result.person.length !== 0 ? result.person.map((el, i) => {
+                        {personResult.length !== 0 ? personResult.map(el => {
                                 if (el.profile_path) return <SearchPerson
                                                             key={el.id}
                                                             id={el.id}

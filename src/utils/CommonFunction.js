@@ -7,3 +7,10 @@ export const getGenresById = (data, genres) => {
         return acc
     }, [])
 }
+
+export const getContentImg = (path) => {
+    return `https://image.tmdb.org/t/p/original${path}`
+}
+export const getContentVedio = (key) => {
+    return `https://youtube.com/embed/${key}?autoplay=0&mute=1&controls=0&fs=0&modestbranding=0&rel=0&loop=1`
+}

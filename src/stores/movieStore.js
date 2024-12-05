@@ -8,16 +8,19 @@ import { devtools } from 'zustand/middleware';
 // create 함수 호출에서 반환하는 Store Hook은, use 접두사와 Store 접미사로 명명하여 사용 ex) useMovieStore
 export const useMovieStore = create(
     devtools(set => ({
+        mediaType: '',
+        setMediaType: (type) => set({mediaType: type}),
+        
         likes: [],
         setLikes: (id) => set((state) => ({
             likes: [...state.likes, id]
         })),
         clearLikes: () => set({ likes: [] }),
 
-        // genres: [],
-        // setGenres: (genre) => set((state) => ({
-        //     genres: genre // 기존 상태에 새 장르 추가
-        //   })),
-        // clearGenres: () => set({genres: []})
+        genres: [],
+        setGenres: (genre) => set((state) => ({
+            genres: genre // 기존 상태에 새 장르 추가
+          })),
+        clearGenres: () => set({genres: []})
     }))
 )

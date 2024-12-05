@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import PreviewModal from './modal/PreviewModal'
+import { getContentImg } from 'utils/CommonFunction'
 
 const Wrapper = styled.ul`
     display: flex;
@@ -29,12 +30,11 @@ function SearchContents (props) {
     // console.log('MovieList > props', id, detail);
     const [modalActive, setModalActive] = useState(false)
     const posterRef = useRef(null)
-    const POSTER_URL = `https://image.tmdb.org/t/p/original/` + detail.poster // detail.backdrop
 
     return (
         <Wrapper id="movie-list">
             <Poster ref={posterRef} onMouseEnter={() => setModalActive(true)} onMouseLeave={() => setModalActive(false)}>
-                <img loading="lazy" src={POSTER_URL} alt="포스터" width='100%'/>
+                <img loading="lazy" src={getContentImg(detail.poster)} alt="포스터" width='100%'/>
                 {/* <div className="fadeIn">
                     {modalActive && <PreviewModal id={id} detail={detail} /> }
                 </div> */}

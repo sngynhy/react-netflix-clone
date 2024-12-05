@@ -26,6 +26,8 @@ export const SelectBoxForGenre = styled.div`
     flex-direction: row;
     flex-grow: 1;
     justify-content: flex-start;
+    position: absolute;
+    z-index: 2;
     & > span {
         font-size: 38px;
         margin-right: 15px;
@@ -37,14 +39,22 @@ export const SelectBoxForGenre = styled.div`
         cursor: pointer;
         display: inline-block;
         position: relative;
-        background-color: openGenreBox ? rgba(0, 0, 0, 0.4) : black
+        background-color: black;
     }
-    & > .selectBoxOptions {
+    & > .selectBox > .selectIndex {
+        padding: 5px 10px;
+    }
+    & > .selectBox > .selectBoxOptions {
         position: absolute;
         z-index: 3;
         top: 32px;
-        background-color: black;
-        width: 150px;
+        background-color: rgba(0,0,0,.9);
+        width: 300px;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+    }
+    & > .selectBox > .selectBoxOptions > div > span:hover {
+        border-bottom: 2px solid white;
     }
 `
 export const CoverContentText = styled.div`
