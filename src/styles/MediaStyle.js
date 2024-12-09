@@ -34,12 +34,15 @@ export const SelectBoxForGenre = styled.div`
     }
     & > .selectBox {
         border: 1px solid white;
-        width: 95px;
+        width: auto; // 95px;
         margin: 0 30px;
         cursor: pointer;
         display: inline-block;
         position: relative;
-        background-color: black;
+        background-color: ${props => props.bgcolor};
+    }
+        & > .selectBox:hover {
+        background-color: hsla(0,0%,100%,.1);
     }
     & > .selectBox > .selectIndex {
         padding: 5px 10px;
@@ -49,7 +52,7 @@ export const SelectBoxForGenre = styled.div`
         z-index: 3;
         top: 32px;
         background-color: rgba(0,0,0,.9);
-        width: 300px;
+        width: 500px;
         display: grid;
         grid-template-columns: repeat(3, 1fr);
     }

@@ -7,6 +7,7 @@ import { getContentImg } from 'utils/CommonFunction'
 
 const Wrapper = styled.div`
     display: flex;
+    position: relative;
     // list-style: none;
     // padding: 0;
     // overflow-y: visible;
@@ -23,8 +24,11 @@ const Poster = styled.div`
         width: 215px;
     }
     & > .fadeIn {
-        opacity: 0;
+        opacity: 1; // 0;
         transition: 0.5s;
+        position: absolute;
+        z-index: 10;
+        left: -78px;
     }
     & > img:hover + .fadeIn {
         opacity: 1;
@@ -32,20 +36,21 @@ const Poster = styled.div`
 `
 
 function SliderContents (props) {
-    const {id, ...detail} = props
-    // console.log('Movie > props', props);
+    const {id, type, ...detail} = props
+    // console.log('SliderContents > props', props);
     const [openPreviewmodal, setOpenPreviewmodal] = useState(false)
     const posterRef = useRef(null)
     
     return (
-        <Wrapper>
+        <Wrapper id="slider">
             <Poster ref={posterRef} onMouseEnter={() => setOpenPreviewmodal(true)} onMouseLeave={() => setOpenPreviewmodal(false)}>
+            {/* <Poster ref={posterRef} onClick={() => setOpenPreviewmodal(true)}> */}
             {/* <Poster ref={posterRef}> */}
                 <img loading="lazy" src={getContentImg(detail.poster)} alt="포스터" />
-                {/* <div className="fadeIn"> */}
-                    {/* {openPreviewmodal && <PreviewModal id={id} detail={detail} /> } */}
+                <div className="fadeIn">
+                    {openPreviewmodal && <PreviewModal type={type} id={id} detail={detail} /> }
                     {/* <PreviewModal id={id} detail={detail} /> */}
-                {/* </div> */}
+                </div>
                 {/* {modalActive && <PreviewModal id={id} detail={detail} left={0} top={0} />} */}
 
                 {/* {<Link to={`/movie-detail/${id}`}><img src={POSTER_URL + poster} /></Link>} */}

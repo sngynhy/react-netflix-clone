@@ -8,7 +8,8 @@ import { ImEnlarge2 } from "react-icons/im";
 import { fetchGenres, fetchVideo } from "api/movieApi";
 import { getGenresById, getContentVedio, getContentImg } from "utils/CommonFunction";
 import PropTypes from "prop-types";
-import { useMovieStore } from "stores/movieStore";
+import { useMediaStore } from "stores/CommonStore";
+import { useVideoQuery } from "hooks/useReactQuery";
 
 const Wrapper = styled.div`
     border: 1px solid white;
@@ -41,20 +42,17 @@ const PreviewInfo = styled.div`
 `
 
 function PreviewModal (props) {
-    const { id, ...detail } = props
-    // console.log('PreviewModal', id, detail);
+    const { id, type, detail } = props
+    console.log('PreviewModal', id, detail);
     
-    const { mediaType } = useMovieStore()
+    const { mediaType } = useMediaStore()
     const queryClient = useQueryClient(); // 캐시된 데이터 가져오기
     const genres = queryClient.getQueryData(['genres', mediaType]) // 'genres' 키로 데이터 조회
     const genre = getGenresById(detail.genre, genres)
 
-    const {data: videokey} = useQuery({
-        queryKey: ["video", id],
-        queryFn: fetchVideo,
-        select: data => data.find(el => el.type === 'Trailer').key
-    })
-    
+    const {data: videokey, isLoading: videoLoading} = useVideoQuery({type: type, id: id})
+    console.log('videokey', videokey);
+
     const [like, setLike] = useState(false)
     const liked = () => {
         setLike(prev => !prev)

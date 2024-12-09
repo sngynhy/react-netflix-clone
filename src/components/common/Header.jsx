@@ -22,16 +22,19 @@ function Header () {
     const movieMatch = useMatch('/media/1')
     const seriesMatch = useMatch('/media/2')
     const netflixMatch = useMatch('/netflix-original')
+    const movieByGenreMatch = useMatch('/media/1/genre/:id')
+    const seriesByGenreMatch = useMatch('/media/2/genre/:id')
+
     const categorys = [
         { name: '홈', path: '/', active: Boolean(homeMatch) },
-        { name: '영화', path: '/media/1', active: Boolean(movieMatch) },
-        { name: '시리즈', path: '/media/2', active: Boolean(seriesMatch) },
+        { name: '영화', path: '/media/1', active: Boolean(movieMatch) || Boolean(movieByGenreMatch)},
+        { name: '시리즈', path: '/media/2', active: Boolean(seriesMatch) || Boolean(seriesByGenreMatch) },
         { name: '넷플릭스 오리지널', path: '/netflix-original', active: Boolean(netflixMatch) }
     ]
 
     const navigate = useNavigate()
+    
     const searchRef = useRef(null)
-
     useEffect(() => {
         // 특정 영역 외 클릭 시 이벤트 발생
     	const outSideClick = (e) => {
@@ -76,7 +79,7 @@ function Header () {
 
                 {/* 우측 검색 아이콘 */}
                 <div style={styles.rightItems}>
-                    <SearchBox ref={searchRef} open={openSearchInput}>
+                    <SearchBox className="search-box" ref={searchRef} open={openSearchInput}>
                         <label htmlFor="searchInput" style={{height: 'inherit'}}><IoSearch onClick={(e) => openSearchInput ? search(e) : setOpenSearchInput(true)} style={styles.searchIcon}/></label>
                             {
                                 openSearchInput &&

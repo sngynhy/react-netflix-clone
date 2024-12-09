@@ -7,7 +7,7 @@
             "pages/": ["pages/*"],
             "style/": ["style/*"],
             "api/": ["api/*"],
-            "stores/": ["stores/*"],
+            "stores/CommonStore": ["stores/CommonStore*"],
             "utils/": ["utils/*"]
         }
     },

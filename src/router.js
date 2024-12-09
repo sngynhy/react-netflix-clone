@@ -9,9 +9,10 @@ function Router () {
         <div id="routes" style={styles.routes}>
             <Routes>
                 <Route index element={<Home />} />
-                {/* <Route path="/movie-detail/:id" element={<MovieDetail />} /> */}
-                <Route path="/search" element={<Search />} />
                 <Route path="/media/:id" element={<Media />} />
+                {/* <Route path="/media/genre/:id" element={<Media />} /> */}
+                <Route path="/media/:id/genre/:genreId" element={<Media />} />
+                <Route path="/search" element={<Search />} />
             </Routes>
         </div>
     )

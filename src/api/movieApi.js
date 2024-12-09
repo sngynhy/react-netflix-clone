@@ -55,6 +55,13 @@ export const fetchSimilarContents = async ({ queryKey }) => { // type: 'movie' o
     const res = await axios.get(url, options);
     return res.data.results
 }
+// 추천 컨텐츠
+export const fetchRecommendContents = async ({ queryKey }) => { // type: 'movie' or 'tv'
+    const [, type, id] = queryKey
+    const url = `${BASE_URL}/${type}/${id}/recommendations?${QUERY_PARAM}`
+    const res = await axios.get(url, options);
+    return res.data.results
+}
 // 트렌드 컨텐츠
 export const fetchTrendingContents = async ({ queryKey }) => { // type: 'all' or 'movie' or 'tv', period: 'week' or 'day'
     const [, type, period] = queryKey
@@ -80,13 +87,10 @@ export const fetchSearchBykeyword = async ({ queryKey }) => {
 
 // 장르로 검색
 export const fetchSearchByGenre = async ({ queryKey }) => {
-    const [, type, queryClient] = queryKey
-    const genres = queryClient.getQueryData(['genres' + type]);
-
-    // 입력한 장르의 id 추출
-    const id = 0 // includes로 처리 << 추가 구현 필요
-    
-    const url = `${BASE_URL}/discover/${type}?${QUERY_PARAM}&with_genres=${id}`
+    const [, type, genreId] = queryKey
+    console.log('fetchSearchByGenre', type, genreId);
+                                    // multi
+    const url = `${BASE_URL}/discover/${type}?${QUERY_PARAM}&with_genres=${genreId}`
     
     const res = await axios.get(url, options);
     return res.data.results

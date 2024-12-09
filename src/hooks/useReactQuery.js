@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { fetchCreditDetails, fetchContents, fetchSimilarContents, fetchVideo } from "api/movieApi";
+import { fetchCreditDetails, fetchContents, fetchSimilarContents, fetchRecommendContents, fetchVideo } from "api/movieApi";
 
 export const useContentsQueryKey = {
     movie: {
@@ -32,11 +32,18 @@ export const useCrditDetailsQuery = (props) => {
         queryFn: fetchCreditDetails,
     })
 }
-export const useSimilarContetnsQuery = (props) => {
+export const useSimilarContentsQuery = (props) => {
     const { type, id } = props
     return useQuery({
         queryKey: [id + "_similar", type, id],
         queryFn: fetchSimilarContents
+    })
+}
+export const useRecommendContentsQuery = (props) => {
+    const { type, id } = props
+    return useQuery({
+        queryKey: [id + "_recommend", type, id],
+        queryFn: fetchRecommendContents
     })
 }
 export const useVideoQuery = (props) => {
@@ -44,6 +51,6 @@ export const useVideoQuery = (props) => {
     return useQuery({
         queryKey: [id + "_video", type, id],
         queryFn: fetchVideo,
-        select: data => data.find(el => el.type === 'Trailer').key
+        select: data => data.find(el => el.type === 'Trailer' || el.type === 'Teaser').key
     })
 }

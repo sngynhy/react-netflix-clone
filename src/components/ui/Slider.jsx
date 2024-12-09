@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { GoChevronLeft, GoChevronRight } from "react-icons/go";
-import SliderContents from './SliderContents';
+import SliderContents from '../SliderContents';
 
 const Wrapper = styled.div`
     position: relative;
@@ -33,7 +33,7 @@ const Contents = styled.div`
 `
 
 function Slider (props) {
-    const {name, data} = props
+    const {type, name, data} = props
     const count = 7 // 한 화면에 출력되는 포스터 이미지 수
     const [sliderIndex, setSliderIndex] = useState(1)
     const [sliderPosition, setSliderPosition] = useState(0)
@@ -71,9 +71,10 @@ function Slider (props) {
                             data.map((el, i) => {
                                 return <SliderContents
                                 key={el.id}
+                                type={type}
                                 id={el.id}
-                                title={el.title}
-                                originTitle={el.original_title}
+                                title={el.title || el.name}
+                                originTitle={el.original_title || el.original_name}
                                 overview={el.overview}
                                 poster={el.poster_path}
                                 genre={el.genre_ids}
