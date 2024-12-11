@@ -1,12 +1,15 @@
 {
   "files": {
-    "main.js": "/movie_webservice/static/js/main.5f8ed699.js",
-    "static/js/453.0b30a3d5.chunk.js": "/movie_webservice/static/js/453.0b30a3d5.chunk.js",
-    "index.html": "/movie_webservice/index.html",
-    "main.5f8ed699.js.map": "/movie_webservice/static/js/main.5f8ed699.js.map",
-    "453.0b30a3d5.chunk.js.map": "/movie_webservice/static/js/453.0b30a3d5.chunk.js.map"
+    "main.css": "/react-netflix-clone/static/css/main.93a0497a.css",
+    "main.js": "/react-netflix-clone/static/js/main.2c509909.js",
+    "static/js/453.4d78b4ad.chunk.js": "/react-netflix-clone/static/js/453.4d78b4ad.chunk.js",
+    "index.html": "/react-netflix-clone/index.html",
+    "main.93a0497a.css.map": "/react-netflix-clone/static/css/main.93a0497a.css.map",
+    "main.2c509909.js.map": "/react-netflix-clone/static/js/main.2c509909.js.map",
+    "453.4d78b4ad.chunk.js.map": "/react-netflix-clone/static/js/453.4d78b4ad.chunk.js.map"
   },
   "entrypoints": [
-    "static/js/main.5f8ed699.js"
+    "static/css/main.93a0497a.css",
+    "static/js/main.2c509909.js"
   ]
 }
