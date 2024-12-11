@@ -20,10 +20,14 @@ export const useMediaStore = create(
         removeLikes: (id) => set((state) => ({ likes: state.likes.filter(el => el !== id) })),
         clearLikes: () => set({ likes: [] }),
 
-        readyToPlay: false,
-        setReadyToPlay: (val) => set((state) => ({ readyToPlay: val })),
-        fullScreen: false,
-        setFullScreen: (val) => set((state) => ({fullScreen: val})),
+        videoId: '',
+        setVideoId: (value) => set({videoId: value}),
+        readyToPlay: false, // 동영상 재생 준비 완료
+        setReadyToPlay: (value) => set({ readyToPlay: value }),
+        endPlay: false, // 동영상 재생 완료
+        setEndPlay: (value) => set({endPlay: value}),
+        fullScreen: false, // 전체 화면
+        setFullScreen: (value) => set({fullScreen: value}),
 
         genreName: '',
         setGenreName: (val) => set({ genreName: val}),

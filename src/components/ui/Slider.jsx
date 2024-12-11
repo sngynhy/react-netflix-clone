@@ -4,35 +4,6 @@ import { GoChevronLeft, GoChevronRight } from "react-icons/go";
 import { getContentImg } from "utils/CommonFunction";
 import PreviewModal from "components/modal/PreviewModal";
 
-const Wrapper = styled.div`
-    position: relative;
-    margin: 50px 0;
-
-    & > p {
-        font-size: 1.4vw;
-        padding: 0 3rem;
-        margin: 0 0 20px 0;
-    }
-    & > div > span > svg {
-        width: 3rem;
-        height: 3rem;
-    }
-    & > div > span:hover {
-        cursor: pointer;
-        // background: hsla(0, 0%, 8%, .5);
-    }
-`
-const Container = styled.div`
-    overflow: hidden;
-`
-const Contents = styled.div`
-    display: grid;
-    grid-auto-flow: column;
-    gap: 15px;
-    transform: translateX(${props => props.position}px);
-    transition: transform 0.5s ease-in-out;
-`
-
 function Slider (props) {
     const {mType, name, data} = props
     const count = 7 // 한 화면에 출력되는 포스터 이미지 수
@@ -78,6 +49,7 @@ function Slider (props) {
                                 originTitle={el.original_title || el.original_name}
                                 overview={el.overview}
                                 poster={el.poster_path}
+                                backdrop={el.backdrop_path}
                                 genre={el.genre_ids}
                                 voteAvg={el.vote_average.toFixed(1)}
                                 voteCnt={el.vote_count} />
@@ -91,6 +63,34 @@ function Slider (props) {
         </Wrapper>
     )
 }
+const Wrapper = styled.div`
+    position: relative;
+    margin: 50px 0;
+
+    & > p {
+        font-size: 1.4vw;
+        padding: 0 3rem;
+        margin: 0 0 20px 0;
+    }
+    & > div > span > svg {
+        width: 3rem;
+        height: 3rem;
+    }
+    & > div > span:hover {
+        cursor: pointer;
+        // background: hsla(0, 0%, 8%, .5);
+    }
+`
+const Container = styled.div`
+    overflow: hidden;
+`
+const Contents = styled.div`
+    display: grid;
+    grid-auto-flow: column;
+    gap: 15px;
+    transform: translateX(${props => props.position}px);
+    transition: transform 0.5s ease-in-out;
+`
 
 const SliderContents = (props) => {
     const {id, mType, ...detail} = props
@@ -105,9 +105,6 @@ const SliderContents = (props) => {
                 <div className="fadeIn">
                     {openPreviewmodal && <PreviewModal mType={mType} id={id} detail={detail} /> }
                 </div>
-
-                {/* {<Link to={`/movie-detail/${id}`}><img src={POSTER_URL + poster} /></Link>} */}
-                {/* <h2><Link to='/movie-detail' state={{ title, overview, poster, genres }}>{title} ({originTitle})</Link></h2> */}
             </Poster>
         </div>
     )

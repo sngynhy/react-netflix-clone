@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useQuery } from '@tanstack/react-query';
 import { fetchCreditDetails, fetchContentDetails, fetchRecommendContents } from "api/movieApi"; 
 import LoadingOverlay from "components/ui/LoadingOverlay";
-import { getContentImg, getContentVedio } from "utils/CommonFunction";
+import { getContentImg } from "utils/CommonFunction";
 import { useVideoQuery } from "hooks/useReactQuery";
 import { FaStar } from "react-icons/fa6";
 import { IoCloseCircle } from "react-icons/io5";
@@ -116,25 +116,24 @@ function DetailModal (props) {
 
 const PreviewContent = ({ id, mType, imgPath }) => {
 
-    const { readyToPlay, setOpenDetailModal } = useMediaStore()
-    useEffect(() => { console.log('PreviewContent > readyToPlay', readyToPlay); }, [readyToPlay])
+    const { readyToPlay, endPlay, setOpenDetailModal } = useMediaStore()
 
     // video
     const {data: videokey, isLoading: videoLoading} = useVideoQuery({type: mType, id: id})
     // console.log('videokey', videokey);
-        
+
     return (
         <PreviewPlayer>
             {/* 영상 or 이미지 콘텐츠 */}
             <div style={{height: '100%'}}>
-                {videokey ? <YouTubePlayer videoId={videokey} style={{borderRadius: '8px 8px 0 0'}} /> 
+                {videokey && !endPlay ? <YouTubePlayer videoId={videokey} style={{borderRadius: '8px 8px 0 0'}} /> 
                 : <img src={getContentImg(imgPath)} style={{width: '100%', borderRadius: '8px 8px 0 0'}} alt="backdrop" />}
             </div>
             {/* 버튼 */}
             <PlayerOnIcons>
                 <IoCloseCircle className="closeBtn" onClick={() => setOpenDetailModal(false)} />
                 <div style={{height: '46px'}}>
-                    <PlayButton active={!!videokey} />
+                    <PlayButton active={videokey && readyToPlay} />
                     <MyContentsButton id={id} width="auto" height="100%" />
                 </div>
             </PlayerOnIcons>

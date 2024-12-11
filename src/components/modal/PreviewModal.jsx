@@ -5,11 +5,12 @@ import { FaCirclePlay } from "react-icons/fa6";
 import { AiOutlineLike, AiFillLike } from "react-icons/ai";
 import { ImEnlarge2 } from "react-icons/im";
 import { fetchGenres, fetchVideo } from "api/movieApi";
-import { getGenresById, getContentVedio, getContentImg } from "utils/CommonFunction";
+import { getGenresById, getContentImg } from "utils/CommonFunction";
 import PropTypes from "prop-types";
 import { useMediaStore } from "stores/CommonStore";
 import { useVideoQuery } from "hooks/useReactQuery"
-import MyContentsButton from "components/ui/MyContentsButton";;
+import MyContentsButton from "components/ui/MyContentsButton";
+import { YouTubePlayer } from "components/contents/YouTubePlayer";
 
 const Wrapper = styled.div`
     border: 1px solid white;
@@ -43,7 +44,10 @@ const PreviewInfo = styled.div`
 
 function PreviewModal (props) {
     const { id, mType, detail } = props
+    console.log('PreviewModal', detail);
    
+    const { readyToPlay, endPlay } = useMediaStore()
+
     const queryClient = useQueryClient(); // 캐시된 데이터 가져오기
     const genres = queryClient.getQueryData(['genres', mType]) // 'genres' 키로 데이터 조회
     const genre = genres ? getGenresById(detail.genre, genres) : []
@@ -59,7 +63,8 @@ function PreviewModal (props) {
     return (
         <Wrapper>
             <PreviewPlayer>
-                <iframe src={getContentVedio(videokey)} width="100%" height="100%" title="preview" style={{border: 'none'}}></iframe>
+                {videokey && !endPlay ? <YouTubePlayer videoId={videokey} width="382px" height="230px" />
+                : <img src={getContentImg(detail.backdrop)} style={{width: '100%', height: '100%'}} alt="backdrop" />}
             </PreviewPlayer>
             <PreviewInfo>
                 <div>
@@ -86,11 +91,5 @@ PreviewModal.prototype = {
     genre: PropTypes.arrayOf(PropTypes.number).isRequired,
     voteAvg: PropTypes.number,
 }
-
-// 기본값 지정
-// PreviewModal.defaultProps = {
-//     voteAvg: 0.0,
-// }
-
 
 export default PreviewModal
