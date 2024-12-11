@@ -34,7 +34,7 @@ function SearchContents (props) {
     return (
         <Wrapper id="movie-list">
             <Poster ref={posterRef} onMouseEnter={() => setModalActive(true)} onMouseLeave={() => setModalActive(false)}>
-                <img loading="lazy" src={getContentImg(detail.poster)} alt="포스터" width='100%'/>
+                <img loading="lazy" src={getContentImg(detail.poster)} alt={detail.title} width='100%'/>
                 {/* <div className="fadeIn">
                     {modalActive && <PreviewModal id={id} detail={detail} /> }
                 </div> */}
@@ -53,11 +53,5 @@ SearchContents.prototype = {
     genre: PropTypes.arrayOf(PropTypes.number).isRequired,
     voteAvg: PropTypes.number,
     voteCnt: PropTypes.number,
-}
-
-// 기본값 지정
-SearchContents.defaultProps = {
-    voteAvg: 0.0,
-    voteCnt: 0,
 }
 export default SearchContents

@@ -14,22 +14,21 @@ export const useGlobalStore = create(
 )
 
 export const useMediaStore = create(
-    devtools(set => ({
-        mediaType: '',
-        setMediaType: (type) => set({mediaType: type}),
-        
+    devtools((set, get) => ({
         likes: [],
-        setLikes: (id) => set((state) => ({
-            likes: [...state.likes, id]
-        })),
+        addLikes: (id) => set((state) => ({ likes: [...state.likes, id] })),
+        removeLikes: (id) => set((state) => ({ likes: state.likes.filter(el => el !== id) })),
         clearLikes: () => set({ likes: [] }),
 
-        genres: [],
-        setGenres: (genre) => set((state) => ({
-            genres: genre // 기존 상태에 새 장르 추가
-          })),
+        readyToPlay: false,
+        setReadyToPlay: (val) => set((state) => ({ readyToPlay: val })),
+        fullScreen: false,
+        setFullScreen: (val) => set((state) => ({fullScreen: val})),
+
+        genreName: '',
+        setGenreName: (val) => set({ genreName: val}),
 
         openDetailModal: false,
-        setOpenDetailModal: (openDetailModal) => set({openDetailModal: openDetailModal}),
+        setOpenDetailModal: (openDetailModal) => set({openDetailModal: openDetailModal, readyToPlay: false}),
     }))
 )

@@ -16,7 +16,7 @@ const queryClient = new QueryClient()
 
 function App() {
   const {isLoading} = useGlobalStore()
-  // console.log('isLoading', isLoading);
+
   return (
     <QueryClientProvider client={queryClient}>
       {/* 📍 context 사용 */}

@@ -89,17 +89,10 @@ export const CoverContentText = styled.div`
     & > div > button > svg {
         margin-right: 8px;
     }
-    & > div > .playBtn {
-        background-color: #ffffff;
-    }
     & > div > .detailBtn {
         color: white;
         background-color: rgba(109, 109, 110, 0.7);
     }
-    & > div > .playBtn:hover {
-        background-color: #ffffffbf;
-    }
-
     & > div > .detailBtn:hover {
         color: white;
         background-color: rgba(109, 109, 110, 0.4);

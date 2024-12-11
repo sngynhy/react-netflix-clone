@@ -33,7 +33,6 @@ const Container = styled.div`
 `
 
 function Home () {
-
     const {data: netflix, isLoading: netflixLoading, error: netflixError} = useQuery({ queryKey: ['netflix'], queryFn: fetchNetflixOriginal })
 
     if (netflixLoading) return <LoadingOverlay />;
@@ -50,7 +49,7 @@ function Home () {
   
                 <div>
                     {/* <Slider data={netflix.slice(0, 10)} /> */}
-                    <Slider name="Netflix Original" data={netflix} />
+                    {/* <Slider name="Netflix Original" data={netflix} /> */}
                 </div>
 
                 <div>

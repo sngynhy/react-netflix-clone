@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { fetchCreditDetails, fetchContents, fetchSimilarContents, fetchRecommendContents, fetchVideo } from "api/movieApi";
+import { fetchCreditDetails, fetchContents, fetchSimilarContents, fetchRecommendContents, fetchVideo, fetchContentsByGenre } from "api/movieApi";
 
 export const useContentsQueryKey = {
     movie: {
@@ -22,6 +22,14 @@ export const useConetentsQuery = (props) => {
     return useQuery({
         queryKey: [key, type, content],
         queryFn: fetchContents,
+        select: data => data.filter(el => el.backdrop_path !== null && el.poster !== null)
+    })
+}
+export const useConetentsByGenreQuery = (props) => {
+    const { type, genreId } = props
+    return useQuery({
+        queryKey: [type +'_' + genreId, type, genreId],
+        queryFn: fetchContentsByGenre,
         select: data => data.filter(el => el.backdrop_path !== null && el.poster !== null)
     })
 }

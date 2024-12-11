@@ -21,7 +21,7 @@ export const fetchGenres = async ({ queryKey }) => { // type: 'movie' or 'tv'
     const res = await axios.get(url, options)
     return res.data.genres
 }
-// 컨텐츠 상세 정보
+// 콘텐츠 상세 정보
 export const fetchContentDetails = async ({ queryKey }) => {
     const [, type, id] = queryKey
     const url = `${BASE_URL}/${type}/${id}?${QUERY_PARAM}`
@@ -35,7 +35,7 @@ export const fetchCreditDetails = async ({ queryKey }) => {
     const res = await axios.get(url, options)
     return res.data
 }
-// 영화, 시리즈 컨텐츠
+// 영화, 시리즈 콘텐츠
 export const fetchContents = async ({ queryKey }) => { // type: 'movie' or 'tv', content: 'nowplaying', 'airingToday', ...
     const [, type, content] = queryKey
     const url = `${BASE_URL}/${type}/${content}?${QUERY_PARAM}`
@@ -48,22 +48,22 @@ export const fetchNetflixOriginal = async () => {
     const res = await axios.get(url, options)
     return res.data.results
 }
-// 유사 컨텐츠
+// 유사 콘텐츠
 export const fetchSimilarContents = async ({ queryKey }) => { // type: 'movie' or 'tv'
     const [, type, id] = queryKey
     const url = `${BASE_URL}/${type}/${id}/similar?${QUERY_PARAM}`
     const res = await axios.get(url, options);
     return res.data.results
 }
-// 추천 컨텐츠
+// 추천 콘텐츠
 export const fetchRecommendContents = async ({ queryKey }) => { // type: 'movie' or 'tv'
     const [, type, id] = queryKey
     const url = `${BASE_URL}/${type}/${id}/recommendations?${QUERY_PARAM}`
     const res = await axios.get(url, options);
     return res.data.results
 }
-// 트렌드 컨텐츠
-export const fetchTrendingContents = async ({ queryKey }) => { // type: 'all' or 'movie' or 'tv', period: 'week' or 'day'
+// 트렌드 콘텐츠
+export const fetchTrendingContents = async ({ queryKey }) => { // type: 'all' or 'movie' or 'tv' or 'people', period: 'week' or 'day'
     const [, type, period] = queryKey
     const url = `${BASE_URL}/trending/${type}/${period}?${QUERY_PARAM}`
     const res = await axios.get(url, options)
@@ -85,13 +85,12 @@ export const fetchSearchBykeyword = async ({ queryKey }) => {
     return res.data.results
 }
 
-// 장르로 검색
-export const fetchSearchByGenre = async ({ queryKey }) => {
+// 장르별 콘텐츠
+export const fetchContentsByGenre = async ({ queryKey }) => {
     const [, type, genreId] = queryKey
-    console.log('fetchSearchByGenre', type, genreId);
+    console.log('fetchContentsByGenre', type, genreId);
                                     // multi
     const url = `${BASE_URL}/discover/${type}?${QUERY_PARAM}&with_genres=${genreId}`
-    
     const res = await axios.get(url, options);
     return res.data.results
 }

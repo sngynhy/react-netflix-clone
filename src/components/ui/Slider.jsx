@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import { GoChevronLeft, GoChevronRight } from "react-icons/go";
-import SliderContents from '../SliderContents';
+import { getContentImg } from "utils/CommonFunction";
+import PreviewModal from "components/modal/PreviewModal";
 
 const Wrapper = styled.div`
     position: relative;
@@ -33,7 +34,7 @@ const Contents = styled.div`
 `
 
 function Slider (props) {
-    const {type, name, data} = props
+    const {mType, name, data} = props
     const count = 7 // 한 화면에 출력되는 포스터 이미지 수
     const [sliderIndex, setSliderIndex] = useState(1)
     const [sliderPosition, setSliderPosition] = useState(0)
@@ -71,7 +72,7 @@ function Slider (props) {
                             data.map((el, i) => {
                                 return <SliderContents
                                 key={el.id}
-                                type={type}
+                                mType={mType}
                                 id={el.id}
                                 title={el.title || el.name}
                                 originTitle={el.original_title || el.original_name}
@@ -91,4 +92,44 @@ function Slider (props) {
     )
 }
 
+const SliderContents = (props) => {
+    const {id, mType, ...detail} = props
+    const [openPreviewmodal, setOpenPreviewmodal] = useState(false)
+    const posterRef = useRef(null)
+    
+    return (
+        <div id="slider" style={{display: 'flex', position: 'relative'}}>
+            <Poster ref={posterRef} onMouseEnter={() => setOpenPreviewmodal(true)} onMouseLeave={() => setOpenPreviewmodal(false)}>
+            {/* <Poster ref={posterRef} onClick={() => setOpenPreviewmodal(true)}> */}
+                <img loading="lazy" src={getContentImg(detail.poster)} alt={detail.title} />
+                <div className="fadeIn">
+                    {openPreviewmodal && <PreviewModal mType={mType} id={id} detail={detail} /> }
+                </div>
+
+                {/* {<Link to={`/movie-detail/${id}`}><img src={POSTER_URL + poster} /></Link>} */}
+                {/* <h2><Link to='/movie-detail' state={{ title, overview, poster, genres }}>{title} ({originTitle})</Link></h2> */}
+            </Poster>
+        </div>
+    )
+}
+
+const Poster = styled.div`
+    flex-shrink: 0;
+    scroll-snap-align: start;
+    display: flex;
+    & > img {
+        cursor: pointer;
+        width: 215px;
+    }
+    & > .fadeIn {
+        opacity: 1; // 0;
+        transition: 0.5s;
+        position: absolute;
+        z-index: 10;
+        left: -78px;
+    }
+    & > img:hover + .fadeIn {
+        opacity: 1;
+    }
+`
 export default Slider

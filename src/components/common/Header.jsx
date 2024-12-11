@@ -19,17 +19,21 @@ function Header () {
     const [searchKeyword, setSearchKeyword] = useState('')
 
     const homeMatch = useMatch('/')
-    const movieMatch = useMatch('/media/1')
-    const seriesMatch = useMatch('/media/2')
-    const netflixMatch = useMatch('/netflix-original')
-    const movieByGenreMatch = useMatch('/media/1/genre/:id')
-    const seriesByGenreMatch = useMatch('/media/2/genre/:id')
+    const movieMatch = useMatch('/media/movie')
+    const seriesMatch = useMatch('/media/tv')
+    // const netflixMatch = useMatch('/netflix-original')
+    const movieByGenreMatch = useMatch('/media/movie/genre/:genreId')
+    const seriesByGenreMatch = useMatch('/media/tv/genre/:genreId')
+    const TrendingNowMatch = useMatch('/trending-now')
+    const MyListMatch = useMatch('/my-list')
 
     const categorys = [
         { name: '홈', path: '/', active: Boolean(homeMatch) },
-        { name: '영화', path: '/media/1', active: Boolean(movieMatch) || Boolean(movieByGenreMatch)},
-        { name: '시리즈', path: '/media/2', active: Boolean(seriesMatch) || Boolean(seriesByGenreMatch) },
-        { name: '넷플릭스 오리지널', path: '/netflix-original', active: Boolean(netflixMatch) }
+        { name: '영화', path: '/media/movie', active: Boolean(movieMatch) || Boolean(movieByGenreMatch)},
+        { name: '시리즈', path: '/media/tv', active: Boolean(seriesMatch) || Boolean(seriesByGenreMatch) },
+        // { name: '넷플릭스 오리지널', path: '/netflix-original', active: Boolean(netflixMatch) },
+        { name: 'NEW! 요즘 대체 콘텐츠', path: '/trending-now', active: Boolean(TrendingNowMatch) },
+        { name: '내가 찜한 리스트', path: '/my-list', active: Boolean(MyListMatch) },
     ]
 
     const navigate = useNavigate()
@@ -61,7 +65,7 @@ function Header () {
         <Wrapper id="header">
             <Container>
                 {/* 좌측 넷플릭스 로고 */}
-                <Link to="/"><img loading="lazy" src={logo} style={{width: 120, verticalAlign:'middle'}} alt="logo"/></Link>
+                <Link to="/"><img loading="lazy" src={logo} style={{width: 120, verticalAlign:'middle'}} alt="로고 아이콘"/></Link>
                 
                 {/* 좌측 카테고리 */}
                 <Nav>

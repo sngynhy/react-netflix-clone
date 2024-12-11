@@ -1,51 +1,25 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useQuery } from '@tanstack/react-query';
 import { fetchCreditDetails, fetchContentDetails, fetchRecommendContents } from "api/movieApi"; 
-import styled from "styled-components";
 import LoadingOverlay from "components/ui/LoadingOverlay";
 import { getContentImg, getContentVedio } from "utils/CommonFunction";
 import { useVideoQuery } from "hooks/useReactQuery";
 import { FaStar } from "react-icons/fa6";
 import { IoCloseCircle } from "react-icons/io5";
-import PreviewModal from 'components/modal/PreviewModal';
-import GridContents from "components/GridContents";
+import { TfiArrowCircleLeft } from "react-icons/tfi";
+import GridContents from "components/contents/GridContents";
 import { useMediaStore } from 'stores/CommonStore';
-
-const Wrapper = styled.div`
-    justify-content : center;
-    display: flex;
-`
-const Container = styled.div`
-    border: none;
-    position: absolute;
-    z-index: 999;
-    width: 50%;
-    top: 30px;
-`
-const PreviewPlayer = styled.div`
-    width: 100%;
-    height: 475px;
-    background: linear-gradient(0deg, #181818, transparent 50%);
-`
-const Detail = styled.div`
-    display: grid;
-    grid-template-columns: minmax(0,2fr) minmax(0,1fr);
-    column-gap: 2rem;
-`
-const Recommend = styled.div`
-
-`
+import {Wrapper, Container, PreviewPlayer, PlayerOnIcons, Detail, MoreDiv} from 'styles/DetailModal'
+import MyContentsButton from "components/ui/MyContentsButton";
+import PlayButton from 'components/ui/PlayButton';
+import { YouTubePlayer } from "components/contents/YouTubePlayer";
 
 function DetailModal (props) {
-    const { id, type } = props
-    const isMovie = type === 'movie'
-    const {season, setSeason} = useState(0)
-    const { setOpenDetailModal } = useMediaStore()
-
+    const { id, mType } = props
+    // const {season, setSeason} = useState(0)
     // detail data
-    const {data: detailsData, isLoading: detailsLoading, error: detailsError} = useQuery({ queryKey: [id + '_details', type, id], queryFn: fetchContentDetails })
-    console.log('data', detailsData);
-    
+    const {data: detailsData, isLoading: detailsLoading, error: detailsError} = useQuery({ queryKey: [id + '_details', mType, id], queryFn: fetchContentDetails })
+    // console.log('data', detailsData);
     let details = { title: '', genres: [], runtime: 0, overview: '', releaseDate: '', voteAvg: 0 }
     if (!detailsLoading && !detailsError) {
         details.title = detailsData.title || detailsData.name
@@ -58,51 +32,33 @@ function DetailModal (props) {
         details.totalEpisodeCnt = detailsData.number_of_episodes || null
         details.totolSeasons = detailsData.number_of_seasons || null
     }
-    console.log('details', details);
-
-    // video
-    const {data: videokey, isLoading: videoLoading} = useVideoQuery({type: type, id: id})
-    console.log('videokey', videokey);
+    // console.log('details', details);
 
     // credit data
-    const {data: creditData, isLoading: creditLoading, error: crditError} = useQuery({ queryKey: [id + '_cast', type, id], queryFn: fetchCreditDetails, enabled: !detailsLoading })
+    const {data: creditData, isLoading: creditLoading, error: crditError} = useQuery({ queryKey: [id + '_cast', mType, id], queryFn: fetchCreditDetails, enabled: !detailsLoading })
     // console.log('creditData', creditData);
 
-    // recommendData data
-    const {data: recommendData, isLoading: recommendLoading, error: recommendError} = useQuery({
-        queryKey: [id + "_recommend", type, id],
-        queryFn: fetchRecommendContents,
-        enabled: !detailsLoading,
-        select: data => data.filter(el => !!el.backdrop_path)
-    })
-    // console.log('recommendData', recommendData)
-
     const scrollToBottom = () => {
-        window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+        const location = document.querySelector("#bottomDetail").offsetTop
+        window.scrollTo({ top: location, behavior: "smooth" })
     }
 
-    // 컨텐츠 정보
+    // 콘텐츠 정보
     return (
         <Wrapper className="detail-info">
-            {detailsLoading || videoLoading || creditLoading ? <LoadingOverlay /> :
+            {detailsLoading || creditLoading ? <LoadingOverlay /> :
             <Container>
-                <PreviewPlayer>
-                <IoCloseCircle className="close" onClick={() => setOpenDetailModal(false)} style={{ width: '36px', height: '36px', position: 'absolute', right: '0', margin: '12px', cursor: 'pointer'}} />
-                    {videokey
-                        ? <iframe src={getContentVedio(videokey)} width="100%" height="100%" title="preview" style={{border: 'none', borderRadius: '8px 8px 0 0'}}></iframe>
-                        : <img src={getContentImg(detailsData.backdrop_path)} style={{width: '100%', borderRadius: '8px 8px 0 0'}} alt="backdrop" />
-                    }
-                    
-                </PreviewPlayer>
+                <PreviewContent id={id} mType={mType} imgPath={detailsData.backdrop_path} />
 
                 <div style={{width: '100%', backgroundColor: '#181818', borderRadius: '0 0 8px 8px'}}>
-                    <div style={{padding: '1.5rem'}}>
+                    <div style={{padding: '2rem'}}>
+                        {/* 상단 요약 정보 */}
                         <Detail>
                             <div style={{paddingRight: '1rem'}}>
                                 <div style={{display: 'flex', marginBottom: '12px'}}>
                                     <div style={{color: '#fbbc04', marginRight: '1rem'}}><FaStar style={{color: '#fbbc04'}}/><span style={{marginLeft: '6px'}}>{details.voteAvg}</span></div>
                                     <div style={{marginRight: '1rem'}}>{details.releaseDate}</div>
-                                    {isMovie
+                                    {mType === 'movie'
                                         ? <div>{details.runtime}분</div>
                                         : <div>시즌 {details.totolSeasons}개</div>} {/**  (에피소드 {details.totalEpisodeCnt}개) */}
                                 </div>
@@ -111,53 +67,112 @@ function DetailModal (props) {
                                 </div>
                             </div>
                             <div style={{fontSize: '14px'}}>
+                                {creditData.cast.length !== 0 &&
                                 <div style={{marginBottom: '10px'}}>
                                     <span style={{color: '#777777', marginRight: '5px'}}>출연:</span>{creditData.cast.slice(0, 3).map(el => <span key={el.id}>{el.name}, </span>)}
-                                    <span className="moreView" onClick={scrollToBottom}style={{cursor: 'pointer', borderBottom: '1px solid'}}>더보기</span>
-                                </div>
+                                    <span className="moreView" onClick={scrollToBottom}style={{cursor: 'pointer', borderBottom: '1px solid', color: 'grey', fontStyle: 'italic'}}>더보기</span>
+                                </div> }
                                 <div>
                                     <span style={{color: '#777777', marginRight: '5px'}}>장르:</span>{details.genres.map(el => <span key={el.id}>{el.name}, </span>)}
                                 </div>
                             </div>
                         </Detail>
+                        
+                        {/* 추천 콘텐츠 */}
+                        <RecommendSection id={id} mType={mType} />
 
-                        {recommendData && 
-                            <div style={{margin: '30px 0'}}>
-                                <h2>추천 컨텐츠</h2>
-                                <div className="gridBox" style={{}}>
-                                    <GridContents data={recommendData} showTitle={true} showOverview={false} gridColumns={3} imgPath='backdrop_path' />
-                                </div>
-                            </div>
-                        }
-
-                        <BottomDetails>
+                        {/* 하단 디테일 정보 */}
+                        <div id="bottomDetail">
                             <h2>{details.title} 상세 정보</h2>
                             <div style={{fontSize: '14px'}}>
-                                {detailsData.created_by && <div style={{marginBottom: '10px'}}>
-                                    <span style={{color: '#777777', marginRight: '5px'}}>크리에이터:</span>{detailsData.created_by?.map(el => <span>{el.name}, </span>)}
+                                {detailsData.created_by &&
+                                <div style={{marginBottom: '10px'}}>
+                                    <span style={{color: '#777777', marginRight: '5px'}}>크리에이터:</span>{detailsData.created_by?.map(el => <span key={el.id}>{el.name}, </span>)}
                                 </div>}
+                                {creditData.cast.length !== 0 &&
                                 <div style={{marginBottom: '10px'}}>
                                     <span style={{color: '#777777', marginRight: '5px'}}>출연:</span>{creditData.cast.map(el => <span key={el.id}>{el.name}, </span>)}
-                                </div>
+                                </div>}
+                                {details.genres &&
                                 <div style={{marginBottom: '10px'}}>
                                     <span style={{color: '#777777', marginRight: '5px'}}>장르:</span>{details.genres.map(el => <span key={el.id}>{el.name}, </span>)}
-                                </div>
+                                </div>}
+                                {detailsData.production_companies &&
                                 <div style={{marginBottom: '10px'}}>
                                     <span style={{color: '#777777', marginRight: '5px'}}>제작사:</span>{detailsData.production_companies.map(el => <span key={el.id}>{el.name}, </span>)}
-                                </div>
-                                {detailsData.networks && <div style={{marginBottom: '10px'}}>
-                                    {detailsData.networks.map(el => <span style={{marginRight: '8px', backgroundColor:"white", padding: '3px', borderRadius: '4px'}}><img src={getContentImg(el.logo_path)} style={{width: '35px'}} alt="" /></span> )}
+                                </div>}
+                                {detailsData.networks &&
+                                <div style={{marginBottom: '10px'}}>
+                                    {detailsData.networks.map((el, i) => <span key={i} style={{marginRight: '8px', backgroundColor:"white", padding: '3px', borderRadius: '4px'}}><img src={getContentImg(el.logo_path)} style={{width: '35px'}} alt={el.name} /></span> )}
                                 </div>}
                             </div>
-                        </BottomDetails>
+                        </div>
                     </div>
                 </div>
             </Container>}
-            
         </Wrapper>
     )
 }
-const BottomDetails = styled.div`
 
-`
+const PreviewContent = ({ id, mType, imgPath }) => {
+
+    const { readyToPlay, setOpenDetailModal } = useMediaStore()
+    useEffect(() => { console.log('PreviewContent > readyToPlay', readyToPlay); }, [readyToPlay])
+
+    // video
+    const {data: videokey, isLoading: videoLoading} = useVideoQuery({type: mType, id: id})
+    // console.log('videokey', videokey);
+        
+    return (
+        <PreviewPlayer>
+            {/* 영상 or 이미지 콘텐츠 */}
+            <div style={{height: '100%'}}>
+                {videokey ? <YouTubePlayer videoId={videokey} style={{borderRadius: '8px 8px 0 0'}} /> 
+                : <img src={getContentImg(imgPath)} style={{width: '100%', borderRadius: '8px 8px 0 0'}} alt="backdrop" />}
+            </div>
+            {/* 버튼 */}
+            <PlayerOnIcons>
+                <IoCloseCircle className="closeBtn" onClick={() => setOpenDetailModal(false)} />
+                <div style={{height: '46px'}}>
+                    <PlayButton active={!!videokey} />
+                    <MyContentsButton id={id} width="auto" height="100%" />
+                </div>
+            </PlayerOnIcons>
+        </PreviewPlayer>
+    )
+}
+
+const RecommendSection = (props) => {
+    const {id, mType} = props
+    // recommendData data
+    const {data: recommendData, isLoading: recommendLoading, error: recommendError} = useQuery({
+        queryKey: [id + "_recommend", mType, id],
+        queryFn: fetchRecommendContents,
+        select: data => data.filter(el => !!el.backdrop_path)
+    })
+    // console.log('recommendData', recommendData)
+
+    const [moreViewRecommend, setMoreViewRecommend] = useState(false)
+    const moreView = () => {
+        if (moreViewRecommend) {
+            const location = document.querySelector("#recommendSection").offsetTop
+            window.scrollTo({ top: location, behavior: "smooth" })
+        }
+        setMoreViewRecommend(prev => !prev)
+    }
+
+    if (recommendLoading) return <LoadingOverlay />
+    if (recommendError) return <h1></h1>
+
+    return (
+        <div id="recommendSection" style={{margin: '30px 0'}}>
+            <h2>추천 콘텐츠</h2>
+            <div className="gridBox">
+                <GridContents data={recommendData.slice(0, 9)} showTitle={true} showOverview={true} gridColumns={3} imgPath='backdrop_path' />
+                {moreViewRecommend && <GridContents data={recommendData.slice(9, recommendData.lenght)} showTitle={true} showOverview={true} gridColumns={3} imgPath='backdrop_path' />}
+                <MoreDiv moreview={moreViewRecommend} ><TfiArrowCircleLeft onClick={moreView}/></MoreDiv>
+            </div>
+        </div>
+    )
+}
 export default DetailModal

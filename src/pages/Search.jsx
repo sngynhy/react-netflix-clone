@@ -2,12 +2,10 @@ import React from "react";
 import { useLocation } from 'react-router-dom'
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { fetchSearchBykeyword } from "api/movieApi";
-import SearchContents from "../components/SearchContents";
-import SearchPerson from "../components/SearchPerson";
 import styled from "styled-components";
 import LoadingOverlay from "components/ui/LoadingOverlay";
 import { RxTriangleRight } from "react-icons/rx";
-import GridContents from "components/GridContents";
+import GridContents from "components/contents/GridContents";
 
 const Wrapper = styled.div`
     width: 100%;
@@ -60,7 +58,7 @@ function Search (props) {
                     <div>
                         {movieResult.length !== 0
                             ? <GridContents data={movieResult} showTitle={false} showOverview={false} gridColumns={6} />
-                            : <spna>검색 결과가 없습니다.</spna>}                            
+                            : <spna>검색 결과가 없습니다.</spna>}
                     </div>
                 
                     {/* TV */}
@@ -72,7 +70,7 @@ function Search (props) {
                     <div>
                         {tvResult.length !== 0
                             ? <GridContents data={tvResult} showTitle={false} showOverview={false} gridColumns={6} />
-                            : <spna>검색 결과가 없습니다.</spna>}                            
+                            : <spna>검색 결과가 없습니다.</spna>}
                     </div>
 
                     {/* 인물 */}
@@ -80,7 +78,7 @@ function Search (props) {
                     <div>
                         {personResult.length !== 0
                             ? <GridContents data={personResult} showTitle={false} showOverview={false} gridColumns={7} imgPath='profile_path' />
-                            : <spna>검색 결과가 없습니다.</spna>}                            
+                            : <spna>검색 결과가 없습니다.</spna>}
                     </div>
                     {/* <div style={{display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)'}}>
                         {personResult.length !== 0 ? personResult.map(el => {

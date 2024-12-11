@@ -2,14 +2,14 @@ import React, { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import styled from 'styled-components'
 import { FaCirclePlay } from "react-icons/fa6";
-import { GoPlusCircle } from "react-icons/go";
 import { AiOutlineLike, AiFillLike } from "react-icons/ai";
 import { ImEnlarge2 } from "react-icons/im";
 import { fetchGenres, fetchVideo } from "api/movieApi";
 import { getGenresById, getContentVedio, getContentImg } from "utils/CommonFunction";
 import PropTypes from "prop-types";
 import { useMediaStore } from "stores/CommonStore";
-import { useVideoQuery } from "hooks/useReactQuery";
+import { useVideoQuery } from "hooks/useReactQuery"
+import MyContentsButton from "components/ui/MyContentsButton";;
 
 const Wrapper = styled.div`
     border: 1px solid white;
@@ -42,21 +42,18 @@ const PreviewInfo = styled.div`
 `
 
 function PreviewModal (props) {
-    const { id, type, detail } = props
-    console.log('PreviewModal', id, detail);
-    
-    const { mediaType } = useMediaStore()
+    const { id, mType, detail } = props
+   
     const queryClient = useQueryClient(); // 캐시된 데이터 가져오기
-    const genres = queryClient.getQueryData(['genres', mediaType]) // 'genres' 키로 데이터 조회
-    const genre = getGenresById(detail.genre, genres)
+    const genres = queryClient.getQueryData(['genres', mType]) // 'genres' 키로 데이터 조회
+    const genre = genres ? getGenresById(detail.genre, genres) : []
 
-    const {data: videokey, isLoading: videoLoading} = useVideoQuery({type: type, id: id})
-    console.log('videokey', videokey);
+    const {data: videokey, isLoading: videoLoading} = useVideoQuery({type: mType, id: id})
+    // console.log('videokey', videokey);
 
     const [like, setLike] = useState(false)
     const liked = () => {
         setLike(prev => !prev)
-        // 추가) store에 like 콘텐츠 id 추가
     }
 
     return (
@@ -67,13 +64,13 @@ function PreviewModal (props) {
             <PreviewInfo>
                 <div>
                     <FaCirclePlay />
-                    <GoPlusCircle />
+                    <MyContentsButton id={id} width='2rem' height='2rem' />
                     {like ? <AiFillLike onClick={liked} /> : <AiOutlineLike onClick={liked} />}
                     <ImEnlarge2 style={{float: 'right'}} />
                 </div>
                 <div>
                     <span style={{fontSize: '22px'}}>{detail.title}</span>
-                    <span style={{marginLeft: '8px'}}>⭐{detail.voteAvg}</span>
+                    <span style={{marginLeft: '8px'}}>⭐{detail.voteAvg || 0.0}</span>
                     <ul>{genre.map((el, i) => <li key={i}>{el}</li>)}</ul>
                 </div>
             </PreviewInfo>
@@ -91,9 +88,9 @@ PreviewModal.prototype = {
 }
 
 // 기본값 지정
-PreviewModal.defaultProps = {
-    voteAvg: 0,
-}
+// PreviewModal.defaultProps = {
+//     voteAvg: 0.0,
+// }
 
 
 export default PreviewModal
