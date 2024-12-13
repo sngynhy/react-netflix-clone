@@ -1,16 +1,21 @@
 import React from "react";
 import { FaPlay } from "react-icons/fa";
+import { FaCirclePlay } from "react-icons/fa6";
 import styled from "styled-components";
 import { useMediaStore } from "stores/CommonStore"; 
 
-function PlayButton ({ active }) {
+function PlayButton ({ active, type="button" }) { // type: 'button' or 'icon'
     const {setFullScreen} = useMediaStore()
     const videoPlay = () => {
         if (active) setFullScreen(true)
-        else alert('동영상 재생이 불가능합니다.')
+        else alert('재생할 수 없는 콘텐츠입니다.')
     }
     return (
-        <Button active={active} onClick={videoPlay}><FaPlay />재생</Button>
+        <div style={{display: 'inline-block'}} onClick={videoPlay}>
+            {type === 'button'
+            ? <Button active={active}><FaPlay />재생</Button>
+            : <FaCirclePlay style={{}}/>}
+        </div>
     )
 }
 

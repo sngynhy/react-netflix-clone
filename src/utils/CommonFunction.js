@@ -11,13 +11,12 @@ export const getGenresById = (data, genres) => {
 export const getContentImg = (path) => {
     return `https://image.tmdb.org/t/p/original${path}`
 }
-export const getContentVedio = (key) => {
-    // param info
-    // 자동재생 autoplay = 0 or 1
-    // 시작, 끝나는 시간 start = 61 / end = 120
-    // 영상 컨트롤러 표시 controls = 0 or 1
-    // 로고 표시 modestbranding = 0 or 1
-    // 반복 재생 loop = 1 & playlist =비디오_ID
-    // 관련 영상 표시 rel = 0 or 1
-    return `https://www.youtube-nocookie.com/embed/${key}?autoplay=1&mute=1&controls=0&modestbranding=1&rel=0&loop=1`
+export const getContentVedio = (logoData) => {
+    const compareData = (a, b) => {
+        if (a.iso_639_1 > b.iso_639_1) return -1
+        if (a.iso_639_1 < b.iso_639_1) return 1
+        return a.height - b.height
+    }
+    const path = logoData?.data?.sort(compareData)[0]?.file_path
+    return getContentImg(path)
 }

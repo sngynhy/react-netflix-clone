@@ -47,7 +47,7 @@ export const YouTubePlayer = ({ videoId, width="100%", height="475px" }) => {
             // YT.Player를 통해 YouTube 플레이어 생성
             playerRef.current = new window.YT.Player("youtube-player", {
             videoId: videoId, // 재생할 동영상 id
-            playerVars: { autoplay: 1, controls: 0, mute: 0, modestbranding: 1, rel: 0 }, // 동영상의 동작 설정
+            playerVars: { autoplay: 1, controls: 0, mute: 1, modestbranding: 1, rel: 0 }, // 동영상의 동작 설정
             events: { // 콜백 핸들러 > onReady: 플레이어 준비 완료 시, onStateChange: 플레이어 상태 변경 시 호출
                 onReady: onPlayerReady,
                 onStateChange: onPlayerStateChange,

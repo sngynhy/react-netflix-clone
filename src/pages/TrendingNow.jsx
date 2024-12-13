@@ -2,9 +2,10 @@ import React from "react";
 
 function TrendingNow () {
     return (
-        <div>
-            <div>오늘 컨텐츠</div>
-            <div>한 주 컨텐츠</div>
+        <div className="trending-now">
+            <div style={{padding: '64px 40px 0'}}>
+                <div>트렌드행</div>
+            </div>
         </div>
     )
 }

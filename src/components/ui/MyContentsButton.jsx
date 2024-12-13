@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { GoPlusCircle } from "react-icons/go";
-import { FaCircleCheck } from "react-icons/fa6";
+import { GoCheckCircle } from "react-icons/go";
 import { useMediaStore } from 'stores/CommonStore'
 
 const Button = styled.span`
@@ -16,13 +16,13 @@ const Button = styled.span`
         color: white;
     }
 `
-function MyContentsButton ({id, width='30px', height='30px' }) {
+function MyContentsButton ({id, mType, width='30px', height='30px' }) {
     const {likes, addLikes, removeLikes} = useMediaStore()
-    const isLiked = likes.includes(id) // 찜 상태 확인
+    const isLiked = likes.has(id) // 찜 상태 확인
     const handleClick = () => {
-        isLiked ? removeLikes(id) : addLikes(id)
+        isLiked ? removeLikes(id) : addLikes(id, mType)
     }
-    return (<Button width={width} height={height} onClick={handleClick}>{isLiked ? <FaCircleCheck /> : <GoPlusCircle />}</Button>)
+    return (<Button width={width} height={height} onClick={handleClick}>{isLiked ? <GoCheckCircle style={{fill: 'white'}} /> : <GoPlusCircle />}</Button>)
 }
 
 // props 유효성 검사

@@ -44,7 +44,8 @@ export const fetchContents = async ({ queryKey }) => { // type: 'movie' or 'tv',
 }
 // 넷플릭스 오리지널
 export const fetchNetflixOriginal = async () => {
-    const url = `${BASE_URL}/discover/tv?with_networks=213&${QUERY_PARAM}`
+    // const url = `${BASE_URL}/discover/tv?with_networks=213&${QUERY_PARAM}`
+    const url = `${BASE_URL}/discover/movie?with_networks=213&${QUERY_PARAM}`
     const res = await axios.get(url, options)
     return res.data.results
 }
@@ -70,6 +71,13 @@ export const fetchTrendingContents = async ({ queryKey }) => { // type: 'all' or
     return res.data.results
 }
 
+// 이미지
+export const fetchImage = async ({ queryKey }) => {
+    const [, type, id] = queryKey
+    const IMAGE_URL = `${BASE_URL}/${type}/${id}/images?api_key=${API_KEY}&include_image_language=en,ko` // &include_image_language=en&language=en
+    const res = await axios.get(IMAGE_URL, options);
+    return {id: id, data: res.data.logos}
+}
 // 동영상
 export const fetchVideo = async ({ queryKey }) => { // type: 'movie' or 'tv'
     const [, type, id] = queryKey
@@ -88,7 +96,6 @@ export const fetchSearchBykeyword = async ({ queryKey }) => {
 // 장르별 콘텐츠
 export const fetchContentsByGenre = async ({ queryKey }) => {
     const [, type, genreId] = queryKey
-    console.log('fetchContentsByGenre', type, genreId);
                                     // multi
     const url = `${BASE_URL}/discover/${type}?${QUERY_PARAM}&with_genres=${genreId}`
     const res = await axios.get(url, options);

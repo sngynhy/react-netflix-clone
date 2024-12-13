@@ -25,7 +25,7 @@ function Header () {
     const movieByGenreMatch = useMatch('/media/movie/genre/:genreId')
     const seriesByGenreMatch = useMatch('/media/tv/genre/:genreId')
     const TrendingNowMatch = useMatch('/trending-now')
-    const MyListMatch = useMatch('/my-list')
+    const MyContentsMatch = useMatch('/my-list')
 
     const categorys = [
         { name: '홈', path: '/', active: Boolean(homeMatch) },
@@ -33,7 +33,7 @@ function Header () {
         { name: '시리즈', path: '/media/tv', active: Boolean(seriesMatch) || Boolean(seriesByGenreMatch) },
         // { name: '넷플릭스 오리지널', path: '/netflix-original', active: Boolean(netflixMatch) },
         { name: 'NEW! 요즘 대체 콘텐츠', path: '/trending-now', active: Boolean(TrendingNowMatch) },
-        { name: '내가 찜한 리스트', path: '/my-list', active: Boolean(MyListMatch) },
+        { name: '내가 찜한 리스트', path: '/my-list', active: Boolean(MyContentsMatch) },
     ]
 
     const navigate = useNavigate()

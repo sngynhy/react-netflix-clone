@@ -126,15 +126,18 @@ const PreviewContent = ({ id, mType, imgPath }) => {
         <PreviewPlayer>
             {/* 영상 or 이미지 콘텐츠 */}
             <div style={{height: '100%'}}>
-                {videokey && !endPlay ? <YouTubePlayer videoId={videokey} style={{borderRadius: '8px 8px 0 0'}} /> 
+                {videokey && !endPlay ? <YouTubePlayer videoId={videokey} style={{borderRadius: '8px 8px 0 0', opacity: '1'}} />
                 : <img src={getContentImg(imgPath)} style={{width: '100%', borderRadius: '8px 8px 0 0'}} alt="backdrop" />}
+
+                {/* {videokey && !endPlay ? <YouTubePlayer videoId={videokey} style={{borderRadius: '8px 8px 0 0'}} /> 
+                : <img src={getContentImg(imgPath)} style={{width: '100%', borderRadius: '8px 8px 0 0'}} alt="backdrop" />} */}
             </div>
             {/* 버튼 */}
             <PlayerOnIcons>
                 <IoCloseCircle className="closeBtn" onClick={() => setOpenDetailModal(false)} />
                 <div style={{height: '46px'}}>
                     <PlayButton active={videokey && readyToPlay} />
-                    <MyContentsButton id={id} width="auto" height="100%" />
+                    <MyContentsButton id={id} mType={mType} width="auto" height="100%" />
                 </div>
             </PlayerOnIcons>
         </PreviewPlayer>
@@ -167,7 +170,7 @@ const RecommendSection = (props) => {
         <div id="recommendSection" style={{margin: '30px 0'}}>
             <h2>추천 콘텐츠</h2>
             <div className="gridBox">
-                <GridContents data={recommendData.slice(0, 9)} showTitle={true} showOverview={true} gridColumns={3} imgPath='backdrop_path' />
+                <GridContents data={recommendData.slice(0, 9)} mType={mType} showTitle={true} showOverview={true} gridColumns={3} imgPath='backdrop_path' />
                 {moreViewRecommend && <GridContents data={recommendData.slice(9, recommendData.lenght)} showTitle={true} showOverview={true} gridColumns={3} imgPath='backdrop_path' />}
                 <MoreDiv moreview={moreViewRecommend} ><TfiArrowCircleLeft onClick={moreView}/></MoreDiv>
             </div>

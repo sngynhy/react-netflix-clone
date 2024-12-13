@@ -14,7 +14,7 @@ export const Container = styled.div`
 export const PreviewPlayer = styled.div`
     position: relative;
     width: 100%;
-    height: 475px;
+    // height: 475px;
 `
 export const PlayerOnIcons = styled.div`
     display: flex;

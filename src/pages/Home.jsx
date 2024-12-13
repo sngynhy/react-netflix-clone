@@ -44,16 +44,7 @@ function Home () {
 
             <Container>
                 <div>
-                    {/* <Slider name="현재 상영작" data={nowPlaying} /> */}
-                </div>
-  
-                <div>
-                    {/* <Slider data={netflix.slice(0, 10)} /> */}
-                    {/* <Slider name="Netflix Original" data={netflix} /> */}
-                </div>
-
-                <div>
-                    {/* <Slider name="인기있는" data={popluar} /> */}
+                    <Slider name="Netflix Original" data={netflix} />
                 </div>
             </Container>
         </Wrapper>

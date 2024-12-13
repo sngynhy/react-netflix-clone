@@ -15,10 +15,22 @@ export const useGlobalStore = create(
 
 export const useMediaStore = create(
     devtools((set, get) => ({
-        likes: [],
-        addLikes: (id) => set((state) => ({ likes: [...state.likes, id] })),
-        removeLikes: (id) => set((state) => ({ likes: state.likes.filter(el => el !== id) })),
-        clearLikes: () => set({ likes: [] }),
+        // likes: [],
+        // addLikes: (id) => set((state) => ({ likes: [...state.likes, id] })),
+        // removeLikes: (id) => set((state) => ({ likes: state.likes.filter(el => el !== id) })),
+        // clearLikes: () => set({ likes: [] }),
+        // likes: {id: 0, type: ''},
+        likes: new Map(),
+        addLikes: (id, type) => set(state => {
+            const updatedMap = new Map(state.likes)
+            updatedMap.set(id, type)
+            return { likes: updatedMap }
+        }),
+        removeLikes: (id) => set(state => {
+            const updatedMap = new Map(state.likes)
+            updatedMap.delete(id)
+            return { likes: updatedMap }
+        }),
 
         videoId: '',
         setVideoId: (value) => set({videoId: value}),
@@ -30,9 +42,9 @@ export const useMediaStore = create(
         setFullScreen: (value) => set({fullScreen: value}),
 
         genreName: '',
-        setGenreName: (val) => set({ genreName: val}),
+        setGenreName: (value) => set({ genreName: value}),
 
         openDetailModal: false,
-        setOpenDetailModal: (openDetailModal) => set({openDetailModal: openDetailModal, readyToPlay: false}),
+        setOpenDetailModal: (value) => set({openDetailModal: value, readyToPlay: false, endPlay: false}),
     }))
 )

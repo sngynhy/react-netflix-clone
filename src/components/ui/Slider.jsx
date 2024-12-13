@@ -1,8 +1,9 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { GoChevronLeft, GoChevronRight } from "react-icons/go";
 import { getContentImg } from "utils/CommonFunction";
 import PreviewModal from "components/modal/PreviewModal";
+import { useMediaStore } from "stores/CommonStore";
 
 function Slider (props) {
     const {mType, name, data} = props
@@ -94,16 +95,25 @@ const Contents = styled.div`
 
 const SliderContents = (props) => {
     const {id, mType, ...detail} = props
-    const [openPreviewmodal, setOpenPreviewmodal] = useState(false)
+    const [openPreviewModal, setOpenPreviewModal] = useState(false)
+    const {setReadyToPlay, setEndPlay} = useMediaStore()
     const posterRef = useRef(null)
+
+    useEffect(() => {
+        if (!openPreviewModal) {
+            setReadyToPlay(false)
+            setEndPlay(false)
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [openPreviewModal])
     
     return (
         <div id="slider" style={{display: 'flex', position: 'relative'}}>
-            <Poster ref={posterRef} onMouseEnter={() => setOpenPreviewmodal(true)} onMouseLeave={() => setOpenPreviewmodal(false)}>
-            {/* <Poster ref={posterRef} onClick={() => setOpenPreviewmodal(true)}> */}
+            <Poster ref={posterRef} onMouseEnter={() => setOpenPreviewModal(true)} onMouseLeave={() => setOpenPreviewModal(false)}>
+            {/* <Poster ref={posterRef} onClick={() => setOpenPreviewModal(true)}> */}
                 <img loading="lazy" src={getContentImg(detail.poster)} alt={detail.title} />
                 <div className="fadeIn">
-                    {openPreviewmodal && <PreviewModal mType={mType} id={id} detail={detail} /> }
+                    {openPreviewModal && <PreviewModal mType={mType} id={id} detail={detail} /> }
                 </div>
             </Poster>
         </div>

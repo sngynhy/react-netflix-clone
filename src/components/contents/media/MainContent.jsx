@@ -5,8 +5,8 @@ import { FiInfo } from "react-icons/fi";
 import { MainCover, CoverContent, SelectBoxForGenre, CoverContentText } from 'styles/MediaStyle';
 import { fetchGenres } from 'api/movieApi';
 import { useMediaStore } from 'stores/CommonStore';
-import styled from 'styled-components';
 import PlayButton from 'components/ui/PlayButton';
+import { LogoImage } from '../LogoImage';
 
 function MainContent (props) {
     const {mType, genreId, name, coverContent} = props
@@ -83,7 +83,8 @@ function MainContent (props) {
                 </SelectBoxForGenre>
                 {/* 메인 커버 콘텐츠 */}
                 <CoverContentText>
-                    <h2>{coverContent.title}</h2>
+                    {/* <h2>{coverContent.title}</h2> */}
+                    <h2 style={{width: "50%"}}><LogoImage id={coverContent.id} mType={mType} alt={coverContent.title} /></h2>
                     <p>{coverContent.overview}</p>
                     <div style={{marginTop: '30px'}}>
                         {/* <PlayButton /> */}

@@ -57,7 +57,7 @@ function Search (props) {
                     </h2>
                     <div>
                         {movieResult.length !== 0
-                            ? <GridContents data={movieResult} showTitle={false} showOverview={false} gridColumns={6} />
+                            ? <GridContents data={movieResult} mType='movie' showTitle={false} showOverview={false} gridColumns={6} />
                             : <spna>검색 결과가 없습니다.</spna>}
                     </div>
                 
@@ -69,7 +69,7 @@ function Search (props) {
                     </h2>
                     <div>
                         {tvResult.length !== 0
-                            ? <GridContents data={tvResult} showTitle={false} showOverview={false} gridColumns={6} />
+                            ? <GridContents data={tvResult} mType='tv' showTitle={false} showOverview={false} gridColumns={6} />
                             : <spna>검색 결과가 없습니다.</spna>}
                     </div>
 
@@ -77,7 +77,7 @@ function Search (props) {
                     <h2><RxTriangleRight /> 인물</h2>
                     <div>
                         {personResult.length !== 0
-                            ? <GridContents data={personResult} showTitle={false} showOverview={false} gridColumns={7} imgPath='profile_path' />
+                            ? <GridContents data={personResult} mType='person' showTitle={false} showOverview={false} gridColumns={7} imgPath='profile_path' />
                             : <spna>검색 결과가 없습니다.</spna>}
                     </div>
                     {/* <div style={{display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)'}}>

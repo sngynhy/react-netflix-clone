@@ -67,7 +67,7 @@ export const CoverContentText = styled.div`
     flex-grow: 1;
     justify-content: flex-start;
     position: absolute;
-    bottom: 30%;
+    bottom: 10%;
 
     & > h2 {
         font-size: 50px;

@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import styled from 'styled-components'
-import { FaCirclePlay } from "react-icons/fa6";
 import { AiOutlineLike, AiFillLike } from "react-icons/ai";
 import { ImEnlarge2 } from "react-icons/im";
 import { fetchGenres, fetchVideo } from "api/movieApi";
@@ -11,6 +10,7 @@ import { useMediaStore } from "stores/CommonStore";
 import { useVideoQuery } from "hooks/useReactQuery"
 import MyContentsButton from "components/ui/MyContentsButton";
 import { YouTubePlayer } from "components/contents/YouTubePlayer";
+import PlayButton from "components/ui/PlayButton";
 
 const Wrapper = styled.div`
     border: 1px solid white;
@@ -44,7 +44,7 @@ const PreviewInfo = styled.div`
 
 function PreviewModal (props) {
     const { id, mType, detail } = props
-    console.log('PreviewModal', detail);
+    // console.log('PreviewModal', detail);
    
     const { readyToPlay, endPlay } = useMediaStore()
 
@@ -68,8 +68,8 @@ function PreviewModal (props) {
             </PreviewPlayer>
             <PreviewInfo>
                 <div>
-                    <FaCirclePlay />
-                    <MyContentsButton id={id} width='2rem' height='2rem' />
+                    <PlayButton active={videokey && readyToPlay} type='icon' />
+                    <MyContentsButton id={id} mType={mType} width='2rem' height='2rem' />
                     {like ? <AiFillLike onClick={liked} /> : <AiOutlineLike onClick={liked} />}
                     <ImEnlarge2 style={{float: 'right'}} />
                 </div>
