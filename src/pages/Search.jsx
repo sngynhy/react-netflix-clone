@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useLocation } from 'react-router-dom'
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { fetchSearchBykeyword } from "api/movieApi";
@@ -23,7 +23,7 @@ const Container = styled.div`
 function Search (props) {
     const { state } = useLocation()
     const keyword = state.keyword
-
+    
     const {data: movieResult, isLoading: movieIsLoading, error: movieError } = useQuery({
         queryKey: ["search", 'movie', keyword],
         queryFn: fetchSearchBykeyword,
@@ -57,7 +57,7 @@ function Search (props) {
                     </h2>
                     <div>
                         {movieResult.length !== 0
-                            ? <GridContents data={movieResult} mType='movie' showTitle={false} showOverview={false} gridColumns={6} />
+                            ? <GridContents data={movieResult} mType='movie' showTitle={true} showOverview={false} gridColumns={6} imgPath="backdrop_path" />
                             : <spna>검색 결과가 없습니다.</spna>}
                     </div>
                 
@@ -69,7 +69,7 @@ function Search (props) {
                     </h2>
                     <div>
                         {tvResult.length !== 0
-                            ? <GridContents data={tvResult} mType='tv' showTitle={false} showOverview={false} gridColumns={6} />
+                            ? <GridContents data={tvResult} mType='tv' showTitle={true} showOverview={false} gridColumns={6} imgPath="backdrop_path" />
                             : <spna>검색 결과가 없습니다.</spna>}
                     </div>
 
@@ -80,21 +80,6 @@ function Search (props) {
                             ? <GridContents data={personResult} mType='person' showTitle={false} showOverview={false} gridColumns={7} imgPath='profile_path' />
                             : <spna>검색 결과가 없습니다.</spna>}
                     </div>
-                    {/* <div style={{display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)'}}>
-                        {personResult.length !== 0 ? personResult.map(el => {
-                                return <SearchPerson
-                                            key={el.id}
-                                            id={el.id}
-                                            name={el.name}
-                                            originName={el.original_name}
-                                            gender={el.gender}
-                                            department={el.known_for_department}
-                                            profile={el.profile_path}
-                                            work={el.known_for}
-                                                />
-                            })
-                            : <spna>검색 결과가 없습니다.</spna>}
-                    </div> */}
                 </div>
             </Container>
         </Wrapper>

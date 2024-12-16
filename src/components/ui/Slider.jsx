@@ -70,12 +70,12 @@ const Wrapper = styled.div`
 
     & > p {
         font-size: 1.4vw;
-        padding: 0 3rem;
+        padding: 0 60px;
         margin: 0 0 20px 0;
     }
     & > div > span > svg {
-        width: 3rem;
-        height: 3rem;
+        width: 60px;
+        height: 60px;
     }
     & > div > span:hover {
         cursor: pointer;

@@ -15,11 +15,27 @@ export const useGlobalStore = create(
 
 export const useMediaStore = create(
     devtools((set, get) => ({
-        // likes: [],
-        // addLikes: (id) => set((state) => ({ likes: [...state.likes, id] })),
-        // removeLikes: (id) => set((state) => ({ likes: state.likes.filter(el => el !== id) })),
-        // clearLikes: () => set({ likes: [] }),
-        // likes: {id: 0, type: ''},
+        mediaType: 'movie', // 'movie' or 'tv'
+        setMediaType: (type) => set({mediaType: type}),
+
+        contentId: null,
+        setContentId: value => set({ contentId: value }),
+
+        genreName: '',
+        setGenreName: (value) => set({ genreName: value}),
+
+        openDetailModal: false,
+        setOpenDetailModal: (value) => set({openDetailModal: value, readyToPlay: false, endPlay: false}),
+
+        videoId: '',
+        setVideoId: (value) => set({videoId: value}),
+        readyToPlay: false, // 동영상 재생 준비 완료
+        setReadyToPlay: (value) => set({ readyToPlay: value }),
+        endPlay: false, // 동영상 재생 완료
+        setEndPlay: (value) => set({endPlay: value}),
+        fullScreen: false, // 전체 화면
+        setFullScreen: (value) => set({fullScreen: value}),
+
         likes: new Map(),
         addLikes: (id, type) => set(state => {
             const updatedMap = new Map(state.likes)
@@ -31,20 +47,5 @@ export const useMediaStore = create(
             updatedMap.delete(id)
             return { likes: updatedMap }
         }),
-
-        videoId: '',
-        setVideoId: (value) => set({videoId: value}),
-        readyToPlay: false, // 동영상 재생 준비 완료
-        setReadyToPlay: (value) => set({ readyToPlay: value }),
-        endPlay: false, // 동영상 재생 완료
-        setEndPlay: (value) => set({endPlay: value}),
-        fullScreen: false, // 전체 화면
-        setFullScreen: (value) => set({fullScreen: value}),
-
-        genreName: '',
-        setGenreName: (value) => set({ genreName: value}),
-
-        openDetailModal: false,
-        setOpenDetailModal: (value) => set({openDetailModal: value, readyToPlay: false, endPlay: false}),
     }))
 )

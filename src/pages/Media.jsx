@@ -18,21 +18,10 @@ const mediaTypes = {
 
 function Media () {
     let { mType, genreId } = useParams()
-    const { openDetailModal, setOpenDetailModal } = useMediaStore()
-    
-    const detailModalRef = useRef(null)
-    useEffect(() => {
-        // 특정 영역 외 클릭 시 이벤트 발생
-    	const outSideClick = (e) => {
-            if (detailModalRef.current && !detailModalRef.current.contains(e.target)) {
-                setOpenDetailModal(false)
-            }
-        }
-        // 이벤트 리스너에 outSideClick 함수 등록
-        document.addEventListener("mousedown", outSideClick);
-        return () => { document.removeEventListener("mousedown", outSideClick); }
+    console.log('Media', genreId);
+    const { setMediaType, setContentId, openDetailModal } = useMediaStore()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [detailModalRef])
+    useEffect(() => setMediaType(mType), [mType])
 
     const [coverContent, setCoverContent] = useState({})
     const recieveDataFromSliderForCoverContent = (data) => {
@@ -44,13 +33,13 @@ function Media () {
             img: getContentImg(temp.backdrop_path),
             overview: temp.overview.length > 130 ? temp.overview.slice(0, 130) + '...' : temp.overview
         }
+        setContentId(temp.id)
         setCoverContent(coverData)
     }
 
     return (
         <div>
             {/* {openDetailModal && genreBoxRef && <div ref={detailModalRef}><DetailModal id={coverContents.id} type={type} /></div>} */}
-            {openDetailModal && <div id="detail-modal" ref={detailModalRef}><DetailModal id={coverContent.id} mType={mType} /></div>}
             
             <Wrapper opacity={openDetailModal ? 0.7 : 1}>
                 {/** 중앙 메인 콘텐츠 */}

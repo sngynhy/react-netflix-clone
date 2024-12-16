@@ -11,7 +11,7 @@ export const getGenresById = (data, genres) => {
 export const getContentImg = (path) => {
     return `https://image.tmdb.org/t/p/original${path}`
 }
-export const getContentVedio = (logoData) => {
+export const getLogoImg = (logoData) => {
     const compareData = (a, b) => {
         if (a.iso_639_1 > b.iso_639_1) return -1
         if (a.iso_639_1 < b.iso_639_1) return 1

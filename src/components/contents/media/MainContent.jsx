@@ -8,12 +8,11 @@ import { useMediaStore } from 'stores/CommonStore';
 import PlayButton from 'components/ui/PlayButton';
 import { LogoImage } from '../LogoImage';
 
-function MainContent (props) {
-    const {mType, genreId, name, coverContent} = props
+function MainContent ({mType, genreId, name, coverContent}) {
+    console.log('MainContent', mType, genreId, name, coverContent);
     const {setGenreName, setOpenDetailModal} = useMediaStore()
-
     const {data: genres} = useQuery({
-        queryKey: ['genres', mType],
+        queryKey: [mType + '_genres', mType],
         queryFn: fetchGenres,
         staleTime: Infinity, // 데이터는 무기한 신선한 상태로 유지
         cacheTime: Infinity, // 캐시 데이터를 무기한 보관
@@ -21,9 +20,10 @@ function MainContent (props) {
     const [openGenreBox, setOpenGenreBox] = useState(false)
     const [genre, setGenre] = useState({id: -1, name: '장르'})
     useEffect(() => {
+        console.log('MainContent > useEffect', mType, genreId);
         if (genreId && genres) {
-            const gr = genres.find(el => el.id === parseInt(genreId)).name
-            setGenre({id: genreId, name: gr})
+            const genreName = genres.find(el => el.id === parseInt(genreId)).name
+            setGenre({id: genreId, name: genreName})
         }
     }, [mType, genreId, genres])
 
@@ -59,12 +59,12 @@ function MainContent (props) {
             <CoverContent id="cover-content">
                 {/* 장르 선택 */}
                 <SelectBoxForGenre bgcolor={openGenreBox ? 'hsla(0,0%,100%,.1)' : 'black'}>
-                    {genre.id === -1 ?
+                    {genre.id ?
                         <>
                             <span>{name}</span>
                             <div className="selectBox" onClick={() => setOpenGenreBox(true)}>
                                 <div className="selectIndex">
-                                    <span>{genre.name}</span>
+                                    <span style={{paddingRight: "30px"}}>{genre.name}</span>
                                     <span style={{float: 'right'}}>▼</span>
                                 </div>
                                 <div className="selectBoxOptions" ref={genreBoxRef}>
@@ -83,11 +83,10 @@ function MainContent (props) {
                 </SelectBoxForGenre>
                 {/* 메인 커버 콘텐츠 */}
                 <CoverContentText>
-                    {/* <h2>{coverContent.title}</h2> */}
-                    <h2 style={{width: "50%"}}><LogoImage id={coverContent.id} mType={mType} alt={coverContent.title} /></h2>
+                    {coverContent.hasOwnProperty('id') && <h2 style={{width: '60%'}}><LogoImage id={coverContent.id} mType={mType} alt={coverContent.title} /></h2>}
                     <p>{coverContent.overview}</p>
                     <div style={{marginTop: '30px'}}>
-                        {/* <PlayButton /> */}
+                        <PlayButton />
                         <button className="btn detailBtn" onClick={() => setOpenDetailModal(true)}><FiInfo />상세정보</button>
                     </div>
                 </CoverContentText>

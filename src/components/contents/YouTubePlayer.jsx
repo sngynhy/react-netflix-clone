@@ -101,7 +101,7 @@ export const YouTubePlayer = ({ videoId, width="100%", height="475px" }) => {
 
     // 플레이어 상태 변경 핸들러
     const onPlayerStateChange = (event) => {
-        console.log("Player state changed:", event.data, window.YT.PlayerState.ENDED)
+        // console.log("Player state changed:", event.data, window.YT.PlayerState.ENDED)
         /**
          PLAYING: 1
          PAUSED: 2
@@ -120,7 +120,7 @@ export const YouTubePlayer = ({ videoId, width="100%", height="475px" }) => {
 
     // 재생 에러 핸들러
     const onPlayerError = (event) => {
-        console.error("Error occurred:", event.data);
+        // console.error("Error occurred:", event.data);
         setReadyToPlay(false)
         setEndPlay(true)
         

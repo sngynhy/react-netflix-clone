@@ -4,6 +4,7 @@ import { useConetentsQuery, useContentsQueryKey } from "hooks/useReactQuery";
 import React, { useEffect } from "react";
 
 export const MovieContents = (props) => {
+    // console.log('MovieContents', props);
     const {mType, mediaTypes, sendDataToParent} = props
     const isMovie = mType === 'movie'
     // console.log('SliderSection', id, type);
@@ -31,7 +32,6 @@ export const MovieContents = (props) => {
         type: mType,
         content: isMovie ? movie.upcoming : tv.airingToday
     })
-
     useEffect(() => {
         if (!topRatedLoading) {
             sendDataToParent(topRated)

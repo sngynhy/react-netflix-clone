@@ -9,7 +9,7 @@ export const Wrapper = styled.div`
     z-index: 10;
 `
 export const Container =  styled.div`
-    padding: 0 40px;
+    padding: 0 60px;
     height: 100%;
 `
 export const Nav = styled.ul`

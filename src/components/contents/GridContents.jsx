@@ -26,8 +26,8 @@ function GridContents ({ mType, data, gridColumns=`repeat(6, 1fr)`, gap=10, show
                         <div className="backdrop-img" style={{position: 'relative'}}>
                             <img loading="lazy" src={getContentImg(el[imgPath])} alt={el.title} width='100%' style={{cursor: 'pointer'}} />
                             {showTitle && 
-                                <div className="logo-img" style={{position: 'absolute', bottom : '10px', left: '10px'}}>
-                                    <LogoImage id={el.id} mType={mType ? mType : !mType && 'seasons' in el ? 'tv' : 'movie'} alt={el.title} />
+                                <div className="logo-img" style={{position: 'absolute', bottom : '10px', left: '10px', fontSize: '22px'}}>
+                                    <LogoImage id={el.id} mType={mType ? mType : !mType && 'seasons' in el ? 'tv' : 'movie'} alt={el.title || el.name} width='120px' height='60px' />
                                 </div>
                             }
                         </div>

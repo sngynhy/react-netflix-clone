@@ -13,6 +13,7 @@ import {Wrapper, Container, PreviewPlayer, PlayerOnIcons, Detail, MoreDiv} from 
 import MyContentsButton from "components/ui/MyContentsButton";
 import PlayButton from 'components/ui/PlayButton';
 import { YouTubePlayer } from "components/contents/YouTubePlayer";
+import { LogoImage } from "components/contents/LogoImage";
 
 function DetailModal (props) {
     const { id, mType } = props
@@ -48,7 +49,7 @@ function DetailModal (props) {
         <Wrapper className="detail-info">
             {detailsLoading || creditLoading ? <LoadingOverlay /> :
             <Container>
-                <PreviewContent id={id} mType={mType} imgPath={detailsData.backdrop_path} />
+                <PreviewContent id={id} mType={mType} imgPath={detailsData.backdrop_path} title={details.title}/>
 
                 <div style={{width: '100%', backgroundColor: '#181818', borderRadius: '0 0 8px 8px'}}>
                     <div style={{padding: '2rem'}}>
@@ -114,7 +115,7 @@ function DetailModal (props) {
     )
 }
 
-const PreviewContent = ({ id, mType, imgPath }) => {
+const PreviewContent = ({ id, mType, imgPath, title }) => {
 
     const { readyToPlay, endPlay, setOpenDetailModal } = useMediaStore()
 
@@ -125,12 +126,12 @@ const PreviewContent = ({ id, mType, imgPath }) => {
     return (
         <PreviewPlayer>
             {/* 영상 or 이미지 콘텐츠 */}
-            <div style={{height: '100%'}}>
+            <div style={{height: '100%', position: 'relative'}}>
                 {videokey && !endPlay ? <YouTubePlayer videoId={videokey} style={{borderRadius: '8px 8px 0 0', opacity: '1'}} />
                 : <img src={getContentImg(imgPath)} style={{width: '100%', borderRadius: '8px 8px 0 0'}} alt="backdrop" />}
-
-                {/* {videokey && !endPlay ? <YouTubePlayer videoId={videokey} style={{borderRadius: '8px 8px 0 0'}} /> 
-                : <img src={getContentImg(imgPath)} style={{width: '100%', borderRadius: '8px 8px 0 0'}} alt="backdrop" />} */}
+                <div style={{position: 'absolute', width: '60%', bottom : 100, left: '3rem',}}>
+                    <LogoImage id={id} mType={mType} alt={title} width='320px' height='150px' />
+                </div>
             </div>
             {/* 버튼 */}
             <PlayerOnIcons>

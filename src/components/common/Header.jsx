@@ -32,7 +32,7 @@ function Header () {
         { name: '영화', path: '/media/movie', active: Boolean(movieMatch) || Boolean(movieByGenreMatch)},
         { name: '시리즈', path: '/media/tv', active: Boolean(seriesMatch) || Boolean(seriesByGenreMatch) },
         // { name: '넷플릭스 오리지널', path: '/netflix-original', active: Boolean(netflixMatch) },
-        { name: 'NEW! 요즘 대체 콘텐츠', path: '/trending-now', active: Boolean(TrendingNowMatch) },
+        { name: 'NEW! 요즘 대세 콘텐츠', path: '/trending-now', active: Boolean(TrendingNowMatch) },
         { name: '내가 찜한 리스트', path: '/my-list', active: Boolean(MyContentsMatch) },
     ]
 
@@ -42,7 +42,7 @@ function Header () {
     useEffect(() => {
         // 특정 영역 외 클릭 시 이벤트 발생
     	const outSideClick = (e) => {
-            console.log('outSideClick', e.target, searchRef.current)
+            // console.log('outSideClick', e.target, searchRef.current)
         	if (searchRef.current && !searchRef.current.contains(e.target)) {
             	setOpenSearchInput(false)
                 setSearchKeyword('')
