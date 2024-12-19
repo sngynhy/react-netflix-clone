@@ -8,15 +8,14 @@ export const Container = styled.div`
     border: none;
     position: absolute;
     z-index: 999;
-    width: 50%;
-    top: 30px;
+    top: 0;
+    padding: 30px 25% 0;
 `
 export const PreviewPlayer = styled.div`
     position: relative;
     width: 100%;
-    // height: 475px;
 `
-export const PlayerOnIcons = styled.div`
+export const IconsOnPlayer = styled.div`
     display: flex;
     position: absolute;
     bottom: 0;
@@ -26,7 +25,8 @@ export const PlayerOnIcons = styled.div`
     background-repeat: no-repeat;
     background-position: top, bottom;
     border-radius: 8px 8px 0 0;
-    & > .closeBtn {
+
+    & .closeBtn {
         position: absolute;
         right: 0;
         width: 36px;

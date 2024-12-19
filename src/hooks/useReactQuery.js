@@ -25,10 +25,42 @@ export const useConetentsQuery = (props) => {
         select: data => data.filter(el => el.backdrop_path !== null && el.poster !== null)
     })
 }
+
+// 여기부터
+export const useConetentsQueries = (type) => {
+    const param = {
+            movie: [
+                {key: 'nowPlaying', content: 'now_playing', headerTitle: 'Now Playing In Theaters'},
+                {key: 'topRated', content: 'top_rated', headerTitle: 'Top Rated'},
+                {key: 'popular', content: 'popular', headerTitle: 'Popular'},
+                {key: 'upcoming', content: 'upcoming', headerTitle: 'Upcoming'},
+            ],
+            tv: [
+                {key: 'onTheAir', content: 'on_the_air', headerTitle: 'On The Air'},
+                {key: 'topRated', content: 'top_rated', headerTitle: 'Top Rated'},
+                {key: 'popular', content: 'popular', headerTitle: 'Popular'},
+                {key: 'airingToday', content: 'airing_today', headerTitle: 'Airing Today'},
+            ]
+    }
+    const queries = useQueries({
+        queries: param[type].map(el => ({
+            queryKey: [el.key, type, el.content],
+            queryFn: fetchContents,
+            select: (data) => ({
+                // select 속성에 메타 데이터 추가
+                type: type,
+                key: el.key,
+                title: el.headerTitle,
+                data: data.filter(el => el.backdrop_path !== null && el.poster !== null)
+            }),
+        }))
+    })
+    return queries
+}
 export const useConetentsByGenreQuery = (props) => {
     const { type, genreId } = props
     return useQuery({
-        queryKey: [type +'_' + genreId, type, genreId],
+        queryKey: [genreId, type, genreId],
         queryFn: fetchContentsByGenre,
         select: data => data.filter(el => el.backdrop_path !== null && el.poster !== null)
     })
@@ -36,21 +68,21 @@ export const useConetentsByGenreQuery = (props) => {
 export const useCrditDetailsQuery = (props) => {
     const { type, id } = props
     return useQuery({
-        queryKey: [id + '_cast', type],
+        queryKey: ['cast', type],
         queryFn: fetchCreditDetails,
     })
 }
 export const useSimilarContentsQuery = (props) => {
     const { type, id } = props
     return useQuery({
-        queryKey: [id + "_similar", type, id],
+        queryKey: ["similar", type, id],
         queryFn: fetchSimilarContents
     })
 }
 export const useRecommendContentsQuery = (props) => {
     const { type, id } = props
     return useQuery({
-        queryKey: [id + "_recommend", type, id],
+        queryKey: ["recommend", type, id],
         queryFn: fetchRecommendContents
     })
 }
@@ -81,16 +113,17 @@ export const useTrendingContentsQueries = () => {
 export const useVideoQuery = (props) => {
     const { type, id } = props
     return useQuery({
-        queryKey: [id + "_video", type, id],
+        queryKey: ["video", type, id],
         queryFn: fetchVideo,
-        select: data => data.find(el => el.type === 'Trailer' || el.type === 'Teaser').key
+        select: data => {
+            return data.length > 0 ? data.find(el => el.type === 'Trailer' || el.type === 'Teaser').key : null
+        },
+        refetchOnWindowFocus: false // 포커스 시 자동 재요청 방지
     })
 }
 
 export const getAllQueryKeys = (queryClient) => { // param: useQueryClient()
     // 모든 쿼리 키 가져오기
-    // const allQueryKeys = queryClient.getQueryCache().getAll().map((query) => query.queryKey)
-    // console.log(allQueryKeys)
     return queryClient.getQueryCache().getAll().map((query) => query.queryKey);
 }
 

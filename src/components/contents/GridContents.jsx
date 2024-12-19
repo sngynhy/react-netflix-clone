@@ -1,11 +1,10 @@
 import PropTypes from "prop-types";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { getContentImg } from "utils/CommonFunction";
 import MyContentsButton from "components/ui/MyContentsButton";
-import styled from "styled-components";
-import { fetchImage } from "api/movieApi";
-import { useQuery } from "@tanstack/react-query";
 import { LogoImage } from "./LogoImage";
+import { PlayButton } from "components/ui/PlayButton";
+import { BackdropImage } from "components/contents/BackdropImage";
 
 GridContents.prototype = {
     data: PropTypes.object.isRequired,
@@ -17,28 +16,20 @@ GridContents.prototype = {
     imgPath: PropTypes.string
 }
 
-function GridContents ({ mType, data, gridColumns=`repeat(6, 1fr)`, gap=10, showTitle=true, showOverview=false, imgPath=`poster_path` }) {
+function GridContents ({ mType, data, gridColumns=`repeat(6, 1fr)`, gap=10, showTitle=true, showOverview=false, showPlayButton=false, imgPath=`poster_path` }) {
     return (
         <div style={{display: 'grid', gridTemplateColumns: `repeat(${gridColumns}, 1fr)`, gap: `${gap}px`, marginTop: '10px', }}>
-            {data.map(el => {
-                return (
+            {data.map(el => (
                     <div key={el.id}>
-                        <div className="backdrop-img" style={{position: 'relative'}}>
-                            <img loading="lazy" src={getContentImg(el[imgPath])} alt={el.title} width='100%' style={{cursor: 'pointer'}} />
-                            {showTitle && 
-                                <div className="logo-img" style={{position: 'absolute', bottom : '10px', left: '10px', fontSize: '22px'}}>
-                                    <LogoImage id={el.id} mType={mType ? mType : !mType && 'seasons' in el ? 'tv' : 'movie'} alt={el.title || el.name} width='120px' height='60px' />
-                                </div>
-                            }
-                        </div>
-                        {/* <div style={{cursor: 'pointer', border:'1px solid', backgroundImage: `url(${getContentImg(el[imgPath])})`, backgroundSize: 'contain', height: '200px'}}></div> */}
+                        <BackdropImage id={el.id} mType={mType ? mType : !mType && 'seasons' in el ? 'tv' : 'movie'} title={el.title || el.name} showTitle={showTitle} showPlayButton={showPlayButton} imgPath={el[imgPath]} width='120px' height='60px' />
                         {showOverview && <Overview id={el.id} mType={mType} showTitle={showTitle} showOverview={showOverview} title={el.title || el.name} overview={el.overview} />}    
                     </div>
                 )
-            })}
+            )}
         </div>
     )
 }
+
 
 const Overview = (props) => {
     const {id, mType, showTitle, showOverview, title, overview } = props

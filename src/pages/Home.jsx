@@ -1,12 +1,9 @@
-import React, { useEffect, useState } from 'react'
-import styled from "styled-components";
+import React, { useEffect, useContext, useRef, useState } from 'react'
 import { useQuery } from '@tanstack/react-query';
-import { fetchContentDetails, fetchNetflixOriginal } from 'api/movieApi';
-import LoadingOverlay from 'components/ui/LoadingOverlay';
-import Slider from 'components/ui/Slider';
-
-const Wrapper = styled.div`
-`
+import { fetchNetflixOriginal } from 'api/movieApi';
+import styled from "styled-components";
+import useLoading from 'hooks/useLoading';
+import { SliderContainer } from 'components/ui/SliderContainer';
 
 const MainCover = styled.div`
     background-image: url(https://assets.nflxext.com/ffe/siteui/vlv3/dadb130d-463b-4e5b-b335-038ed912059e/web_tall_panel/KR-ko-20241118-TRIFECTA-perspective_39e1ee1c-668b-451c-ac1b-2f61698a6a44_large.jpg);
@@ -28,26 +25,22 @@ const MainCover = styled.div`
 
 const Container = styled.div`
     padding-top: 650px;
-    // position: absolute;
-    // z-index: 1;
 `
 
 function Home () {
-    const {data: netflix, isLoading: netflixLoading, error: netflixError} = useQuery({ queryKey: ['netflix'], queryFn: fetchNetflixOriginal })
-
-    if (netflixLoading) return <LoadingOverlay />;
-    if (netflixError) return <p>Error occurred! {netflixError.message}</p>;
-
+    const {data: netflixData, isLoading: netflixLoading, error: netflixError} = useQuery({ queryKey: ['netflix'], queryFn: fetchNetflixOriginal })
+    
     return (
-        <Wrapper>
+        <div>
             <MainCover/>
-
+            
             <Container>
+                {netflixData &&
                 <div>
-                    <Slider name="Netflix Original" data={netflix} />
-                </div>
+                    <SliderContainer mType="netflix" headerTitle="Netflix Original" data={netflixData} />
+                </div>}
             </Container>
-        </Wrapper>
+        </div>
     )
 }
 

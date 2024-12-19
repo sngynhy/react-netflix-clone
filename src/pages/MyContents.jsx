@@ -1,12 +1,13 @@
 import { useQueries } from "@tanstack/react-query";
-import { fetchContentDetails, fetchImage } from "api/movieApi";
+import { fetchContentDetails } from "api/movieApi";
 import GridContents from "components/contents/GridContents";
-import LoadingOverlay from "components/ui/LoadingOverlay";
+import LoadingOverlay from "components/common/LoadingOverlay";
+import useLoading from "hooks/useLoading";
 import React from "react";
-import { useMediaStore } from "stores/CommonStore";
-import { getContentImg } from "utils/CommonFunction";
+import { useMediaStore } from "stores/mediaStore"
 
 function MyContents () {
+
     const {likes} = useMediaStore() // likes: { id => mType }
     const likeList = likes.size > 0 ? Array.from(likes) : []
     // const ids = Array.from(likes.keys())
@@ -26,12 +27,11 @@ function MyContents () {
     })
     // console.log('queries', queries);
 
-    if (queries.some((query) => query.isLoading)) return <LoadingOverlay />
+    if (queries.some((query) => query.isLoading)) return
     if (queries.some((query) => query.isError)) return <div>Error occurred!</div>
 
     const data = queries?.map(query => query.data)
     // console.log('data', data);
-
     return (
         <div className="my-contents">
             <div style={{padding: '64px 60px 0'}}>

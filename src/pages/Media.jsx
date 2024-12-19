@@ -1,54 +1,34 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useParams } from 'react-router-dom';
-import DetailModal from 'components/modal/DetailModal';
-import styled from 'styled-components';
-import { getContentImg } from 'utils/CommonFunction';
-import { useMediaStore } from 'stores/CommonStore';
+import { useMediaStore } from 'stores/mediaStore';
 import MainContent from 'components/contents/media/MainContent';
-import { GenreConetns } from 'components/contents/media/slidersection/GenreConstens';
+import { GenreContents } from 'components/contents/media/slidersection/GenreContents';
+import { MediaContents } from 'components/contents/media/slidersection/MediaContents';
 import { MovieContents } from 'components/contents/media/slidersection/MovieConetns';
 
-const Wrapper = styled.div`
-    opacity: ${props => props.opacity}
-`
 const mediaTypes = {
-    movie: {name: '영화', title: ['Now Playing In Theaters', 'Popular', 'Top Rated', 'Upcoming'] },
-    tv: { name: '시리즈', title: ['On The Air', 'Popular', 'Top Rated', 'Airing Today'] }
+    movie: '영화',
+    tv: '시리즈'
 }
 
 function Media () {
     let { mType, genreId } = useParams()
-    console.log('Media', genreId);
-    const { setMediaType, setContentId, openDetailModal } = useMediaStore()
+    // console.log('Media', genreId);
+    const { setMediaType, openDetailModal } = useMediaStore()
     // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => setMediaType(mType), [mType])
-
-    const [coverContent, setCoverContent] = useState({})
-    const recieveDataFromSliderForCoverContent = (data) => {
-        let randomIndex = Math.floor(Math.random() * data.length)
-        let temp = data[randomIndex]
-        let coverData = {
-            id: temp.id,
-            title: temp.title || temp.name,
-            img: getContentImg(temp.backdrop_path),
-            overview: temp.overview.length > 130 ? temp.overview.slice(0, 130) + '...' : temp.overview
-        }
-        setContentId(temp.id)
-        setCoverContent(coverData)
-    }
-
     return (
-        <div>
+        <div style={{position: openDetailModal ? 'fixed' : ''}}>
             {/* {openDetailModal && genreBoxRef && <div ref={detailModalRef}><DetailModal id={coverContents.id} type={type} /></div>} */}
             
-            <Wrapper opacity={openDetailModal ? 0.7 : 1}>
+            <div style={{opacity: openDetailModal ? 0.7 : 1}}>
                 {/** 중앙 메인 콘텐츠 */}
-                <MainContent mType={mType} name={mediaTypes[mType].name} genreId={genreId} coverContent={coverContent} />
+                <MainContent mType={mType} name={mediaTypes[mType]} genreId={genreId} />
 
                 {/** 하단 슬라이더 */}
-                {genreId ? <GenreConetns mType={mType} genreId={genreId} sendDataToParent={recieveDataFromSliderForCoverContent} />
-                : <MovieContents mType={mType} mediaTypes={mediaTypes} sendDataToParent={recieveDataFromSliderForCoverContent} />}
-            </Wrapper>
+                {genreId ? <GenreContents mType={mType} genreId={genreId} /> : <MediaContents mType={mType} />}
+                {/* {genreId ? <GenreContents mType={mType} genreId={genreId} /> : <MovieContents mType={mType} />} */}
+            </div>
         </div>
     )
 }

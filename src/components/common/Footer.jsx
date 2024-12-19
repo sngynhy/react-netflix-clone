@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import styled from "styled-components";
 
 const Wrapper = styled.div`
@@ -11,12 +11,10 @@ const Wrapper = styled.div`
     }
 `
 
-function Footer () {
+export const Footer = memo(function Footer() {
     return (
         <Wrapper id="footer">
            <p>@2024 Made by sngynhy</p>
         </Wrapper>
     )
-}
-
-export default Footer
+})

@@ -3,9 +3,10 @@ import { useLocation } from 'react-router-dom'
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { fetchSearchBykeyword } from "api/movieApi";
 import styled from "styled-components";
-import LoadingOverlay from "components/ui/LoadingOverlay";
+import LoadingOverlay from "components/common/LoadingOverlay";
 import { RxTriangleRight } from "react-icons/rx";
 import GridContents from "components/contents/GridContents";
+import useLoading from "hooks/useLoading";
 
 const Wrapper = styled.div`
     width: 100%;
@@ -40,8 +41,8 @@ function Search (props) {
         select: data => data.filter(el => el.profile_path !== null && el.poster !== null)
     })
 
-    if (movieIsLoading || tvIsLoading || personIsLoading) return <LoadingOverlay />;
-    if (movieError || tvError || personError) return <p>Error occurred!</p>;
+    if (movieIsLoading || tvIsLoading || personIsLoading) return
+    if (movieError || tvError || personError) return <p>Error occurred!</p>
     
     return (
         <Wrapper>

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { GoPlusCircle } from "react-icons/go";
 import { GoCheckCircle } from "react-icons/go";
-import { useMediaStore } from 'stores/CommonStore'
+import { useMediaStore } from 'stores/mediaStore'
 
 const Button = styled.span`
     & > svg {

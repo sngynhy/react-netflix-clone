@@ -1,27 +1,26 @@
 import React, { useEffect, useRef } from "react";
-import { useMediaStore } from "stores/CommonStore"; 
+import { useMediaStore } from "stores/mediaStore"; 
 import styled from "styled-components";
 
-export const YouTubePlayer = ({ videoId, width="100%", height="475px" }) => {
+export const YouTubePlayer = ({ videoId, width="100%", height="475px", borderRadius="0" }) => {
     const playerRef = useRef(null)
     const {fullScreen, setFullScreen, setReadyToPlay, setEndPlay} = useMediaStore()
 
     // ESC 키 충돌 처리
     useEffect(() => {
         const handleKeyDown = (event) => {
-          if (event.key === "Escape") {
-            if (document.fullscreenElement) { // full screen일 때 esc키를 누른 경우
-              document.exitFullscreen();
-              setFullScreen(false)
-              setEndPlay(false)
-            } else {
-            //   console.log("ESC pressed outside fullscreen");
+            if (event.key === "Escape") {
+                if (document.fullscreenElement) { // full screen일 때 esc키를 누른 경우
+                    document.exitFullscreen();
+                    setFullScreen(false)
+                    setEndPlay(false)
+                }
             }
-          }
-        };
+        }
       
         document.addEventListener("keydown", handleKeyDown);
         return () => document.removeEventListener("keydown", handleKeyDown);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
     
     useEffect(() => {
@@ -171,7 +170,7 @@ export const YouTubePlayer = ({ videoId, width="100%", height="475px" }) => {
     
     return (
         <div id="player">
-            <Player id="youtube-player" width={width} height={height} />
+            <Player id="youtube-player" width={width} height={height} borderRadius={borderRadius}/>
         </div>
     )
 }
@@ -179,6 +178,7 @@ export const YouTubePlayer = ({ videoId, width="100%", height="475px" }) => {
 const Player = styled.div`
     width: ${props => props.width};
     height: ${props => props.height};
+    border-radius: ${props => props.borderRadius}; // 8px 8px 0 0;
 
     & > #youtube-player {
         width: ${props => props.width};

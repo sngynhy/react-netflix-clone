@@ -1,14 +1,15 @@
 import React from "react";
 import useLoading from "hooks/useLoading";
+import { FadeLoader } from "react-spinners";
 
 // 📍 로딩 화면 생성
 function LoadingOverlay () {
-    const { isLoading } = useLoading()
-    // if (!isLoading) return null
+    const { isFetching } = useLoading()
+    if (!isFetching) return null
 
     return (
         <div style={styles.overlay}>
-            <div style={styles.spinner}>Loading...</div>
+            <FadeLoader color="white" />
         </div>
     )
 }
@@ -21,17 +22,12 @@ const styles = {
       width: "100%",
       height: "100%",
       backgroundColor: "rgba(0, 0, 0, 0.5)",
-      // backgroundColor: "black",
+    //   backgroundColor: "black",
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
       zIndex: 999,
-    },
-    spinner: {
-      color: "#fff",
-      fontSize: "24px",
-      fontWeight: "bold",
-    },
+    }
 };
 
 export default LoadingOverlay

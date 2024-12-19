@@ -1,12 +1,12 @@
 import React from "react";
 import GridContents from "components/contents/GridContents";
 import { useTrendingContentsQueries } from "hooks/useReactQuery";
-import LoadingOverlay from "components/ui/LoadingOverlay";
 
 function TrendingNow () {
+
     const queries = useTrendingContentsQueries()
 
-    if (queries.some((query) => query.isLoading)) return <LoadingOverlay />
+    if (queries.some((query) => query.isLoading)) return
     if (queries.some((query) => query.isError)) return <div>Error occurred!</div>
 
     const data = queries?.map(query => query.data)
@@ -14,15 +14,15 @@ function TrendingNow () {
     const dayContents = data?.filter(el => el.period === 'day')
     // console.log('weekContents', weekContents);
     // console.log('dayContents', dayContents);
-
+    
     return (
         <div className="trending-now">
             <div style={{padding: '64px 60px 0'}}>
                 <div className="title">
                     <h1 style={{fontWeight: '400'}}>오늘의 인기 콘텐츠</h1>
                 </div>
-                {weekContents?.map(el => {
-                    return (<div className="contents" style={{marginTop: "1rem"}}>
+                {weekContents?.map((el, i) => {
+                    return (<div key={i} className="contents" style={{marginTop: "1rem"}}>
                         <GridContents data={el.data} mType={null} showTitle={true} showOverview={false} gridColumns={6} imgPath='backdrop_path' />
                     </div>)
                 })}
@@ -31,8 +31,8 @@ function TrendingNow () {
                 <div className="title">
                     <h1 style={{fontWeight: '400'}}>이번주 인기 콘텐츠</h1>
                 </div>
-                {dayContents?.map(el => {
-                    return (<div className="contents" style={{marginTop: "1rem"}}>
+                {dayContents?.map((el, i) => {
+                    return (<div key={i} className="contents" style={{marginTop: "1rem"}}>
                         <GridContents data={el.data} mType={null} showTitle={true} showOverview={false} gridColumns={6} imgPath='backdrop_path' />
                     </div>)
                 })}

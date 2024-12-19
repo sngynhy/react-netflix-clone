@@ -2,8 +2,8 @@ import React, { useState } from 'react'
 import styled from "styled-components";
 import { useQuery } from '@tanstack/react-query';
 import { fetchGenres, fetchNetflixOriginal, fetchNowplaying, fetchPopular, fetchToprated, fetchupcoming } from 'api/movieApi';
-import LoadingOverlay from 'components/ui/LoadingOverlay';
-import Slider from 'components/ui/Slider';
+import LoadingOverlay from 'components/common/LoadingOverlay';
+import SliderContainer from 'components/ui/Slider';
 
 const Wrapper = styled.div`
 
@@ -74,12 +74,12 @@ function Main () {
                 <div>
                     {/* <h1>Netflix Original</h1> */}
                     {/* <Slider data={netflix.slice(0, 10)} /> */}
-                    <Slider name="Netflix Original" data={netflix} />
+                    <SliderContainer headerTitle="Netflix Original" data={netflix} />
                 </div>
 
                 <div>
                     {/* <h1>인기있는</h1> */}
-                    <Slider name="인기있는" data={popluar.slice(0, 10)} />
+                    <SliderContainer headerTitle="인기있는" data={popluar.slice(0, 10)} />
                 </div>
             </Container>
         </Wrapper>

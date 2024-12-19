@@ -1,20 +1,11 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, memo } from "react";
 import { Link, useNavigate, useMatch } from 'react-router-dom'
 import logo from 'assets/img/logo/logo.png'
 import {Wrapper, Container, Nav, NavItem, CategoryText, Account, SearchBox, styles} from 'styles/HeaderStyle'
 import { IoSearch, IoCloseSharp } from "react-icons/io5";
-import styled from "styled-components";
 
-
-// const categorys = [
-//     { name: '홈', path: '/' },
-//     { name: '영화', path: '/media/1' },
-//     { name: '시리즈', path: '/media/2' },
-//     { name: '넷플릭스 오리지널', path: '/netflix-original' }
-// ]
-
-
-function Header () {
+// memo => props가 변경되지 않은 경우 구성 요소를 다시 렌더링하는 것을 건너뜀
+export const Header = memo(function Header () {
     const [openSearchInput, setOpenSearchInput] = useState(false)
     const [searchKeyword, setSearchKeyword] = useState('')
 
@@ -42,7 +33,7 @@ function Header () {
     useEffect(() => {
         // 특정 영역 외 클릭 시 이벤트 발생
     	const outSideClick = (e) => {
-            // console.log('outSideClick', e.target, searchRef.current)
+            console.log('outSideClick', e)
         	if (searchRef.current && !searchRef.current.contains(e.target)) {
             	setOpenSearchInput(false)
                 setSearchKeyword('')
@@ -85,19 +76,15 @@ function Header () {
                 <div style={styles.rightItems}>
                     <SearchBox className="search-box" ref={searchRef} open={openSearchInput}>
                         <label htmlFor="searchInput" style={{height: 'inherit'}}><IoSearch onClick={(e) => openSearchInput ? search(e) : setOpenSearchInput(true)} style={styles.searchIcon}/></label>
-                            {
-                                openSearchInput &&
-                                    <>
-                                        <input type="text" id="searchInput" placeholder="제목, 인물" value={searchKeyword} onChange={(e) => setSearchKeyword(e.target.value)} onKeyDown={(e) => search(e)} />
-                                        <label htmlFor="searchInput" style={{height: 'inherit'}}><IoCloseSharp onClick={() => setSearchKeyword('')} style={styles.searchIcon}/></label>
-                                    </>
-                            }
+                            {openSearchInput &&
+                                <>
+                                    <input type="text" id="searchInput" placeholder="제목, 인물" value={searchKeyword} onChange={(e) => setSearchKeyword(e.target.value)} onKeyDown={(e) => search(e)} />
+                                    <label htmlFor="searchInput" style={{height: 'inherit'}}><IoCloseSharp onClick={() => setSearchKeyword('')} style={styles.searchIcon}/></label>
+                                </>}
                     </SearchBox>
                     {/* <Link to="/"><Account>로그인</Account></Link> */}
                 </div>
             </Container>
         </Wrapper>
     )
-}
-
-export default Header
+})

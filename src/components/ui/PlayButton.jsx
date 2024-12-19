@@ -1,10 +1,10 @@
 import React from "react";
 import { FaPlay } from "react-icons/fa";
-import { FaCirclePlay } from "react-icons/fa6";
+import { GoPlay } from "react-icons/go";
 import styled from "styled-components";
-import { useMediaStore } from "stores/CommonStore"; 
+import { useMediaStore } from "stores/mediaStore"; 
 
-function PlayButton ({ active, type="button" }) { // type: 'button' or 'icon'
+export const PlayButton = ({ active=false, type="button", height='40px', width='40px' }) => { // type: 'button' or 'icon'
     const {setFullScreen} = useMediaStore()
     const videoPlay = () => {
         if (active) setFullScreen(true)
@@ -14,7 +14,7 @@ function PlayButton ({ active, type="button" }) { // type: 'button' or 'icon'
         <div style={{display: 'inline-block'}} onClick={videoPlay}>
             {type === 'button'
             ? <Button active={active}><FaPlay />재생</Button>
-            : <FaCirclePlay style={{}}/>}
+            : <span><GoPlay style={{width: width, height: height, cursor: 'pointer'}}/></span>}
         </div>
     )
 }
@@ -35,5 +35,3 @@ const Button = styled.button`
         background-color: #ffffffbf;
     }`}
 `
-
-export default PlayButton

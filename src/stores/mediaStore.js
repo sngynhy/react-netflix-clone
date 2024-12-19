@@ -1,29 +1,35 @@
 import { create } from "zustand";
 import { devtools } from 'zustand/middleware';
+import { getContentImg } from "utils/CommonFunction";
 
 // create 함수로 sotre 생성
 // create 함수의 콜백은 set, get을 인자로 가지며, 이를 통해 상태를 조회하거나 업데이트
 // 만일, set 함수 호출 시 콜백을 사용하면 get 함수를 사용하지 않아도 바로 state를 얻을 수 있음
 // create 함수의 콜백이 반환하는 객체에서의 속성은 상태(state)이고, 함수는 액션(Action)이라고 부름
-// create 함수 호출에서 반환하는 Store Hook은, use 접두사와 Store 접미사로 명명하여 사용 ex) useMovieStore
-export const useGlobalStore = create(
-    devtools(set => ({
-        isLoading: false,
-        setIsLoading: (state) => set({isLoading: !state.isLoading})
-    }))
-)
-
+// create 함수 호출에서 반환하는 Store Hook은, use 접두사와 Store 접미사로 명명하여 사용
 export const useMediaStore = create(
     devtools((set, get) => ({
         mediaType: 'movie', // 'movie' or 'tv'
         setMediaType: (type) => set({mediaType: type}),
 
         contentId: null,
-        setContentId: value => set({ contentId: value }),
+        setContentId: (value) => set({ contentId: value }),
 
         genreName: '',
         setGenreName: (value) => set({ genreName: value}),
 
+        coverContent: {},
+        setCoverContent: (data) => set(state => {
+            const randomIndex = Math.floor(Math.random() * 5)
+            let coverData = {
+                id: data[randomIndex].id,
+                title: data[randomIndex].title || data[0].name,
+                img: getContentImg(data[randomIndex].backdrop_path),
+                overview: data[randomIndex].overview.length > 130 ? data[0].overview.slice(0, 130) + '...' : data[0].overview
+            }
+            return { coverContent: coverData, contentId: coverData.id }
+        }),
+ 
         openDetailModal: false,
         setOpenDetailModal: (value) => set({openDetailModal: value, readyToPlay: false, endPlay: false}),
 
