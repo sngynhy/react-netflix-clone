@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const MainCover = styled.div`
-    background-image: url(${props => props.url});
+    background-image: url(${props => props.$url});
     background-size: cover;
     height: 800px;
     width: 100%;
@@ -39,7 +39,7 @@ export const SelectBoxForGenre = styled.div`
         cursor: pointer;
         display: inline-block;
         position: relative;
-        background-color: ${props => props.bgcolor};
+        background-color: ${props => props.$bgcolor};
     }
         & > .selectBox:hover {
         background-color: hsla(0,0%,100%,.1);
@@ -78,7 +78,7 @@ export const CoverContentText = styled.div`
         font-size: 20px;
         margin: 0 15px 0 0;
     }
-    & > div > .btn {
+    & > div > div > .btn {
         margin-right: 10px;
         padding: 0.6rem 1.6rem;
         font-size: 20px;
@@ -86,14 +86,14 @@ export const CoverContentText = styled.div`
         border: none;
         cursor: pointer;
     }
-    & > div > button > svg {
+    & > div > div > button > svg {
         margin-right: 8px;
     }
-    & > div > .detailBtn {
+    & > div > div > .detailBtn {
         color: white;
         background-color: rgba(109, 109, 110, 0.7);
     }
-    & > div > .detailBtn:hover {
+    & > div > div > .detailBtn:hover {
         color: white;
         background-color: rgba(109, 109, 110, 0.4);
     }

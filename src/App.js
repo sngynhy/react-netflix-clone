@@ -16,7 +16,7 @@ export const Wrapper = styled.div`
 const queryClient = new QueryClient()
 
 function App() {
-  const {mediaType, contentId, openDetailModal} = useMediaStore()
+  const {openDetailModal} = useMediaStore()
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -26,7 +26,7 @@ function App() {
           <Wrapper>
             <Header/>
             <Router/>
-            {openDetailModal && <DetailModal id={contentId} mType={mediaType} />}
+            {openDetailModal && <DetailModal />}
             <Footer />
           </Wrapper>
       </LoadingProvider>

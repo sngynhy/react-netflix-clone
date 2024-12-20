@@ -53,7 +53,7 @@ const getGenresById = (data, genres) => {
 
 function PreviewModal ({ id, mType, title, backdrop, voteAvg, genreIds }) {
     // console.log('PreviewModal', id, mType, title, backdrop, voteAvg, genreIds);
-    const { readyToPlay, endPlay, setOpenDetailModal } = useMediaStore()
+    const { readyToPlay, endPlay, setOpenDetailModal, setOpenContentId } = useMediaStore()
 
     const queryClient = useQueryClient(); // 캐시된 데이터 가져오기
     const genres = queryClient.getQueryData(['genres', mType]) // 'genres' 키로 데이터 조회
@@ -66,9 +66,6 @@ function PreviewModal ({ id, mType, title, backdrop, voteAvg, genreIds }) {
 
     const {data: videokey, isLoading, isError} = useVideoQuery({type: mType, id: id})
     // console.log('videokey', id, videokey);
-
-    const [like, setLike] = useState(false)
-    const liked = () => setLike(prev => !prev)
     
     if (isLoading || isError) return
 
@@ -80,15 +77,17 @@ function PreviewModal ({ id, mType, title, backdrop, voteAvg, genreIds }) {
             </PreviewPlayer>
             <PreviewInfo>
                 <div>
-                    <PlayButton active={videokey && readyToPlay} type='icon' />
+                    <PlayButton active={!!videokey && readyToPlay} type='icon' />
                     <MyContentsButton id={id} mType={mType} width='2.5rem' height='2.5rem' />
                     {/* {like ? <AiFillLike onClick={liked} /> : <AiOutlineLike onClick={liked} />} */}
-                    <ImEnlarge2 style={{float: 'right'}} onClick={() => setOpenDetailModal(true)} />
+                    <ImEnlarge2 style={{float: 'right'}} onClick={() => {setOpenContentId(id); setOpenDetailModal(true)}} />
                 </div>
-                <div>
-                    <span style={{fontSize: '20px'}}>{title}</span>
-                    <span style={{marginLeft: '8px'}}>⭐{voteAvg || 0.0}</span>
-                    <ul>{genre.map((el, i) => <li key={i}>{el}</li>)}</ul>
+                <div style={{margin: '5px 0 0'}}>
+                    <div>
+                        <span style={{fontSize: '100%'}}>{title}</span>
+                        <span style={{marginLeft: '8px'}}>⭐{voteAvg || 0.0}</span>
+                    </div>
+                    <ul style={{margin: '5px 0 0'}}>{genre.slice(0,3).map((el, i) => <li key={i} style={{fontSize: '80%'}}>{el}</li>)}</ul>
                 </div>
             </PreviewInfo>
         </Wrapper>

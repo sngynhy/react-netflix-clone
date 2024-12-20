@@ -57,12 +57,12 @@ export const MoreDiv = styled.div`
     position: relative;
     width: 100%;
 
-    ${props => !props.moreview && 'background-image: linear-gradient(0deg, #181818 0, hsla(0, 0%, 9%, .7) 20%, hsla(0, 0%, 9%, .4) 30%, transparent 50%);'}
-    ${props => !props.moreview && 'margin-top: -6em;'}
+    ${props => !props.$moreview && 'background-image: linear-gradient(0deg, #181818 0, hsla(0, 0%, 9%, .7) 20%, hsla(0, 0%, 9%, .4) 30%, transparent 50%);'}
+    ${props => !props.$moreview && 'margin-top: -6em;'}
     & > svg {
         width: 40px;
         height: 40px;
-        transform: ${props => props.moreview ? 'rotate(90deg);' : 'rotate(-90deg);'}
+        transform: ${props => props.$moreview ? 'rotate(90deg);' : 'rotate(-90deg);'}
         position: absolute;
         bottom: -20px;
         color: grey;

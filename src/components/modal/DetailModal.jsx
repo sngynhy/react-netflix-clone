@@ -14,10 +14,9 @@ import { PlayButton } from 'components/ui/PlayButton';
 import { YouTubePlayer } from "components/contents/YouTubePlayer";
 import { LogoImage } from "components/contents/LogoImage";
 
-function DetailModal (props) {
-    const { id, mType } = props
-    // const {season, setSeason} = useState(0)
-    const { setOpenDetailModal } = useMediaStore()
+function DetailModal () {
+    const { openContentId, mediaType, setOpenDetailModal } = useMediaStore()
+    const id = openContentId, mType = mediaType
 
     const detailModalRef = useRef(null)
     useEffect(() => {
@@ -197,7 +196,7 @@ const RecommendSection = (props) => {
             <div className="gridBox">
                 <GridContents data={recommendData?.slice(0, 9)} mType={mType} showTitle={true} showOverview={true} gridColumns={3} imgPath='backdrop_path' />
                 {moreViewRecommend && <GridContents data={recommendData?.slice(9, recommendData.lenght)} showTitle={true} showOverview={true} gridColumns={3} imgPath='backdrop_path' />}
-                <MoreDiv moreview={moreViewRecommend} ><TfiArrowCircleLeft onClick={moreView}/></MoreDiv>
+                <MoreDiv $moreview={moreViewRecommend} ><TfiArrowCircleLeft onClick={moreView}/></MoreDiv>
             </div>
         </div>
     )

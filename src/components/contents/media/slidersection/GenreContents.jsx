@@ -1,19 +1,20 @@
 import { useConetentsByGenreQuery } from "hooks/useReactQuery";
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import { useMediaStore } from "stores/mediaStore";
 import { SliderContainer } from 'components/ui/SliderContainer';
 
-export const GenreContents = ({mType, genreId}) => {
-    const {genreName, setCoverContent} = useMediaStore()
+export const GenreContents = React.memo(({mType, genreId, sendCoverDat}) => {
+    const {genreName} = useMediaStore()
     const {data, isLoading, error} = useConetentsByGenreQuery({ type: mType, genreId: genreId })
     
     useEffect(() => {
-        if (!isLoading) setCoverContent(data.slice(0, 5))
+        if (!isLoading) sendCoverDat(data[Math.floor(Math.random() * 5)])
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data])
 
     if (isLoading) return
     if (error) return <p>Error occurred!</p>
+
     return (
         <>
         {data &&
@@ -24,4 +25,4 @@ export const GenreContents = ({mType, genreId}) => {
             </div>}
         </>
     )
-}
+})

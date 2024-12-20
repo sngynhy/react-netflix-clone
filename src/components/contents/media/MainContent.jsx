@@ -1,16 +1,18 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { FiInfo } from "react-icons/fi";
-import { MainCover, CoverContent, SelectBoxForGenre, CoverContentText } from 'styles/MediaStyle';
+import { MainCover, CoverContent, SelectBoxForGenre, CoverContentText } from 'styles/MainContentStyle';
 import { fetchGenres } from 'api/movieApi';
 import { useMediaStore } from 'stores/mediaStore';
 import { PlayButton } from 'components/ui/PlayButton';
 import { LogoImage } from '../LogoImage';
+import { useVideoQuery } from 'hooks/useReactQuery';
+import { YouTubePlayer } from '../YouTubePlayer';
 
-function MainContent ({mType, genreId, name}) {
-    // console.log('MainContent', mType, genreId, name);
-    const {coverContent, setGenreName, setOpenDetailModal} = useMediaStore()
+export const MainContent = React.memo(({mType, genreId, name, coverData}) => {
+    console.log('MainContent', mType, genreId, name, coverData);
+    const {setGenreName, setOpenDetailModal} = useMediaStore()
     
     const {data: genres} = useQuery({
         queryKey: ['genres', mType],
@@ -20,6 +22,7 @@ function MainContent ({mType, genreId, name}) {
     })
     const [openGenreBox, setOpenGenreBox] = useState(false)
     const [genre, setGenre] = useState({id: -1, name: '장르'})
+    
     useEffect(() => {
         if (genres) {
             if (genreId) {
@@ -54,16 +57,19 @@ function MainContent ({mType, genreId, name}) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [genre])
 
-    if (!coverContent) return
+    // video
+    const {data: videokey, isLoading: videoLoading} = useVideoQuery({type: mType, id: coverData.id})
+    // console.log('videokey', videokey);
 
+    if (!coverData || videoLoading) return
     return (
         <>
-            {coverContent.hasOwnProperty('id') && <MainCover url={coverContent.img}/>}
+            <MainCover $url={coverData.img}/>
             
             {/* 중앙 콘텐츠 */}
             <CoverContent id="cover-content">
                 {/* 장르 선택 */}
-                <SelectBoxForGenre bgcolor={openGenreBox ? 'hsla(0,0%,100%,.1)' : 'black'}>
+                <SelectBoxForGenre $bgcolor={openGenreBox ? 'hsla(0,0%,100%,.1)' : 'black'}>
                     {genreId ?
                         <>
                             <div style={{fontSize: '18px', color: 'grey'}}>
@@ -88,18 +94,18 @@ function MainContent ({mType, genreId, name}) {
                 </SelectBoxForGenre>
                 
                 {/* 메인 커버 콘텐츠 */}
-                {coverContent.hasOwnProperty('id') &&
-                    <CoverContentText>
-                        {coverContent.hasOwnProperty('id') && <h2 style={{width: '60%'}}><LogoImage id={coverContent.id} mType={mType} alt={coverContent.title} /></h2>}
-                        <p>{coverContent.overview}</p>
-                        <div style={{marginTop: '30px'}}>
-                            <PlayButton />
+                <CoverContentText>
+                    {coverData.hasOwnProperty('id') && <h2 style={{width: '60%'}}><LogoImage id={coverData.id} mType={mType} alt={coverData.title} /></h2>}
+                    <p>{coverData.overview}</p>
+                    <div style={{marginTop: '30px'}}>
+                        <div style={{position: 'relative', display: 'flex'}}>
+                            <PlayButton active={!!videokey} />
                             <button className="btn detailBtn" onClick={() => setOpenDetailModal(true)}><FiInfo />상세정보</button>
+                            {videokey && <div style={{position: 'absolute', top: 0, zIndex: -1, opacity: 0}}><YouTubePlayer videoId={videokey} width='119px' height='45px' /></div>}
                         </div>
-                    </CoverContentText>}
+                    </div>
+                </CoverContentText>
             </CoverContent>
         </>
     )
-}
-
-export default MainContent
+})

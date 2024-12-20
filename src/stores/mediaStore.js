@@ -11,28 +11,15 @@ export const useMediaStore = create(
     devtools((set, get) => ({
         mediaType: 'movie', // 'movie' or 'tv'
         setMediaType: (type) => set({mediaType: type}),
-
-        contentId: null,
-        setContentId: (value) => set({ contentId: value }),
-
+        
         genreName: '',
         setGenreName: (value) => set({ genreName: value}),
-
-        coverContent: {},
-        setCoverContent: (data) => set(state => {
-            const randomIndex = Math.floor(Math.random() * 5)
-            let coverData = {
-                id: data[randomIndex].id,
-                title: data[randomIndex].title || data[0].name,
-                img: getContentImg(data[randomIndex].backdrop_path),
-                overview: data[randomIndex].overview.length > 130 ? data[0].overview.slice(0, 130) + '...' : data[0].overview
-            }
-            return { coverContent: coverData, contentId: coverData.id }
-        }),
- 
+        
         openDetailModal: false,
         setOpenDetailModal: (value) => set({openDetailModal: value, readyToPlay: false, endPlay: false}),
-
+        openContentId: null,
+        setOpenContentId: (value) => set({ openContentId: value }),
+        
         videoId: '',
         setVideoId: (value) => set({videoId: value}),
         readyToPlay: false, // 동영상 재생 준비 완료

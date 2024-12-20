@@ -23,8 +23,8 @@ export const SliderContainer = ({mType, headerTitle, data}) => {
             {  
                 breakpoint: 768, //화면 사이즈 768px일 때
                 settings: {
-                    slidesToShow: 3,
-                    slidesToScroll: 3
+                    slidesToShow: 2,
+                    slidesToScroll: 2
                 } 
             },
         ]
@@ -37,10 +37,9 @@ export const SliderContainer = ({mType, headerTitle, data}) => {
         let start = false, end = false
         if ((i + 1) % 6 === 1) start = true
         if ((i + 1) % 6 === 0) end = true
-        let target = document.getElementsByClassName(data.id)[0];
+        let target = document.getElementsByClassName(i + data.id)[0];
         // let targetTop = target.getBoundingClientRect().top
         let targetLeft = target.getBoundingClientRect().left
-        console.log('targetLeft', targetLeft);
         setCoordinate({left: start ? 86 : end ? targetLeft - 97 : targetLeft - 30})
 
         setPreviewData({
@@ -58,19 +57,21 @@ export const SliderContainer = ({mType, headerTitle, data}) => {
             <div style={{padding: "0 60px", position: "relative"}}>
                 <h2>{headerTitle}</h2>
                 <Slider {...settings}>
-                {data.map((el, i) => (
-                    <div className={el.id} key={el.id} onMouseEnter={() => openModal(i, el)}>
-                        <BackdropImage
-                            id={el.id}
-                            mType={mType}
-                            title={el.title || el.name}
-                            showTitle={mType === 'netflix' ? false : true}
-                            imgPath={mType === 'netflix' ? el.poster_path : el.backdrop_path}
-                            width='120px'
-                            height='40px'
-                        />
-                    </div>
-                ))}
+                    {data.map((el, i) => (
+                        <div className={i+el.id} key={el.id} onMouseEnter={() => openModal(i, el)}>
+                            <div className='slick-slide' style={{margin: '5px'}}>
+                                <BackdropImage
+                                    id={el.id}
+                                    mType={mType}
+                                    title={el.title || el.name}
+                                    showTitle={mType === 'netflix' ? false : true}
+                                    imgPath={mType === 'netflix' ? el.poster_path : el.backdrop_path}
+                                    width='120px'
+                                    height='40px'
+                                />
+                            </div>
+                        </div>
+                    ))}
                 </Slider>
                 <Preview onMouseLeave={() => {setIsHovered(false); setPreviewData(null)}} style={{top: 0, left: coordinate.left, transform: isHovered ? 'scale(1.2)' : 'scale(0)'}}>
                     {previewData && <PreviewModal

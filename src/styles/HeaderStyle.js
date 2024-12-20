@@ -29,7 +29,7 @@ export const NavItem = styled.li`
     }
 `
 export const CategoryText = styled.span`
-    border-bottom: ${props => props.selected ? '2px solid red;' : 'none;'}
+    border-bottom: ${props => props.$selected ? '2px solid red;' : 'none;'}
     &:hover {
         color: #b3b3b3;
     }
@@ -51,7 +51,7 @@ export const Account = styled.button`
     }
 `
 export const SearchBox = styled.div`
-    border: ${props => props.open ? '1px solid white' : 'none'};
+    border: ${props => props.$open ? '1px solid white' : 'none'};
     height: 34px;
     display: flex;
     align-items: center;

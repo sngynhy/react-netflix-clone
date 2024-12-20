@@ -7,8 +7,8 @@ import { useMediaStore } from 'stores/mediaStore'
 
 const Button = styled.span`
     & > svg {
-        width: ${props => props.width};
-        height: ${props => props.height};
+        width: ${props => props.$width};
+        height: ${props => props.$height};
         cursor: pointer;
         color: hsla(0,0%,100%,.5);
     }
@@ -22,7 +22,7 @@ function MyContentsButton ({id, mType, width='30px', height='30px' }) {
     const handleClick = () => {
         isLiked ? removeLikes(id) : addLikes(id, mType)
     }
-    return (<Button width={width} height={height} onClick={handleClick}>{isLiked ? <GoCheckCircle style={{fill: 'white'}} /> : <GoPlusCircle />}</Button>)
+    return (<Button $width={width} $height={height} onClick={handleClick}>{isLiked ? <GoCheckCircle style={{fill: 'white'}} /> : <GoPlusCircle />}</Button>)
 }
 
 // props 유효성 검사

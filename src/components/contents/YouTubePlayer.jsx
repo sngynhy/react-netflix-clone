@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import { useMediaStore } from "stores/mediaStore"; 
 import styled from "styled-components";
 
-export const YouTubePlayer = ({ videoId, width="100%", height="475px", borderRadius="0" }) => {
+export const YouTubePlayer = ({ id=null, videoId, width="100%", height="475px", borderRadius="0" }) => {
     const playerRef = useRef(null)
     const {fullScreen, setFullScreen, setReadyToPlay, setEndPlay} = useMediaStore()
 
@@ -17,17 +17,16 @@ export const YouTubePlayer = ({ videoId, width="100%", height="475px", borderRad
                 }
             }
         }
-      
         document.addEventListener("keydown", handleKeyDown);
         return () => document.removeEventListener("keydown", handleKeyDown);
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
     
     useEffect(() => {
-        // YouTube API 스크립트를 동적으로 추가
+        // YouTube API 스크립트 동적으로 추가
         const loadYouTubeAPI = () => {
             if (!window.YT) {
-                // YouTube IFrame API를 로드
+                // YouTube IFrame API 로드
                 const tag = document.createElement("script")
                 tag.src = "https://www.youtube.com/iframe_api"
 
@@ -45,13 +44,13 @@ export const YouTubePlayer = ({ videoId, width="100%", height="475px", borderRad
         const initializePlayer = () => {
             // YT.Player를 통해 YouTube 플레이어 생성
             playerRef.current = new window.YT.Player("youtube-player", {
-            videoId: videoId, // 재생할 동영상 id
-            playerVars: { autoplay: 1, controls: 0, mute: 1, modestbranding: 1, rel: 0 }, // 동영상의 동작 설정
-            events: { // 콜백 핸들러 > onReady: 플레이어 준비 완료 시, onStateChange: 플레이어 상태 변경 시 호출
-                onReady: onPlayerReady,
-                onStateChange: onPlayerStateChange,
-                onError: onPlayerError
-            }
+                videoId: videoId, // 재생할 동영상 id
+                playerVars: { autoplay: 1, controls: 0, mute: 1, modestbranding: 1, rel: 0 }, // 동영상의 동작 설정
+                events: { // 콜백 핸들러 > onReady: 플레이어 준비 완료 시, onStateChange: 플레이어 상태 변경 시 호출
+                    onReady: onPlayerReady,
+                    onStateChange: onPlayerStateChange,
+                    onError: onPlayerError
+                }
             })
             /** playerVars
             자동재생 autoplay = 0 or 1
@@ -68,8 +67,10 @@ export const YouTubePlayer = ({ videoId, width="100%", height="475px", borderRad
         const handleFullscreenChange = () => {
             if (document.fullscreenElement) {
                 // console.log("Entered fullscreen mode");
+                // player.mute()
             } else {
                 // console.log("Exited fullscreen mode");
+                // player.unMute()
                 setFullScreen(false)
             }
         };
@@ -170,18 +171,18 @@ export const YouTubePlayer = ({ videoId, width="100%", height="475px", borderRad
     
     return (
         <div id="player">
-            <Player id="youtube-player" width={width} height={height} borderRadius={borderRadius}/>
+            <Player id="youtube-player" $width={width} $height={height} $borderRadius={borderRadius}/>
         </div>
     )
 }
 
 const Player = styled.div`
-    width: ${props => props.width};
-    height: ${props => props.height};
-    border-radius: ${props => props.borderRadius}; // 8px 8px 0 0;
+    width: ${props => props.$width};
+    height: ${props => props.$height};
+    border-radius: ${props => props.$borderRadius}; // 8px 8px 0 0;
 
     & > #youtube-player {
-        width: ${props => props.width};
-        height: ${props => props.height};
+        width: ${props => props.$width};
+        height: ${props => props.$height};
     }
 `

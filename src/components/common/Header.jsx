@@ -48,7 +48,7 @@ export const Header = memo(function Header () {
 
     function search (e) {
         // 추가) 검색 페이지 이동 props로 keyword 넘겨주기
-        if (e.keyCode === 13 && searchKeyword.trim().length !== 0) {
+        if ((e.keyCode === 13 || e.type === 'click') && searchKeyword.trim().length !== 0) {
             navigate("/search", { state: {keyword: searchKeyword} })
         }
     }
@@ -65,7 +65,7 @@ export const Header = memo(function Header () {
                             <NavItem key={i}>
                                 <Link to={el.path}>
                                     <div>
-                                        <CategoryText selected={!!el.active}>{el.name}</CategoryText>
+                                        <CategoryText $selected={!!el.active}>{el.name}</CategoryText>
                                     </div>
                                 </Link>
                             </NavItem>
@@ -74,7 +74,7 @@ export const Header = memo(function Header () {
 
                 {/* 우측 검색 아이콘 */}
                 <div style={styles.rightItems}>
-                    <SearchBox className="search-box" ref={searchRef} open={openSearchInput}>
+                    <SearchBox className="search-box" ref={searchRef} $open={openSearchInput}>
                         <label htmlFor="searchInput" style={{height: 'inherit'}}><IoSearch onClick={(e) => openSearchInput ? search(e) : setOpenSearchInput(true)} style={styles.searchIcon}/></label>
                             {openSearchInput &&
                                 <>
@@ -82,7 +82,6 @@ export const Header = memo(function Header () {
                                     <label htmlFor="searchInput" style={{height: 'inherit'}}><IoCloseSharp onClick={() => setSearchKeyword('')} style={styles.searchIcon}/></label>
                                 </>}
                     </SearchBox>
-                    {/* <Link to="/"><Account>로그인</Account></Link> */}
                 </div>
             </Container>
         </Wrapper>

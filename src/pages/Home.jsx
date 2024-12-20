@@ -37,7 +37,7 @@ function Home () {
             <Container>
                 {netflixData &&
                 <div>
-                    <SliderContainer mType="netflix" headerTitle="Netflix Original" data={netflixData} />
+                    {/* <SliderContainer mType="netflix" headerTitle="Netflix Original" data={netflixData} /> */}
                 </div>}
             </Container>
         </div>

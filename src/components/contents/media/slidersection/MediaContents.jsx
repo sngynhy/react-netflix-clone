@@ -1,37 +1,25 @@
 import React, { useEffect, useMemo } from "react";
 import { useConetentsQueries } from "hooks/useReactQuery";
 import { SliderContainer } from "components/ui/SliderContainer";
-import { useMediaStore } from "stores/mediaStore";
 
-export const MediaContents = (props) => {
-        const { mType } = props
-        const {setCoverContent} = useMediaStore() 
-
+export const MediaContents = React.memo(({ mType, sendCoverData }) => {
         const queries = useConetentsQueries(mType)
         const isLoading = queries.some((query) => query.isLoading)
-        const coverData = useMemo(() => {
-            return queries?.map(query => query.data)
-            // eslint-disable-next-line react-hooks/exhaustive-deps
-        }, [queries])
-        // console.log('isLoading', isLoading);
-        useEffect(() => console.log('러ㅑㅣ넏랴ㅣ널ㄷ', queries), [queries])
+        const isError = queries.some((query) => query.isError)
+
+        const contentsData = useMemo(() => {
+            return !isLoading ? queries?.map(query => query.data) : null
+        }, [queries, isLoading])
 
         useEffect(() => {
-            if (!isLoading) {
-                const topRatedData = contentsData.find((el) => el.key === "topRated")?.data
-                // console.log('topRatedData', topRatedData);
-                if (topRatedData.length > 0) {
-                    // setCoverContent(topRatedData.slice(0, 5)); // 필요한 데이터만 store에 저장
-                }
+            if (!isLoading && contentsData) {
+                const corverData = contentsData.find((el) => el.key === "topRated")?.data[Math.floor(Math.random() * 5)]
+                sendCoverData(corverData)
             }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        }, [isLoading, coverData])
-        
-        if (isLoading) return
-        if (queries.some((query) => query.isError)) return <div>Error occurred!</div>
-        
-        const contentsData = queries?.map(query => query.data)
-        // console.log('contentsData', contentsData);
+        }, [contentsData, isLoading, sendCoverData])
+
+        if (isLoading || isError) return <></>
+
         return (
             <div style={{paddingTop: '650px'}}>
                 <div>
@@ -39,4 +27,4 @@ export const MediaContents = (props) => {
                 </div>
             </div>
         )
-}
+})

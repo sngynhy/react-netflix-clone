@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import React from "react";
+import React, { useState } from "react";
 import { getContentImg } from "utils/CommonFunction";
 import MyContentsButton from "components/ui/MyContentsButton";
 import { LogoImage } from "./LogoImage";
@@ -21,8 +21,25 @@ function GridContents ({ mType, data, gridColumns=`repeat(6, 1fr)`, gap=10, show
         <div style={{display: 'grid', gridTemplateColumns: `repeat(${gridColumns}, 1fr)`, gap: `${gap}px`, marginTop: '10px', }}>
             {data.map(el => (
                     <div key={el.id}>
-                        <BackdropImage id={el.id} mType={mType ? mType : !mType && 'seasons' in el ? 'tv' : 'movie'} title={el.title || el.name} showTitle={showTitle} showPlayButton={showPlayButton} imgPath={el[imgPath]} width='120px' height='60px' />
-                        {showOverview && <Overview id={el.id} mType={mType} showTitle={showTitle} showOverview={showOverview} title={el.title || el.name} overview={el.overview} />}    
+                        <BackdropImage
+                            id={el.id}
+                            mType={mType ? mType : !mType && 'seasons' in el ? 'tv' : 'movie'}
+                            title={el.title || el.name}
+                            showTitle={showTitle}
+                            showPlayButton={showPlayButton}
+                            imgPath={el[imgPath]}
+                            width='120px'
+                            height='60px'
+                        />
+                        {showOverview &&
+                            <Overview
+                                id={el.id}
+                                mType={mType}
+                                showTitle={showTitle}
+                                showOverview={showOverview}
+                                title={el.title || el.name}
+                                overview={el.overview}
+                            />}    
                     </div>
                 )
             )}
