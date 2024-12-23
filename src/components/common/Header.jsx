@@ -1,13 +1,19 @@
-import React, { useState, useRef, useEffect, memo } from "react";
+import React, { useState, useRef, useEffect, memo, useMemo } from "react";
 import { Link, useNavigate, useMatch } from 'react-router-dom'
 import logo from 'assets/img/logo/logo.png'
-import {Wrapper, Container, Nav, NavItem, CategoryText, Account, SearchBox, styles} from 'styles/HeaderStyle'
+import {Wrapper, Container, Nav, NavItem, CategoryText, SearchBox, styles} from 'styles/HeaderStyle'
 import { IoSearch, IoCloseSharp } from "react-icons/io5";
+import { useGlobalStore } from "stores/globalStore";
+import { useMediaStore } from "stores/mediaStore";
 
 // memo => props가 변경되지 않은 경우 구성 요소를 다시 렌더링하는 것을 건너뜀
 export const Header = memo(function Header () {
+    // console.log('Header', );
     const [openSearchInput, setOpenSearchInput] = useState(false)
     const [searchKeyword, setSearchKeyword] = useState('')
+    const { scrollTop } = useGlobalStore()
+    const { openDetailModal } = useMediaStore()
+    // console.log('scrollTop', scrollTop);
 
     const homeMatch = useMatch('/')
     const movieMatch = useMatch('/media/movie')
@@ -33,7 +39,7 @@ export const Header = memo(function Header () {
     useEffect(() => {
         // 특정 영역 외 클릭 시 이벤트 발생
     	const outSideClick = (e) => {
-            console.log('outSideClick', e)
+            // console.log('outSideClick', e)
         	if (searchRef.current && !searchRef.current.contains(e.target)) {
             	setOpenSearchInput(false)
                 setSearchKeyword('')
@@ -41,9 +47,7 @@ export const Header = memo(function Header () {
         }
         // 이벤트 리스너에 outSideClick 함수 등록
         document.addEventListener("mousedown", outSideClick)
-        return (
-            document.removeEventListener("mousedown", outSideClick)
-        )
+        return () => document.removeEventListener("mousedown", outSideClick)
     }, [searchRef])
 
     function search (e) {
@@ -53,7 +57,7 @@ export const Header = memo(function Header () {
         }
     }
     return (
-        <Wrapper id="header">
+        <Wrapper id="header" $scrollTop={scrollTop} $openDetailModal={openDetailModal}>
             <Container>
                 {/* 좌측 넷플릭스 로고 */}
                 <Link to="/"><img loading="lazy" src={logo} style={{width: 120, verticalAlign:'middle'}} alt="로고 아이콘"/></Link>

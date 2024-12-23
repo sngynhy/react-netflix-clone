@@ -35,7 +35,7 @@ function DetailModal () {
     // detail data
     const {data: detailsData, isLoading: detailsLoading, error: detailsError} = useQuery({ queryKey: ['details', mType, id], queryFn: fetchContentDetails })
     const details = useMemo(() => {
-        let temp = { title: '', genres: [], runtime: 0, overview: '', releaseDate: '', voteAvg: 0 }
+        let temp = { id: id, title: '', genres: [], runtime: 0, overview: '', releaseDate: '', voteAvg: 0 }
         if (detailsData && !detailsLoading) {
             temp.title = detailsData.title || detailsData.name
             temp.genres = detailsData.genres
@@ -65,7 +65,7 @@ function DetailModal () {
 
     // 콘텐츠 정보
     return (
-        <Wrapper className="detail-info">
+        <Wrapper id="detail-info">
             {detailsData &&
             <Container className="container">
                 <div ref={detailModalRef}>
@@ -136,22 +136,34 @@ function DetailModal () {
     )
 }
 
-const PreviewContent = ({ id, mType, imgPath, title }) => {
+const PreviewContent = React.memo(({ id, mType, imgPath, title }) => {
 
-    const { readyToPlay, endPlay, setOpenDetailModal } = useMediaStore()
+    const { readyToPlay, setOpenDetailModal } = useMediaStore()
 
     // video
     const {data: videokey, isLoading: videoLoading} = useVideoQuery({type: mType, id: id})
-    // console.log('videokey', videokey);
+    console.log('videokey >>', videokey);
+
+    const [lowerTitle, setLowerTitle] = useState(false)
+    if (videoLoading) return
+
+    setTimeout(() => {
+        setLowerTitle(true)
+    }, 2000)
 
     return (
         <PreviewPlayer>
             {/* 영상 or 이미지 콘텐츠 */}
             <div style={{height: '100%', position: 'relative'}}>
-                {videokey && !endPlay ? <YouTubePlayer videoId={videokey} style={{opacity: '1'}} borderRadius="8px 8px 0 0" />
-                : <img src={getContentImg(imgPath)} style={{width: '100%', height: '475px', borderRadius: '8px 8px 0 0'}} alt="backdrop" />}
-                <div style={{position: 'absolute', width: '60%', bottom : 100, left: '3rem',}}>
-                    <LogoImage id={id} mType={mType} alt={title} width='320px' height='150px' />
+                {/* {videokey && !endPlay ? <YouTubePlayer videoId={videokey} style={{opacity: '1'}} borderRadius="8px 8px 0 0" /> */}
+                <div>
+                    {videokey
+                    ? <YouTubePlayer videoId={videokey} imgPath={imgPath} id={id} mType={mType} alt={title} style={{opacity: '1'}} borderRadius="8px 8px 0 0" />
+                    : <img src={getContentImg(imgPath)} style={{width: '100%', height: '475px', borderRadius: '8px 8px 0 0'}} alt="backdrop" />
+                    }
+                </div>
+                <div style={{position: 'absolute', width: '60%', bottom : 100, left: '3rem' }}>
+                    <LogoImage id={id} mType={mType} alt={title} width='320px' height='150px' lowerTitle={lowerTitle} />
                 </div>
                 <div className="playBtn">
                 </div>
@@ -166,10 +178,9 @@ const PreviewContent = ({ id, mType, imgPath, title }) => {
             </IconsOnPlayer>
         </PreviewPlayer>
     )
-}
+})
 
-const RecommendSection = (props) => {
-    const {id, mType} = props
+const RecommendSection = React.memo(({id, mType}) => {
 
     // recommendData data
     const {data: recommendData, isLoading: recommendLoading, error: recommendError} = useQuery({
@@ -194,11 +205,11 @@ const RecommendSection = (props) => {
         <div id="recommendSection" style={{margin: '30px 0'}}>
             <h2>추천 콘텐츠</h2>
             <div className="gridBox">
-                <GridContents data={recommendData?.slice(0, 9)} mType={mType} showTitle={true} showOverview={true} gridColumns={3} imgPath='backdrop_path' />
-                {moreViewRecommend && <GridContents data={recommendData?.slice(9, recommendData.lenght)} showTitle={true} showOverview={true} gridColumns={3} imgPath='backdrop_path' />}
+                <GridContents data={recommendData?.slice(0, 9)} mType={mType} showTitle={true} showPlayButton={true} showOverview={true} gridColumns={3} imgPath='backdrop_path' />
+                {moreViewRecommend && <GridContents data={recommendData?.slice(9, recommendData.lenght)} showPlayButton={true} showTitle={true} showOverview={true} gridColumns={3} imgPath='backdrop_path' />}
                 <MoreDiv $moreview={moreViewRecommend} ><TfiArrowCircleLeft onClick={moreView}/></MoreDiv>
             </div>
         </div>
     )
-}
+})
 export default DetailModal

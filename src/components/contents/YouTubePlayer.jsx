@@ -2,26 +2,10 @@ import React, { useEffect, useRef } from "react";
 import { useMediaStore } from "stores/mediaStore"; 
 import styled from "styled-components";
 
-export const YouTubePlayer = ({ id=null, videoId, width="100%", height="475px", borderRadius="0" }) => {
+export const YouTubePlayer = ({ videoId, width="100%", height="475px", borderRadius="0" }) => {
+    // console.log('<< videoId', videoId);
     const playerRef = useRef(null)
-    const {fullScreen, setFullScreen, setReadyToPlay, setEndPlay} = useMediaStore()
-
-    // ESC 키 충돌 처리
-    useEffect(() => {
-        const handleKeyDown = (event) => {
-            if (event.key === "Escape") {
-                if (document.fullscreenElement) { // full screen일 때 esc키를 누른 경우
-                    document.exitFullscreen();
-                    setFullScreen(false)
-                    setEndPlay(false)
-                }
-            }
-        }
-        document.addEventListener("keydown", handleKeyDown);
-        return () => document.removeEventListener("keydown", handleKeyDown);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
-    
+    const {setFullScreen, setReadyToPlay, setEndPlay} = useMediaStore()
     useEffect(() => {
         // YouTube API 스크립트 동적으로 추가
         const loadYouTubeAPI = () => {
@@ -63,45 +47,79 @@ export const YouTubePlayer = ({ id=null, videoId, width="100%", height="475px", 
             */
         }
 
-        // 전체 화면 변화 감지 핸들러
-        const handleFullscreenChange = () => {
-            if (document.fullscreenElement) {
-                // console.log("Entered fullscreen mode");
-                // player.mute()
-            } else {
-                // console.log("Exited fullscreen mode");
-                // player.unMute()
-                setFullScreen(false)
-            }
-        };
-    
-        // 이벤트 리스너 추가
-        document.addEventListener("fullscreenchange", handleFullscreenChange);
-    
         loadYouTubeAPI();
-    
-        // 컴포넌트 언마운트 시 이벤트 리스너 제거
-        return () => {
-            document.removeEventListener("fullscreenchange", handleFullscreenChange);
-        };
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [videoId])
 
-    useEffect(() => {
-        if (fullScreen) enterFullScreen()
-    }, [fullScreen])
+    // ESC 키 충돌 처리
+    // useEffect(() => {
+    //     const handleKeyDown = (event) => {
+    //         console.log('handleKeyDown', event.key);
+    //         if (event.key === "Escape") {
+    //             if (document.fullscreenElement) { // full screen일 때 esc키를 누른 경우
+    //                 document.exitFullscreen();
+    //                 setFullScreen(false)
+    //                 // setEndPlay(false)
+    //             }
+    //         }
+    //     }
+
+    //     // 전체 화면 변화 감지 핸들러
+    //     // const handleFullscreenChange = () => {
+    //     //     if (document.fullscreenElement) {
+    //     //         // console.log("Entered fullscreen mode");
+    //     //         // player.mute()
+    //     //     } else {
+    //     //         // console.log("Exited fullscreen mode");
+    //     //         // player.unMute()
+    //     //         setFullScreen(false)
+    //     //     }
+    //     // };
+    //     document.addEventListener("keydown", handleKeyDown);
+    //     // document.addEventListener("fullscreenchange", handleFullscreenChange);
+    //     return () => {
+    //         document.removeEventListener("keydown", handleKeyDown);
+    //         // document.removeEventListener("fullscreenchange", handleFullscreenChange);
+    //     }
+    // }, [])
 
     // 플레이어 준비 핸들러
     const onPlayerReady = (event) => {
-        // console.log('onPlayerReady', );
+        console.log('🎞🎞 재생 시작', );
         setReadyToPlay(true)
         setEndPlay(false)
     }
 
     // 플레이어 상태 변경 핸들러
     const onPlayerStateChange = (event) => {
-        // console.log("Player state changed:", event.data, window.YT.PlayerState.ENDED)
+        // 재생 종료
+        if (event.data === window.YT.PlayerState.ENDED) { // 재생 완료
+            console.log('재생 완료 🎞🎞', );
+            // setReadyToPlay(false)
+            setEndPlay(true)
+        }
+
+        // switch (event.data) {
+        //     case -1:
+        //         console.log('Player state changed: UNSTARTED', )
+        //         break
+        //     case 0:
+        //         console.log('Player state changed: ENDED', )
+        //         break
+        //     case 1:
+        //         console.log('Player state changed: PLAYING', )
+        //         break
+        //     case 2:
+        //         console.log('Player state changed: PAUSED', )
+        //         break
+        //     case 3:
+        //         console.log('Player state changed: BUFFERING', )
+        //         break
+        //     case 5:
+        //         console.log('Player state changed: CUED', )
+        //         break
+        //     default:
+        //         console.log('Player state changed: default', );
+        // }
         /**
          PLAYING: 1
          PAUSED: 2
@@ -111,16 +129,11 @@ export const YouTubePlayer = ({ id=null, videoId, width="100%", height="475px", 
          UNSTARTED: -1
         * 
         */
-        // 재생 종료
-        if (event.data === window.YT.PlayerState.ENDED) { // 재생 완료
-            setReadyToPlay(false)
-            setEndPlay(true)
-        }
     }
 
     // 재생 에러 핸들러
     const onPlayerError = (event) => {
-        // console.error("Error occurred:", event.data);
+        console.error("Error occurred:", event.data);
         setReadyToPlay(false)
         setEndPlay(true)
         
@@ -155,23 +168,23 @@ export const YouTubePlayer = ({ id=null, videoId, width="100%", height="475px", 
     // 전체 화면으로 전환하는 함수
     const enterFullScreen = () => {
         if (playerRef.current) {
-            const iframe = playerRef.current.getIframe(); // IFrame 요소 가져오기
+            const iframe = playerRef.current.getIframe() // IFrame 요소 가져오기
             if (iframe.requestFullscreen) {
-                iframe.requestFullscreen();
+                iframe.requestFullscreen()
+            } else if (iframe.mozRequestFullScreen) {
+                iframe.mozRequestFullScreen() // Firefox 구버전
+            } else if (iframe.webkitRequestFullscreen) {
+                iframe.webkitRequestFullscreen() // Chrome, Safari 구버전
+            } else if (iframe.msRequestFullscreen) {
+                iframe.msRequestFullscreen() // Edge, IE
             }
-            // else if (iframe.mozRequestFullScreen) {
-            //     iframe.mozRequestFullScreen(); // Firefox 구버전
-            // } else if (iframe.webkitRequestFullscreen) {
-            //     iframe.webkitRequestFullscreen(); // Chrome, Safari 구버전
-            // } else if (iframe.msRequestFullscreen) {
-            //     iframe.msRequestFullscreen(); // Edge, IE
-            // }
         }
     }
     
     return (
         <div id="player">
             <Player id="youtube-player" $width={width} $height={height} $borderRadius={borderRadius}/>
+            <div id="fullscreen-btn" onClick={enterFullScreen} style={{opacity: 0}}></div>
         </div>
     )
 }

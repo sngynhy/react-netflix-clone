@@ -1,8 +1,9 @@
 import styled from "styled-components";
 
 export const Wrapper = styled.div`
-    justify-content : center;
-    display: flex;
+    width: 100%;
+    height: 100vh; // 수정 필요
+    // transition: 1s;
 `
 export const Container = styled.div`
     border: none;
@@ -10,6 +11,7 @@ export const Container = styled.div`
     z-index: 999;
     top: 0;
     padding: 30px 25% 0;
+    // backdrop-filter: blur(5px);
 `
 export const PreviewPlayer = styled.div`
     position: relative;

@@ -8,7 +8,7 @@ export const GenreContents = React.memo(({mType, genreId, sendCoverDat}) => {
     const {data, isLoading, error} = useConetentsByGenreQuery({ type: mType, genreId: genreId })
     
     useEffect(() => {
-        if (!isLoading) sendCoverDat(data[Math.floor(Math.random() * 5)])
+        if (!isLoading) sendCoverDat(data[Math.floor(Math.random() * 10)])
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data])
 

@@ -6,6 +6,7 @@ import PreviewModal from "components/modal/PreviewModal";
 import { GoChevronLeft, GoChevronRight } from "react-icons/go";
 import { BackdropImage } from "components/contents/BackdropImage";
 import styled from "styled-components";
+import { useMediaStore } from "stores/mediaStore";
 
 export const SliderContainer = ({mType, headerTitle, data}) => {
     const settings = {
@@ -24,32 +25,43 @@ export const SliderContainer = ({mType, headerTitle, data}) => {
                 breakpoint: 768, //화면 사이즈 768px일 때
                 settings: {
                     slidesToShow: 2,
-                    slidesToScroll: 2
+                    slidesToScroll: 2,
+                    draggable: true,
+                    arrows: false
                 } 
             },
         ]
     }
-      
+    const { fullScreen } = useMediaStore()
     const [isHovered, setIsHovered] = useState(false)
     const [previewData, setPreviewData] = useState(null)
     const [coordinate, setCoordinate] = useState({})
+    let timer
     const openModal = (i, data) => {
-        let start = false, end = false
-        if ((i + 1) % 6 === 1) start = true
-        if ((i + 1) % 6 === 0) end = true
-        let target = document.getElementsByClassName(i + data.id)[0];
-        // let targetTop = target.getBoundingClientRect().top
-        let targetLeft = target.getBoundingClientRect().left
-        setCoordinate({left: start ? 86 : end ? targetLeft - 97 : targetLeft - 30})
-
-        setPreviewData({
-            id: data.id,
-            title: data.title || data.name,
-            backdrop: data.backdrop_path,
-            voteAvg: data.vote_average,
-            genreIds: data.genre_ids
-        })
-        setIsHovered(true)
+        timer = setTimeout(() => {
+            let start = false, end = false
+            if ((i + 1) % 6 === 1) start = true
+            if ((i + 1) % 6 === 0) end = true
+            let target = document.getElementsByClassName(i + data.id)[0];
+            // let targetTop = target.getBoundingClientRect().top
+            let targetLeft = target.getBoundingClientRect().left
+            setCoordinate({left: start ? 86 : end ? targetLeft - 97 : targetLeft - 30})
+    
+            setPreviewData({
+                id: data.id,
+                title: data.title || data.name,
+                backdrop: data.backdrop_path,
+                voteAvg: data.vote_average,
+                genreIds: data.genre_ids
+            })
+            setIsHovered(true)
+        }, 2000)
+    }
+    const closeModal = () => {
+        if (!fullScreen) {
+            clearTimeout(timer)
+            setPreviewData(null)
+        }
     }
 
     return (
@@ -58,7 +70,7 @@ export const SliderContainer = ({mType, headerTitle, data}) => {
                 <h2>{headerTitle}</h2>
                 <Slider {...settings}>
                     {data.map((el, i) => (
-                        <div className={i+el.id} key={el.id} onMouseEnter={() => openModal(i, el)}>
+                        <div className={i+el.id} key={el.id} onMouseEnter={() => openModal(i, el)} onMouseLeave={closeModal}>
                             <div className='slick-slide' style={{margin: '5px'}}>
                                 <BackdropImage
                                     id={el.id}
@@ -73,7 +85,7 @@ export const SliderContainer = ({mType, headerTitle, data}) => {
                         </div>
                     ))}
                 </Slider>
-                <Preview onMouseLeave={() => {setIsHovered(false); setPreviewData(null)}} style={{top: 0, left: coordinate.left, transform: isHovered ? 'scale(1.2)' : 'scale(0)'}}>
+                <Preview onMouseLeave={closeModal} style={{top: 0, left: coordinate.left, transform: isHovered ? 'scale(1.2)' : 'scale(0)'}}>
                     {previewData && <PreviewModal
                         id={previewData.id}
                         mType={mType}

@@ -32,8 +32,7 @@ function Media () {
     }, [])
 
     return (
-        <div style={{position: openDetailModal ? 'fixed' : ''}}>
-            
+        <div style={{position: openDetailModal ? 'fixed' : '', height: '100%', width: '100%'}}>
             <div style={{opacity: openDetailModal ? 0.7 : 1}}>
                 {/** 중앙 메인 콘텐츠 */}
                 {coverData && <MainContent mType={mType} name={mediaTypes[mType]} genreId={genreId} coverData={coverData} />}

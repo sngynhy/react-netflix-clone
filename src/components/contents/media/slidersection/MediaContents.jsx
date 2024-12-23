@@ -13,7 +13,7 @@ export const MediaContents = React.memo(({ mType, sendCoverData }) => {
 
         useEffect(() => {
             if (!isLoading && contentsData) {
-                const corverData = contentsData.find((el) => el.key === "topRated")?.data[Math.floor(Math.random() * 5)]
+                const corverData = contentsData.find((el) => el.key === "topRated")?.data[Math.floor(Math.random() * 10)]
                 sendCoverData(corverData)
             }
         }, [contentsData, isLoading, sendCoverData])

@@ -1,6 +1,5 @@
 import { create } from "zustand";
 import { devtools } from 'zustand/middleware';
-import { getContentImg } from "utils/CommonFunction";
 
 // create 함수로 sotre 생성
 // create 함수의 콜백은 set, get을 인자로 가지며, 이를 통해 상태를 조회하거나 업데이트
@@ -19,15 +18,16 @@ export const useMediaStore = create(
         setOpenDetailModal: (value) => set({openDetailModal: value, readyToPlay: false, endPlay: false}),
         openContentId: null,
         setOpenContentId: (value) => set({ openContentId: value }),
-        
-        videoId: '',
-        setVideoId: (value) => set({videoId: value}),
+
         readyToPlay: false, // 동영상 재생 준비 완료
         setReadyToPlay: (value) => set({ readyToPlay: value }),
         endPlay: false, // 동영상 재생 완료
         setEndPlay: (value) => set({endPlay: value}),
         fullScreen: false, // 전체 화면
-        setFullScreen: (value) => set({fullScreen: value}),
+        setFullScreen: (value) => {
+            console.log('setFullScreen', value);
+            set({fullScreen: value})
+        },
 
         likes: new Map(),
         addLikes: (id, type) => set(state => {

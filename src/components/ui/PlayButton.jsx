@@ -5,10 +5,12 @@ import styled from "styled-components";
 import { useMediaStore } from "stores/mediaStore"; 
 
 export const PlayButton = ({ active=false, type="button", height='40px', width='40px' }) => { // type: 'button' or 'icon'
-    console.log('PlayButton', active);
     const {setFullScreen} = useMediaStore()
     const videoPlay = () => {
-        if (active) setFullScreen(true)
+        if (active) {
+            // setFullScreen(true)
+            document.getElementById('fullscreen-btn').click()
+        }
         else alert('재생할 수 없는 콘텐츠입니다.')
     }
     return (

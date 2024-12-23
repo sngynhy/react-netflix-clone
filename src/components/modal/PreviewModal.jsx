@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import styled from 'styled-components'
 import { AiOutlineLike, AiFillLike } from "react-icons/ai";
@@ -53,7 +53,7 @@ const getGenresById = (data, genres) => {
 
 function PreviewModal ({ id, mType, title, backdrop, voteAvg, genreIds }) {
     // console.log('PreviewModal', id, mType, title, backdrop, voteAvg, genreIds);
-    const { readyToPlay, endPlay, setOpenDetailModal, setOpenContentId } = useMediaStore()
+    const { readyToPlay, endPlay, setEndPlay, setOpenDetailModal, setOpenContentId } = useMediaStore()
 
     const queryClient = useQueryClient(); // 캐시된 데이터 가져오기
     const genres = queryClient.getQueryData(['genres', mType]) // 'genres' 키로 데이터 조회
@@ -63,6 +63,7 @@ function PreviewModal ({ id, mType, title, backdrop, voteAvg, genreIds }) {
         return genres ? getGenresById(genreIds, genres) : []
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [id, genreIds, genres])
+    useEffect(() => { setEndPlay(false) }, [])
 
     const {data: videokey, isLoading, isError} = useVideoQuery({type: mType, id: id})
     // console.log('videokey', id, videokey);
@@ -72,8 +73,8 @@ function PreviewModal ({ id, mType, title, backdrop, voteAvg, genreIds }) {
     return (
         <Wrapper>
             <PreviewPlayer style={{backgroundImage: `url(${getContentImg(backdrop)})`, backgroundSize: 'cover'}}>
-                {videokey && !endPlay && <YouTubePlayer videoId={videokey} width="320px" height="180px" />}
-                {/* // : <img src={getContentImg(backdrop)} style={{width: '100%', height: '100%'}} alt="backdrop" />} */}
+                {!!videokey && !endPlay ? <YouTubePlayer videoId={videokey} width="320px" height="180px" />
+                : <img src={getContentImg(backdrop)} style={{width: '100%', height: '100%'}} alt="backdrop" />}
             </PreviewPlayer>
             <PreviewInfo>
                 <div>

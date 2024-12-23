@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const MainCover = styled.div`
+export const MainCoverImg = styled.div`
     background-image: url(${props => props.$url});
     background-size: cover;
     height: 800px;
@@ -12,14 +12,15 @@ export const MainCover = styled.div`
     position: absolute;
     z-index: 0;
 `
-export const CoverContent = styled.div`
+export const Container = styled.div`
     position: absolute;
     z-index: 1;
     width: 100%;
     height: 600px;
-    margin-top: 80px;
+    margin-top: 64px;
 `
-export const SelectBoxForGenre = styled.div`
+export const SelectBox = styled.div`
+    width: calc(100% - 120px);
     padding: 0 60px;
     align-items: center;
     display: flex;
@@ -28,6 +29,10 @@ export const SelectBoxForGenre = styled.div`
     justify-content: flex-start;
     position: absolute;
     z-index: 2;
+    background-color: ${props => !props.$scrollTop && !props.$openDetailModal ? 'black;' : 'transparent;'}
+    position: fixed;
+    transition: 0.5s;
+    
     & > span {
         font-size: 38px;
         margin-right: 15px;
@@ -39,9 +44,9 @@ export const SelectBoxForGenre = styled.div`
         cursor: pointer;
         display: inline-block;
         position: relative;
-        background-color: ${props => props.$bgcolor};
+        background-color: ${props => props.$openGenreBox ? 'hsla(0,0%,100%,.1);' : 'black;'};
     }
-        & > .selectBox:hover {
+    & > .selectBox:hover {
         background-color: hsla(0,0%,100%,.1);
     }
     & > .selectBox > .selectIndex {
