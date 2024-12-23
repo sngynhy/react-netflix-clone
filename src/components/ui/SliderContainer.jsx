@@ -36,30 +36,43 @@ export const SliderContainer = ({mType, headerTitle, data}) => {
     const [isHovered, setIsHovered] = useState(false)
     const [previewData, setPreviewData] = useState(null)
     const [coordinate, setCoordinate] = useState({})
-    let timer
     const openModal = (i, data) => {
-        timer = setTimeout(() => {
-            let start = false, end = false
-            if ((i + 1) % 6 === 1) start = true
-            if ((i + 1) % 6 === 0) end = true
-            let target = document.getElementsByClassName(i + data.id)[0];
-            // let targetTop = target.getBoundingClientRect().top
-            let targetLeft = target.getBoundingClientRect().left
-            setCoordinate({left: start ? 86 : end ? targetLeft - 97 : targetLeft - 30})
-    
-            setPreviewData({
-                id: data.id,
-                title: data.title || data.name,
-                backdrop: data.backdrop_path,
-                voteAvg: data.vote_average,
-                genreIds: data.genre_ids
-            })
-            setIsHovered(true)
-        }, 2000)
+        // setTimeout(() => {
+        //     let start = false, end = false
+        //     if ((i + 1) % 6 === 1) start = true
+        //     if ((i + 1) % 6 === 0) end = true
+        //     let target = document.getElementsByClassName(i + data.id)[0];
+        //     // let targetTop = target.getBoundingClientRect().top
+        //     let targetLeft = target.getBoundingClientRect().left
+        //     setCoordinate({left: start ? 86 : end ? targetLeft - 97 : targetLeft - 30})
+        //     setPreviewData({
+        //         id: data.id,
+        //         title: data.title || data.name,
+        //         backdrop: data.backdrop_path,
+        //         voteAvg: data.vote_average,
+        //         genreIds: data.genre_ids
+        //     })
+        //     setIsHovered(true)
+        // }, 1000)
+        let start = false, end = false
+        if ((i + 1) % 6 === 1) start = true
+        if ((i + 1) % 6 === 0) end = true
+        let target = document.getElementsByClassName(i + data.id)[0];
+        // let targetTop = target.getBoundingClientRect().top
+        let targetLeft = target.getBoundingClientRect().left
+        setCoordinate({left: start ? 86 : end ? targetLeft - 97 : targetLeft - 30})
+        setPreviewData({
+            id: data.id,
+            title: data.title || data.name,
+            backdrop: data.backdrop_path,
+            voteAvg: data.vote_average,
+            genreIds: data.genre_ids
+        })
+        setIsHovered(true)
     }
     const closeModal = () => {
         if (!fullScreen) {
-            clearTimeout(timer)
+            setIsHovered(false)
             setPreviewData(null)
         }
     }
@@ -70,7 +83,7 @@ export const SliderContainer = ({mType, headerTitle, data}) => {
                 <h2>{headerTitle}</h2>
                 <Slider {...settings}>
                     {data.map((el, i) => (
-                        <div className={i+el.id} key={el.id} onMouseEnter={() => openModal(i, el)} onMouseLeave={closeModal}>
+                        <div className={i+el.id} key={el.id} onMouseEnter={() => openModal(i, el)} style={{cursor: 'pointer'}}>
                             <div className='slick-slide' style={{margin: '5px'}}>
                                 <BackdropImage
                                     id={el.id}
@@ -127,6 +140,6 @@ const Preview = styled.div`
     top: 0;
     width: 262px;
     height: 147px;
-    transition: transform 0.6s ease;
+    transition: transform 1s ease;
     z-index: 10;
 `

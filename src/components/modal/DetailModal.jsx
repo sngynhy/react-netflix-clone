@@ -142,7 +142,7 @@ const PreviewContent = React.memo(({ id, mType, imgPath, title }) => {
 
     // video
     const {data: videokey, isLoading: videoLoading} = useVideoQuery({type: mType, id: id})
-    console.log('videokey >>', videokey);
+    // console.log('videokey >>', videokey);
 
     const [lowerTitle, setLowerTitle] = useState(false)
     if (videoLoading) return

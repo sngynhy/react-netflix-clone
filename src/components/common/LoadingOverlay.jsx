@@ -4,8 +4,10 @@ import { FadeLoader } from "react-spinners";
 
 // 📍 로딩 화면 생성
 function LoadingOverlay () {
-    const { isFetching } = useLoading()
-    if (!isFetching) return null
+    // const { isFetching } = useLoading()
+    // if (!isFetching) return null
+    const { isLoading } = useLoading()
+    if (!isLoading) return null
 
     return (
         <div style={styles.overlay}>
