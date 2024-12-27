@@ -2,53 +2,19 @@ import React, { useEffect, useRef } from "react";
 import { useMediaStore } from "stores/mediaStore"; 
 import styled from "styled-components";
 
+import YouTube from "react-youtube";
+
 export const YouTubePlayer = ({ videoId, width="100%", height="475px", borderRadius="0" }) => {
-    // console.log('<< videoId', videoId);
+    console.log('YouTubePlayer > videokey', videoId);
+
     const playerRef = useRef(null)
     const {setFullScreen, setReadyToPlay, setEndPlay} = useMediaStore()
-    useEffect(() => {
-        // YouTube API 스크립트 동적으로 추가
-        const loadYouTubeAPI = () => {
-            if (!window.YT) {
-                // YouTube IFrame API 로드
-                const tag = document.createElement("script")
-                tag.src = "https://www.youtube.com/iframe_api"
 
-                const firstScriptTag = document.getElementsByTagName("script")[0]
-                firstScriptTag.parentNode.insertBefore(tag, firstScriptTag)
-
-                // API 로드 완료 후 실행
-                window.onYouTubeIframeAPIReady = initializePlayer
-            } else {
-                initializePlayer()
-            }
-        }
-
-        // 플레이어 초기화
-        const initializePlayer = () => {
-            // YT.Player를 통해 YouTube 플레이어 생성
-            playerRef.current = new window.YT.Player("youtube-player", {
-                videoId: videoId, // 재생할 동영상 id
-                playerVars: { autoplay: 1, controls: 0, mute: 1, modestbranding: 1, rel: 0 }, // 동영상의 동작 설정
-                events: { // 콜백 핸들러 > onReady: 플레이어 준비 완료 시, onStateChange: 플레이어 상태 변경 시 호출
-                    onReady: onPlayerReady,
-                    onStateChange: onPlayerStateChange,
-                    onError: onPlayerError
-                }
-            })
-            /** playerVars
-            자동재생 autoplay = 0 or 1
-            시작, 끝나는 시간 start = 61 / end = 120
-            영상 컨트롤러 표시 controls = 0 or 1
-            로고 표시 modestbranding = 0 or 1
-            반복 재생 loop = 1 & playlist =비디오_ID
-            관련 영상 표시 rel = 0 or 1
-            * 
-            */
-        }
-
-        loadYouTubeAPI();
-    }, [videoId])
+    const opts = {
+        height: height,
+        width: width,
+        playerVars: { autoplay: 1, controls: 0, mute: 1, modestbranding: 0, rel: 0 }
+    }
 
     // ESC 키 충돌 처리
     useEffect(() => {
@@ -58,82 +24,39 @@ export const YouTubePlayer = ({ videoId, width="100%", height="475px", borderRad
                 if (document.fullscreenElement) { // full screen일 때 esc키를 누른 경우
                     document.exitFullscreen();
                     setFullScreen(false)
-                    // setEndPlay(false)
+                    setEndPlay(false)
                 }
             }
         }
 
-        // 전체 화면 변화 감지 핸들러
-        // const handleFullscreenChange = () => {
-        //     if (document.fullscreenElement) {
-        //         // console.log("Entered fullscreen mode");
-        //         // player.mute()
-        //     } else {
-        //         // console.log("Exited fullscreen mode");
-        //         // player.unMute()
-        //         setFullScreen(false)
-        //     }
-        // };
-        document.addEventListener("keydown", handleKeyDown);
-        // document.addEventListener("fullscreenchange", handleFullscreenChange);
+        document.addEventListener("keydown", handleKeyDown)
         return () => {
-            document.removeEventListener("keydown", handleKeyDown);
-            // document.removeEventListener("fullscreenchange", handleFullscreenChange);
+            document.removeEventListener("keydown", handleKeyDown)
+            if (playerRef.current) playerRef.current.destroy()
+            console.log('destroy', JSON.parse(JSON.stringify(playerRef.current)));
         }
     }, [])
 
-    // 플레이어 준비 핸들러
-    const onPlayerReady = (event) => {
+    const onReady = (event) => {
+        console.log('🎞🎞 재생 준비', );
+        playerRef.current = event.target;
+    }
+    const onPlay = (event) => {
         console.log('🎞🎞 재생 시작', );
         setReadyToPlay(true)
         setEndPlay(false)
     }
-
-    // 플레이어 상태 변경 핸들러
-    const onPlayerStateChange = (event) => {
-        // 재생 종료
-        if (event.data === window.YT.PlayerState.ENDED) { // 재생 완료
-            console.log('재생 완료 🎞🎞', );
-            // setReadyToPlay(false)
-            setEndPlay(true)
-        }
-
-        // switch (event.data) {
-        //     case -1:
-        //         console.log('Player state changed: UNSTARTED', )
-        //         break
-        //     case 0:
-        //         console.log('Player state changed: ENDED', )
-        //         break
-        //     case 1:
-        //         console.log('Player state changed: PLAYING', )
-        //         break
-        //     case 2:
-        //         console.log('Player state changed: PAUSED', )
-        //         break
-        //     case 3:
-        //         console.log('Player state changed: BUFFERING', )
-        //         break
-        //     case 5:
-        //         console.log('Player state changed: CUED', )
-        //         break
-        //     default:
-        //         console.log('Player state changed: default', );
-        // }
-        /**
-         PLAYING: 1
-         PAUSED: 2
-         BUFFERING: 3
-         CUED: 5
-         ENDED: 0
-         UNSTARTED: -1
-        * 
-        */
+    const onPause = (event) => {
+        console.log('🎞🎞 재생 일시 정지', );
     }
-
-    // 재생 에러 핸들러
-    const onPlayerError = (event) => {
-        console.error("Error occurred:", event.data);
+    const onEnd = (event) => {
+        console.log('재생 완료 🎞🎞', );
+        setReadyToPlay(false)
+        setEndPlay(true)
+    }
+    // 재생 에러
+    const onError = (event) => {
+        console.error("에러 발생 🎞🎞", event.data);
         setReadyToPlay(false)
         setEndPlay(true)
         
@@ -155,21 +78,75 @@ export const YouTubePlayer = ({ videoId, width="100%", height="475px", borderRad
         //     default:
         // }
     }
+    // 플레이어 상태 변경
+    const onStateChange = (event) => {
+        // 재생 종료
+        // if (event.data === 0) { // 재생 완료
+        //     console.log('재생 완료 🎞🎞', );
+        //     setReadyToPlay(false)
+        //     setEndPlay(true)
+        // }
 
-    // 재생 버튼
-    const playVideo = () => {
-        if (playerRef.current) playerRef.current.playVideo();
+        switch (event.data) {
+            case -1:
+                console.log('Player state changed: UNSTARTED', )
+                break
+            case 0:
+                console.log('Player state changed: ENDED', )
+                break
+            case 1:
+                console.log('Player state changed: PLAYING', )
+                break
+            case 2:
+                console.log('Player state changed: PAUSED', )
+                break
+            case 3:
+                console.log('Player state changed: BUFFERING', )
+                break
+            case 5:
+                console.log('Player state changed: CUED', )
+                break
+            default:
+                console.log('Player state changed: default', );
+        }
+        /**
+         PLAYING: 1
+         PAUSED: 2
+         BUFFERING: 3
+         CUED: 5
+         ENDED: 0
+         UNSTARTED: -1
+        */
     }
-    // 일시 정지 버튼
-    const pauseVideo = () => {
-        if (playerRef.current) playerRef.current.pauseVideo();
+
+    // 재생 정지 관련
+    const playVideo = () => { if (playerRef.current) playerRef.current.playVideo() } // 재생
+    const pauseVideo = () => { if (playerRef.current) playerRef.current.pauseVideo() } // 일시 정지
+    const stopVideo = () => { if (playerRef.current) playerRef.current.stopVideo() } // 재생 멈춤
+    const seekTo = (seconds, allowSeekAhead=false) => { if (playerRef.current) playerRef.current.seekTo(seconds, allowSeekAhead) } // 특정 시간(seconds)으로 이동
+    // 볼륨 관련
+    const mute = () => { if (playerRef.current) playerRef.current.mute() } // 음소거
+    const unMute = () => { if (playerRef.current) playerRef.current.unMute() } // 음소거 해제
+    const setVolume = () => { if (playerRef.current) playerRef.current.setVolume(50) } // 볼륨 설정
+    // 영상 정보 관련
+    const getVideoData = () => { if (playerRef.current) playerRef.current.getVideoData() } // 현재 영상의 정보를 반환 => {video_id, title, author}
+    // 현재 영상의 재생 시간을 초 단위로 반환
+    const getCurrentTime = () => {
+        if (playerRef.current) {
+          const currentTime = playerRef.current.getCurrentTime() // 현재 재생 시점 (초 단위)
+          console.log(`현재 재생 시점: ${currentTime.toFixed(2)}초`)
+        }
     }
+    const getDuration = () => { if (playerRef.current) playerRef.current.getDuration() } // 영상의 전체 길이를 초 단위로 반환
+    const getPlayerState = () => { if (playerRef.current) playerRef.current.getPlayerState() } // 현재 플레이어 상태를 반환
+                                  // -1: 로드되지 않음, 0: 종료됨, 1: 재생 중, 2: 일시 정지, 3: 버퍼링 중, 5: 영상 큐 로드됨
 
     // 전체 화면으로 전환하는 함수
     const enterFullScreen = () => {
         if (playerRef.current) {
+            // console.log('enterFullScreen', playerRef.current);
             const iframe = playerRef.current.getIframe() // IFrame 요소 가져오기
-            console.log('enterFullScreen', playerRef.current);
+            unMute()
             if (iframe.requestFullscreen) {
                 iframe.requestFullscreen()
             } else if (iframe.mozRequestFullScreen) {
@@ -184,8 +161,26 @@ export const YouTubePlayer = ({ videoId, width="100%", height="475px", borderRad
     
     return (
         <div id="player">
-            <Player id="youtube-player" $width={width} $height={height} $borderRadius={borderRadius}/>
-            <div id="fullscreen-btn" onClick={enterFullScreen} style={{opacity: 0}}></div>
+            <YouTube
+                videoId={videoId}
+                id={'ytb-' + videoId}
+                className="youtube-player"
+                opts={opts}
+                onReady={onReady}
+                onPlay={onPlay}
+                onPause={onPause}
+                onEnd={onEnd}
+                onError={onError}
+                onStateChange={onStateChange}
+            />
+            {videoId && <>
+                    <div id="video-fullscreen-btn" onClick={enterFullScreen} style={{opacity: 0}}></div>
+                    <div id="video-play-btn" onClick={playVideo} style={{opacity: 0}}></div>
+                    <div id="video-stop-btn" onClick={stopVideo} style={{opacity: 0}}></div>
+                    <div id="video-mute-btn" onClick={mute} style={{opacity: 0}}></div>
+                    <div id="video-unmute-btn" onClick={unMute} style={{opacity: 0}}></div>
+                    <div id="video-currenttime-btn" onClick={getCurrentTime} style={{opacity: 0}}></div>
+            </>}
         </div>
     )
 }
@@ -200,3 +195,22 @@ const Player = styled.div`
         height: ${props => props.$height};
     }
 `
+
+/* <YouTube
+    videoId={string}                  // defaults -> ''
+    id={string}                       // defaults -> ''
+    className={string}                // defaults -> ''
+    iframeClassName={string}          // defaults -> ''
+    style={object}                    // defaults -> {}
+    title={string}                    // defaults -> ''
+    loading={string}                  // defaults -> undefined
+    opts={obj}                        // defaults -> {}
+    onReady={func}                    // defaults -> noop
+    onPlay={func}                     // defaults -> noop
+    onPause={func}                    // defaults -> noop
+    onEnd={func}                      // defaults -> noop
+    onError={func}                    // defaults -> noop
+    onStateChange={func}              // defaults -> noop
+    onPlaybackRateChange={func}       // defaults -> noop
+    onPlaybackQualityChange={func}    // defaults -> noop
+/> */

@@ -3,15 +3,13 @@ import { Link, useNavigate, useMatch } from 'react-router-dom'
 import logo from 'assets/img/logo/logo.png'
 import {Wrapper, Container, Nav, NavItem, CategoryText, SearchBox, styles} from 'styles/HeaderStyle'
 import { IoSearch, IoCloseSharp } from "react-icons/io5";
-import { useGlobalStore } from "stores/globalStore";
 import { useMediaStore } from "stores/mediaStore";
 
 // memo => props가 변경되지 않은 경우 구성 요소를 다시 렌더링하는 것을 건너뜀
-export const Header = memo(function Header () {
+export const Header = memo(function Header ({ scrollTop }) {
     // console.log('Header', );
     const [openSearchInput, setOpenSearchInput] = useState(false)
     const [searchKeyword, setSearchKeyword] = useState('')
-    const { scrollTop } = useGlobalStore()
     const { openDetailModal } = useMediaStore()
     // console.log('scrollTop', scrollTop);
 

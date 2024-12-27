@@ -1,23 +1,24 @@
 import React from "react";
 import { FaPlay } from "react-icons/fa";
-import { GoPlay } from "react-icons/go";
+import { FaCirclePlay } from "react-icons/fa6";
 import styled from "styled-components";
 import { useMediaStore } from "stores/mediaStore"; 
 
-export const PlayButton = ({ active=false, type="button", height='40px', width='40px' }) => { // type: 'button' or 'icon'
+export const PlayButton = ({ active=false, type="button", iconSize=35 }) => { // type: 'button' or 'icon'
     const {setFullScreen} = useMediaStore()
     const videoPlay = () => {
         if (active) {
-            // setFullScreen(true)
-            document.getElementById('fullscreen-btn').click()
+            setFullScreen(true)
+            document.getElementById('video-fullscreen-btn').click()
+            document.getElementById('video-currenttime-btn').click()
         }
         else alert('재생할 수 없는 콘텐츠입니다.')
     }
     return (
-        <div style={{display: 'inline-block'}} onClick={videoPlay}>
+        <div onClick={videoPlay}>
             {type === 'button'
             ? <Button $active={active}><FaPlay />재생</Button>
-            : <Icon $active={active} $width={width} $height={height}><GoPlay /></Icon>}
+            : <Icon $active={active} $width={iconSize} $height={iconSize}><FaCirclePlay /></Icon>}
         </div>
     )
 }
@@ -41,8 +42,8 @@ const Button = styled.button`
 `
 const Icon = styled.span`
     & > svg {
-        width: ${props => props.$width};
-        height: ${props => props.$height};
+        width: ${props => props.$width}px;
+        height: ${props => props.$height}px;
         ${props => props.$active && 'cursor: pointer;'}
         ${props => !props.$active && 'color: hsla(0,0%,100%,.5);'}
         ${props => props.$active &&

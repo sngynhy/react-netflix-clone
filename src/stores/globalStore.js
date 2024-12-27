@@ -8,9 +8,6 @@ import { devtools } from 'zustand/middleware';
 // create 함수 호출에서 반환하는 Store Hook은, use 접두사와 Store 접미사로 명명하여 사용
 export const useGlobalStore = create(
     devtools((set, get) => ({
-        scrollTop: true,
-        setScrollTop: (value) => set({scrollTop: value}),
-
         isLoading: false,
         setIsLoading: (value) => set({isLoading: value})
     }))

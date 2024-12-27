@@ -13,6 +13,7 @@ import MyContentsButton from "components/ui/MyContentsButton";
 import { PlayButton } from 'components/ui/PlayButton';
 import { YouTubePlayer } from "components/contents/YouTubePlayer";
 import { LogoImage } from "components/contents/LogoImage";
+import { MuteButton } from "components/ui/MuteButton";
 
 function DetailModal () {
     const { openContentId, mediaType, setOpenDetailModal } = useMediaStore()
@@ -138,7 +139,7 @@ function DetailModal () {
 
 const PreviewContent = React.memo(({ id, mType, imgPath, title }) => {
 
-    const { readyToPlay, setOpenDetailModal } = useMediaStore()
+    const { readyToPlay, endPlay, setOpenDetailModal } = useMediaStore()
 
     // video
     const {data: videokey, isLoading: videoLoading} = useVideoQuery({type: mType, id: id})
@@ -149,23 +150,17 @@ const PreviewContent = React.memo(({ id, mType, imgPath, title }) => {
 
     setTimeout(() => {
         setLowerTitle(true)
-    }, 2000)
+    }, 3000)
 
     return (
         <PreviewPlayer>
             {/* 영상 or 이미지 콘텐츠 */}
             <div style={{height: '100%', position: 'relative'}}>
-                {/* {videokey && !endPlay ? <YouTubePlayer videoId={videokey} style={{opacity: '1'}} borderRadius="8px 8px 0 0" /> */}
-                <div>
-                    {videokey
-                    ? <YouTubePlayer videoId={videokey} imgPath={imgPath} id={id} mType={mType} alt={title} style={{opacity: '1'}} borderRadius="8px 8px 0 0" />
-                    : <img src={getContentImg(imgPath)} style={{width: '100%', height: '475px', borderRadius: '8px 8px 0 0'}} alt="backdrop" />
-                    }
+                <div style={{backgroundImage: `url(${getContentImg(imgPath)})`, backgroundSize: 'cover', width: '100%', height: '479px', borderRadius: "8px 8px 0 0"}}>
+                    {videokey && <div style={{opacity: endPlay ? 0 : 1}}><YouTubePlayer videoId={videokey} borderRadius="8px 8px 0 0" /></div>}
                 </div>
                 <div style={{position: 'absolute', width: '60%', bottom : 100, left: '3rem' }}>
-                    <LogoImage id={id} mType={mType} alt={title} width='320px' height='150px' lowerTitle={lowerTitle} />
-                </div>
-                <div className="playBtn">
+                    <LogoImage id={id} mType={mType} alt={title} width='320px' height='150px' lowerTitle={lowerTitle} transform='scale(.7) translate(-72px, 40px);' />
                 </div>
             </div>
             {/* 버튼 */}
@@ -173,7 +168,8 @@ const PreviewContent = React.memo(({ id, mType, imgPath, title }) => {
                 <IoCloseCircle className="closeBtn" onClick={() => setOpenDetailModal(false)} />
                 <div style={{height: '46px'}}>
                     <PlayButton active={videokey && readyToPlay} />
-                    <MyContentsButton id={id} mType={mType} width="auto" height="100%" />
+                    <MyContentsButton id={id} mType={mType} />
+                    {videokey && <div><MuteButton /></div>}
                 </div>
             </IconsOnPlayer>
         </PreviewPlayer>

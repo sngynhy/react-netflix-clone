@@ -11,7 +11,7 @@ const compareData = (a, b) => {
     return a.height - b.height;
 }
 
-export const LogoImage = React.memo(({ id, mType, alt, width='500px', height='200px', lowerTitle=false }) => {
+export const LogoImage = React.memo(({ id, mType, alt, width='500px', height='200px', lowerTitle=false, transform=null }) => {
     // console.log('LogoImage', id, mType, lowerTitle);
     const {data: logoData, isLoading: logoDataLoading, error: logoDataError} = useQuery({ queryKey: ['image', mType, id], queryFn: fetchImage })
     // const logoPath = logoData?.data.sort((a, b) => b.iso_639_1.localeCompare(a.iso_639_1) && a.height - b.height)[0].file_path
@@ -28,18 +28,18 @@ export const LogoImage = React.memo(({ id, mType, alt, width='500px', height='20
 
     return (
         // <div style={{width: `${width}`, height: `${height}`, position: 'relative'}}>
-        <Div $width={width} $height={height} $lowerTitle={lowerTitle}>
+        <Div $width={width} $height={height} $lowerTitle={lowerTitle} $transform={transform}>
             {logoPath && <img src={logoPath} alt={alt + '_로고'} style={{width: '100%', height: '100%', position: 'absolute', bottom: '2px' }}/>}
         </Div>
     )
 })
 
 const Div = styled.div`
+    position: relative;
     width: ${props => props.$width};
     height: ${props => props.$height};
-    position: relative;
-    ${props => props.$lowerTitle && 'transition:  1s;'}
-    ${props => props.$lowerTitle && 'transform:  scale(.7) translate(-72px, 40px);'}
+    transition:  1s;
+    transform: ${props => props.$lowerTitle && props.$transform ? props.$transform : 'scale(1) translate: (0)'};
 `
 
 LogoImage.prototype = {

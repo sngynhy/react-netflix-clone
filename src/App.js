@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Router from "./router";
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { useMediaStore } from "stores/mediaStore";
@@ -19,7 +19,7 @@ const queryClient = new QueryClient()
 
 function App() {
   const { openDetailModal } = useMediaStore()
-  const { scrollTop, setScrollTop } = useGlobalStore()
+  const [scrollTop, setScrollTop] = useState(true)
   useEffect(() => {
     const handleScroll = () => {
       // console.log('handleScroll', scrollTop, window.scrollY === 0);
@@ -36,8 +36,8 @@ function App() {
       <LoadingProvider>
           <LoadingOverlay />
           <Wrapper>
-            <Header/>
-            <Router/>
+            <Header scrollTop={scrollTop} />
+            <Router scrollTop={scrollTop} />
             {openDetailModal && <DetailModal />}
             <Footer />
           </Wrapper>

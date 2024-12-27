@@ -1,18 +1,18 @@
-import React from "react";
+import React, { useEffect } from "react";
 import GridContents from "components/contents/GridContents";
 import { useTrendingContentsQueries } from "hooks/useReactQuery";
 
 function TrendingNow () {
 
     const queries = useTrendingContentsQueries()
-
+    
     if (queries.some((query) => query.isLoading)) return
     if (queries.some((query) => query.isError)) return <div>Error occurred!</div>
 
     const data = queries?.map(query => query.data)
     const weekContents = data?.filter(el => el.period === 'week')
     const dayContents = data?.filter(el => el.period === 'day')
-    // console.log('weekContents', weekContents);
+    console.log('weekContents', weekContents);
     // console.log('dayContents', dayContents);
     
     return (

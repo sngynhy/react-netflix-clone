@@ -83,22 +83,21 @@ export const CoverContentText = styled.div`
         font-size: 20px;
         margin: 0 15px 0 0;
     }
-    & > div > div > .btn {
-        margin-right: 10px;
-        padding: 0.6rem 1.6rem;
-        font-size: 20px;
-        border-radius: 4px;
-        border: none;
-        cursor: pointer;
-    }
-    & > div > div > button > svg {
+`
+
+export const DetailViewButton = styled.button`
+    margin-right: 10px;
+    padding: 0.6rem 1.6rem;
+    font-size: 20px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    color: white;
+    background-color: rgba(109, 109, 110, 0.7);
+    & > svg {
         margin-right: 8px;
     }
-    & > div > div > .detailBtn {
-        color: white;
-        background-color: rgba(109, 109, 110, 0.7);
-    }
-    & > div > div > .detailBtn:hover {
+    &:hover {
         color: white;
         background-color: rgba(109, 109, 110, 0.4);
     }

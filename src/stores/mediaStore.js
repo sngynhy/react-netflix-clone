@@ -24,10 +24,9 @@ export const useMediaStore = create(
         endPlay: false, // 동영상 재생 완료
         setEndPlay: (value) => set({endPlay: value}),
         fullScreen: false, // 전체 화면
-        setFullScreen: (value) => {
-            console.log('setFullScreen', value);
-            set({fullScreen: value})
-        },
+        setFullScreen: (value) => set({fullScreen: value}),
+        isMuted: true,
+        setIsMuted: (value) => set({isMuted: value}),
 
         likes: new Map(),
         addLikes: (id, type) => set(state => {

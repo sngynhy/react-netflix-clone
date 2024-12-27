@@ -11,10 +11,10 @@ const mediaTypes = {
     tv: '시리즈'
 }
 
-function Media () {
+function Media ({scrollTop}) {
     let { mType, genreId } = useParams()
     const { setMediaType, openDetailModal, setOpenContentId } = useMediaStore()
-
+    
     // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => setMediaType(mType), [mType])
     
@@ -31,11 +31,12 @@ function Media () {
         setCoverData(coverData)
     }, [])
 
+    // console.log('✨Media✨', coverData);
     return (
         <div style={{position: openDetailModal ? 'fixed' : '', height: '100%', width: '100%'}}>
             <div style={{opacity: openDetailModal ? 0.7 : 1}}>
                 {/** 중앙 메인 콘텐츠 */}
-                {coverData && <MainContent mType={mType} name={mediaTypes[mType]} genreId={genreId} coverData={coverData} />}
+                {coverData && <MainContent scrollTop={scrollTop} mType={mType} name={mediaTypes[mType]} genreId={genreId} coverData={coverData} recieveCoverData={recieveCoverData} />}
 
                 {/** 하단 슬라이더 */}
                 {genreId ? <GenreContents mType={mType} genreId={genreId} sendCoverDat={recieveCoverData} /> : <MediaContents mType={mType} sendCoverData={recieveCoverData} />}

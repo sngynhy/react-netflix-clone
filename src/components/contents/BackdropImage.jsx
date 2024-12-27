@@ -11,7 +11,7 @@ export const BackdropImage = ({id, mType, title, showPlayButton=false, showTitle
                 <img loading="lazy" src={getContentImg(imgPath)} alt={title} width='100%'/>
                 {showPlayButton && show &&
                     <div style={{position: 'absolute', top: 'calc(50% - 30px)', left: 'calc(50% - 30px)', zIndex: 999}}>
-                        <PlayButton active={false} type="icon" height='60px' width='60px' />
+                        <PlayButton active={false} type="icon" iconSize={45} />
                     </div>
                 }
                 {showTitle && 

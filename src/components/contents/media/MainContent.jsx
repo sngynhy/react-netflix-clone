@@ -2,40 +2,54 @@ import React, { useEffect, useRef, useState } from 'react'
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { FiInfo } from "react-icons/fi";
-import { MainCoverImg, Container, SelectBox, CoverContentText } from 'styles/MainContentStyle';
+import { MainCoverImg, Container, SelectBox, CoverContentText, DetailViewButton } from 'styles/MainContentStyle';
 import { fetchGenres } from 'api/movieApi';
 import { useMediaStore } from 'stores/mediaStore';
-import { useGlobalStore } from 'stores/globalStore';
 import { PlayButton } from 'components/ui/PlayButton';
 import { LogoImage } from '../LogoImage';
 import { useVideoQuery } from 'hooks/useReactQuery';
 import { YouTubePlayer } from '../YouTubePlayer';
+import styled from 'styled-components';
+import { MuteButton } from 'components/ui/MuteButton';
+import { ReplayButton } from 'components/ui/ReplayButton';
 
-export const MainContent = React.memo(({mType, genreId, name, coverData}) => {
+export const MainContent = React.memo(({scrollTop, mType, genreId, name, coverData}) => {
     // console.log('MainContent', mType, genreId, name, coverData);
+    const { readyToPlay, endPlay } = useMediaStore()
+    const [videokey, setVideokey] = useState()
+    const recieveVediokey = (data) => {
+        setTimeout(() => {
+            setVideokey(data)
+        }, 3000)
+    }
+    useEffect(() => {
+        return () => setVideokey(null)
+    }, [mType])
+    // console.log('🎁 MainContent 🎁', endPlay);
     return (
         <>
-            <MainCoverImg id="cover-image" $url={coverData.img}/>
+            <MainCoverImg id="cover-image" $url={coverData.img}>
+                {videokey && <div style={{opacity: endPlay ? 0 : 1}}><YouTubePlayer videoId={videokey} width='100%' height='800px' /></div>}
+            </MainCoverImg>
             
             {/* 중앙 콘텐츠 */}
             <Container id="cover-content">
                 {/* 장르 선택 박스 */}
-                <SelectBoxForGenre mType={mType} genreId={genreId} name={name} />
+                <SelectBoxForGenre scrollTop={scrollTop} mType={mType} genreId={genreId} name={name} />
                 
                 {/* 메인 커버 콘텐츠 */}
-                {coverData && <CoverContent mType={mType} coverData={coverData} />}
+                {coverData && <CoverContent mType={mType} coverData={coverData} sendVideokey={recieveVediokey} endPlay={endPlay} />}
             </Container>
         </>
     )
 })
 
-const SelectBoxForGenre = ({mType, genreId, name}) => {
+const SelectBoxForGenre = ({scrollTop, mType, genreId, name}) => {
 
     const [openGenreBox, setOpenGenreBox] = useState(false)
     const [genre, setGenre] = useState({id: -1, name: '장르'})
     
     const { setGenreName, openDetailModal } = useMediaStore()
-    const { scrollTop } = useGlobalStore()
 
     const {data: genres} = useQuery({
         queryKey: ['genres', mType],
@@ -105,30 +119,53 @@ const SelectBoxForGenre = ({mType, genreId, name}) => {
     )
 }
 
-const CoverContent = ({mType, coverData}) => {
+const CoverContent = ({mType, coverData, endPlay, sendVideokey}) => {
     const { setOpenContentId, setOpenDetailModal } = useMediaStore()
-    
+    const [lowerTitle, setLowerTitle] = useState(false)
+
+    useEffect(() => {
+        setLowerTitle(false)
+    }, [mType])
+
     // video
-    // const {data: videokey, isLoading: videoLoading} = useVideoQuery({type: mType, id: coverData.id})
-    // console.log('videokey', videokey);
-
-    // if (!coverData || videoLoading) return
-
+    const {data: videokey, isLoading: videoLoading} = useVideoQuery({type: mType, id: coverData.id})
+    useEffect(() => { 
+        if (videokey) sendVideokey(videokey)
+    }, [videokey, sendVideokey])
+    
+    useEffect(() => {
+        if (endPlay) setTimeout(() => setLowerTitle(false), 1000)
+        else setTimeout(() => setLowerTitle(true), 5000)
+    }, [endPlay])
+    
+    if (!coverData || videoLoading) return
+    
     const openModal = () => {
         setOpenContentId(coverData.id)
         setOpenDetailModal(true)
     }
     return (
         <CoverContentText>
-            {coverData && <h2 style={{width: '60%'}}><LogoImage id={coverData.id} mType={mType} alt={coverData.title} /></h2>}
-            <p>{coverData.overview}</p>
+            {coverData &&
+            <h2 style={{width: '60%'}}>
+                <LogoImage id={coverData.id} mType={mType} alt={coverData.title} lowerTitle={lowerTitle} transform='scale(.7) translate(-108px, 190px);' />
+            </h2>}
+
+            <Overview $lowerTitle={lowerTitle}>{coverData.overview}</Overview>
             <div style={{marginTop: '30px'}}>
                 <div style={{position: 'relative', display: 'flex'}}>
                     {/* <PlayButton active={!!videokey} />
                     {videokey && <div style={{position: 'absolute', top: 0, zIndex: -1, opacity: 0}}><YouTubePlayer videoId={videokey} width='119px' height='45px' /></div>} */}
-                    <button className="btn detailBtn" onClick={openModal}><FiInfo />상세정보</button>
+                    <DetailViewButton className="btn detailBtn" onClick={openModal}><FiInfo />상세정보</DetailViewButton>
+                    {videokey && endPlay ? <ReplayButton /> : <MuteButton />}
                 </div>
             </div>
         </CoverContentText>
     )
 }
+
+const Overview = styled.p`
+    transition:  1s;
+    transform: ${props => props.$lowerTitle ? 'translateY(100px)' : 'translateY(0)'};
+    opacity: ${props => props.$lowerTitle ? 0 : 1};
+`
