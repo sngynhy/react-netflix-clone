@@ -7,11 +7,11 @@ import { useMediaStore } from 'stores/mediaStore'
 function MyContentsButton ({id, mType, borderSize=45, iconSize=30 }) {
     const {likes, addLikes, removeLikes} = useMediaStore()
     const isLiked = likes.has(id) // 찜 상태 확인
-    const handleClick = () => {
+    const setLike = () => {
         isLiked ? removeLikes(id) : addLikes(id, mType)
     }
     return (
-        <Border $borderSize={borderSize} $iconSize={iconSize} onClick={handleClick}>
+        <Border $borderSize={borderSize} $iconSize={iconSize} onClick={setLike}>
             {isLiked ? <IoCheckmark /> : <IoAdd />}
         </Border>
     )

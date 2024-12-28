@@ -1,6 +1,6 @@
 import React from "react";
 import useLoading from "hooks/useLoading";
-import { FadeLoader } from "react-spinners";
+import { BounceLoader } from "react-spinners";
 
 // 📍 로딩 화면 생성
 function LoadingOverlay () {
@@ -11,7 +11,7 @@ function LoadingOverlay () {
 
     return (
         <div style={styles.overlay}>
-            <FadeLoader color="white" />
+            <BounceLoader color="rgba(150, 152, 163, 0.5)" />
         </div>
     )
 }

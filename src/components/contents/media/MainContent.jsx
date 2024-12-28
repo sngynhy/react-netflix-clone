@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { FiInfo } from "react-icons/fi";
@@ -15,21 +15,21 @@ import { ReplayButton } from 'components/ui/ReplayButton';
 
 export const MainContent = React.memo(({scrollTop, mType, genreId, name, coverData}) => {
     // console.log('MainContent', mType, genreId, name, coverData);
-    const { readyToPlay, endPlay } = useMediaStore()
+    const { playerState } = useMediaStore()
     const [videokey, setVideokey] = useState()
-    const recieveVediokey = (data) => {
+    const recieveVediokey = useCallback((data) => {
         setTimeout(() => {
             setVideokey(data)
         }, 3000)
-    }
+    }, [])
     useEffect(() => {
         return () => setVideokey(null)
-    }, [mType])
-    // console.log('🎁 MainContent 🎁', endPlay);
+    }, [mType, genreId, name])
+    // console.log('🎁 MainContent 🎁', playerState);
     return (
         <>
             <MainCoverImg id="cover-image" $url={coverData.img}>
-                {videokey && <div style={{opacity: endPlay ? 0 : 1}}><YouTubePlayer videoId={videokey} width='100%' height='800px' /></div>}
+                {videokey && <div style={{opacity: playerState.state === 1 ? 1 : 0}}><YouTubePlayer videoId={videokey} width='100%' height='800px' /></div>}
             </MainCoverImg>
             
             {/* 중앙 콘텐츠 */}
@@ -38,7 +38,7 @@ export const MainContent = React.memo(({scrollTop, mType, genreId, name, coverDa
                 <SelectBoxForGenre scrollTop={scrollTop} mType={mType} genreId={genreId} name={name} />
                 
                 {/* 메인 커버 콘텐츠 */}
-                {coverData && <CoverContent mType={mType} coverData={coverData} sendVideokey={recieveVediokey} endPlay={endPlay} />}
+                {coverData && <CoverContent mType={mType} coverData={coverData} sendVideokey={recieveVediokey} endPlay={playerState.state === 0} />}
             </Container>
         </>
     )
@@ -119,8 +119,8 @@ const SelectBoxForGenre = ({scrollTop, mType, genreId, name}) => {
     )
 }
 
-const CoverContent = ({mType, coverData, endPlay, sendVideokey}) => {
-    const { setOpenContentId, setOpenDetailModal } = useMediaStore()
+const CoverContent = ({mType, coverData, sendVideokey}) => {
+    const { playerState, setOpenContentId, setOpenDetailModal } = useMediaStore()
     const [lowerTitle, setLowerTitle] = useState(false)
 
     useEffect(() => {
@@ -134,15 +134,18 @@ const CoverContent = ({mType, coverData, endPlay, sendVideokey}) => {
     }, [videokey, sendVideokey])
     
     useEffect(() => {
-        if (endPlay) setTimeout(() => setLowerTitle(false), 1000)
-        else setTimeout(() => setLowerTitle(true), 5000)
-    }, [endPlay])
+        if (playerState.state === 1) setTimeout(() => setLowerTitle(true), 5000)
+        else if (playerState.state === 0) setTimeout(() => setLowerTitle(false), 1000)
+    }, [playerState])
     
     if (!coverData || videoLoading) return
     
     const openModal = () => {
         setOpenContentId(coverData.id)
         setOpenDetailModal(true)
+        if (videokey && playerState.state === 1) {
+            document.getElementById('video-puause-btn').click()
+        }
     }
     return (
         <CoverContentText>
@@ -156,8 +159,11 @@ const CoverContent = ({mType, coverData, endPlay, sendVideokey}) => {
                 <div style={{position: 'relative', display: 'flex'}}>
                     {/* <PlayButton active={!!videokey} />
                     {videokey && <div style={{position: 'absolute', top: 0, zIndex: -1, opacity: 0}}><YouTubePlayer videoId={videokey} width='119px' height='45px' /></div>} */}
-                    <DetailViewButton className="btn detailBtn" onClick={openModal}><FiInfo />상세정보</DetailViewButton>
-                    {videokey && endPlay ? <ReplayButton /> : <MuteButton />}
+                    <DetailViewButton className="detailBtn" onClick={openModal}><FiInfo />상세정보</DetailViewButton>
+                    {videokey && !playerState.error && <div>
+                        {/* {playerState.state === 0 ? <ReplayButton /> : playerState.state === 1 ? <MuteButton /> : <></>} */}
+                        {playerState.state === 0 ? <ReplayButton /> : <MuteButton />}
+                    </div>}
                 </div>
             </div>
         </CoverContentText>

@@ -7,8 +7,8 @@ export const ReplayButton = ({borderSize=45, iconSize=25}) => {
         document.getElementById('video-play-btn').click()
     }
     return (
-        <Border $borderSize={borderSize} $iconSize={iconSize}>
-            <MdOutlineReplay onClick={replay} />
+        <Border $borderSize={borderSize} $iconSize={iconSize} onClick={replay}>
+            <MdOutlineReplay />
         </Border>
     )
 }

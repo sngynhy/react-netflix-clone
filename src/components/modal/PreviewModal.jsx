@@ -21,15 +21,12 @@ const getGenresById = (data, genres) => {
 }
 
 export const PreviewModal = ({ id, mType, title, backdrop, voteAvg, genreIds }) => {
-    const { readyToPlay, setEndPlay } = useMediaStore()
-    
-    useEffect(() => { setEndPlay(false) }, [])
-    
+        
     const {data: videokey, isLoading, isError} = useVideoQuery({type: mType, id: id})
     // console.log('videokey', id, videokey);
     
     if (isLoading || isError) return
-    console.log('👉PreviewModal', id, title, readyToPlay);
+    console.log('👉PreviewModal', id, title);
 
     return (
         <Wrapper>
@@ -40,16 +37,16 @@ export const PreviewModal = ({ id, mType, title, backdrop, voteAvg, genreIds }) 
 }
 
 const Player = ({backdrop, videokey=null}) => {
-    const { endPlay } = useMediaStore()
+    const { playerState } = useMediaStore()
     return (
         <PreviewPlayer style={{backgroundImage: `url(${getContentImg(backdrop)})`, backgroundSize: 'cover'}}>
-            {videokey && !endPlay && <YouTubePlayer videoId={videokey} width="320px" height="180px" />}
+            {videokey && <div style={{opacity: [1,2,3].includes(playerState.state) ? 1 : 0}}><YouTubePlayer videoId={videokey} width="320px" height="180px" /></div>}
         </PreviewPlayer>
     )
 }
 
 const Info = ({id, mType, title, voteAvg, genreIds, videokey=null}) => {
-    const { readyToPlay, setOpenDetailModal, setOpenContentId } = useMediaStore()
+    const { playerState, setOpenDetailModal, setOpenContentId } = useMediaStore()
 
     const queryClient = useQueryClient(); // 캐시된 데이터 가져오기
     const genres = queryClient.getQueryData(['genres', mType]) // 'genres' 키로 데이터 조회
@@ -62,10 +59,10 @@ const Info = ({id, mType, title, voteAvg, genreIds, videokey=null}) => {
 
     return (
         <PreviewInfo>
-            <div style={{display: 'flex'}}>
-                <><PlayButton active={!!videokey && readyToPlay} type='icon' /></>
-                <><MyContentsButton id={id} mType={mType} iconSize={30} borderSize={35} /></>
-                <><Border $iconSize={30} $borderSize={35}><GoChevronRight style={{float: 'right', transform: 'rotate(90deg)'}} onClick={() => {setOpenContentId(id); setOpenDetailModal(true)}} /></Border></>
+            <div style={{display: 'inline-block', width: '100%'}}>
+                <div style={{float: 'left', marginRight: '8px'}}><PlayButton active={!!videokey && [1,2,3].includes(playerState.state)} type='icon' /></div>
+                <div style={{float: 'left'}}><MyContentsButton id={id} mType={mType} iconSize={30} borderSize={35} /></div>
+                <div style={{float: 'right'}}><Border $iconSize={25} $borderSize={35}><GoChevronRight style={{float: 'right', transform: 'rotate(90deg)'}} onClick={() => {setOpenContentId(id); setOpenDetailModal(true)}} /></Border></div>
                 {/* {like ? <AiFillLike onClick={liked} /> : <AiOutlineLike onClick={liked} />} */}
             </div>
             <div style={{margin: '5px 0 0'}}>

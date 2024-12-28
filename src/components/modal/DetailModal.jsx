@@ -139,7 +139,7 @@ function DetailModal () {
 
 const PreviewContent = React.memo(({ id, mType, imgPath, title }) => {
 
-    const { readyToPlay, endPlay, setOpenDetailModal } = useMediaStore()
+    const { playerState, videoCurrentTime, setOpenDetailModal } = useMediaStore()
 
     // video
     const {data: videokey, isLoading: videoLoading} = useVideoQuery({type: mType, id: id})
@@ -157,7 +157,7 @@ const PreviewContent = React.memo(({ id, mType, imgPath, title }) => {
             {/* 영상 or 이미지 콘텐츠 */}
             <div style={{height: '100%', position: 'relative'}}>
                 <div style={{backgroundImage: `url(${getContentImg(imgPath)})`, backgroundSize: 'cover', width: '100%', height: '479px', borderRadius: "8px 8px 0 0"}}>
-                    {videokey && <div style={{opacity: endPlay ? 0 : 1}}><YouTubePlayer videoId={videokey} borderRadius="8px 8px 0 0" /></div>}
+                    {videokey && <div style={{opacity: playerState.state === 1 ? 1 : 0}}><YouTubePlayer videoId={videokey} startTime={videoCurrentTime} borderRadius="8px 8px 0 0" /></div>}
                 </div>
                 <div style={{position: 'absolute', width: '60%', bottom : 100, left: '3rem' }}>
                     <LogoImage id={id} mType={mType} alt={title} width='320px' height='150px' lowerTitle={lowerTitle} transform='scale(.7) translate(-72px, 40px);' />
@@ -167,8 +167,8 @@ const PreviewContent = React.memo(({ id, mType, imgPath, title }) => {
             <IconsOnPlayer>
                 <IoCloseCircle className="closeBtn" onClick={() => setOpenDetailModal(false)} />
                 <div style={{height: '46px'}}>
-                    <PlayButton active={videokey && readyToPlay} />
-                    <MyContentsButton id={id} mType={mType} />
+                    <div style={{marginRight: '10px'}}><PlayButton active={videokey && playerState.state === 1} /></div>
+                    <div style={{marginRight: '10px'}}><MyContentsButton id={id} mType={mType} /></div>
                     {videokey && <div><MuteButton /></div>}
                 </div>
             </IconsOnPlayer>

@@ -15,17 +15,32 @@ export const useMediaStore = create(
         setGenreName: (value) => set({ genreName: value}),
         
         openDetailModal: false,
-        setOpenDetailModal: (value) => set({openDetailModal: value, readyToPlay: false, endPlay: false}),
+        setOpenDetailModal: (value) => set({openDetailModal: value}),
         openContentId: null,
         setOpenContentId: (value) => set({ openContentId: value }),
+        
+        videoId: null,
+        setVideoId: (value) => set({videoId: value}),
+        // 재생 상태 {state: -999, error: null}
+        playerState: {state: -999, error: null},
+        setPlayerState: (value) => {
+            console.log('STORE > playerState', value);
+            set({playerState: value})
+            /**
+                PLAYING: 1
+                PAUSED: 2
+                BUFFERING: 3
+                CUED: 5
+                ENDED: 0
+                UNSTARTED: -1
+            */
+        },
+        videoCurrentTime: 0,
+        setVideoCurrentTime: (value) => set({videoCurrentTime: value}),
 
-        readyToPlay: false, // 동영상 재생 준비 완료
-        setReadyToPlay: (value) => set({ readyToPlay: value }),
-        endPlay: false, // 동영상 재생 완료
-        setEndPlay: (value) => set({endPlay: value}),
         fullScreen: false, // 전체 화면
         setFullScreen: (value) => set({fullScreen: value}),
-        isMuted: true,
+        isMuted: true, // 음소거
         setIsMuted: (value) => set({isMuted: value}),
 
         likes: new Map(),

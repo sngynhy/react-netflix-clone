@@ -5,7 +5,7 @@ import styled from "styled-components";
 export const YouTubePlayer = ({ videoId, width="100%", height="475px", borderRadius="0" }) => {
     // console.log('<< videoId', videoId);
     const playerRef = useRef(null)
-    const {setFullScreen, setReadyToPlay, setEndPlay} = useMediaStore()
+    const {setFullScreen} = useMediaStore()
     useEffect(() => {
         // YouTube API 스크립트 동적으로 추가
         const loadYouTubeAPI = () => {
@@ -58,7 +58,6 @@ export const YouTubePlayer = ({ videoId, width="100%", height="475px", borderRad
                 if (document.fullscreenElement) { // full screen일 때 esc키를 누른 경우
                     document.exitFullscreen();
                     setFullScreen(false)
-                    // setEndPlay(false)
                 }
             }
         }
@@ -85,8 +84,6 @@ export const YouTubePlayer = ({ videoId, width="100%", height="475px", borderRad
     // 플레이어 준비 핸들러
     const onPlayerReady = (event) => {
         console.log('🎞🎞 재생 시작', );
-        setReadyToPlay(true)
-        setEndPlay(false)
     }
 
     // 플레이어 상태 변경 핸들러
@@ -94,8 +91,6 @@ export const YouTubePlayer = ({ videoId, width="100%", height="475px", borderRad
         // 재생 종료
         if (event.data === window.YT.PlayerState.ENDED) { // 재생 완료
             console.log('재생 완료 🎞🎞', );
-            // setReadyToPlay(false)
-            setEndPlay(true)
         }
 
         // switch (event.data) {
@@ -134,8 +129,6 @@ export const YouTubePlayer = ({ videoId, width="100%", height="475px", borderRad
     // 재생 에러 핸들러
     const onPlayerError = (event) => {
         console.error("Error occurred:", event.data);
-        setReadyToPlay(false)
-        setEndPlay(true)
         
         // 에러 상태에 따라 다르게 처리
         // switch (event.data) {

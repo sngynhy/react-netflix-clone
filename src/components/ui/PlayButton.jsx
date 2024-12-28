@@ -24,7 +24,6 @@ export const PlayButton = ({ active=false, type="button", iconSize=35 }) => { //
 }
 
 const Button = styled.button`
-    margin-right: 10px;
     padding: 0.6rem 1.6rem;
     font-size: 20px;
     border-radius: 4px;
