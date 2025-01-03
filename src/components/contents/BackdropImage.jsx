@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { getContentImg } from "utils/CommonFunction";
-import { PlayButton } from "components/ui/PlayButton";
+import { PlayButton } from "components/ui/button/PlayButton";
 import { LogoImage } from "./LogoImage";
 
 export const BackdropImage = ({id, mType, title, showPlayButton=false, showTitle=false, imgPath, width='120px', height='60px'}) => {

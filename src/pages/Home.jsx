@@ -1,9 +1,83 @@
-import React, { useEffect, useContext, useRef, useState } from 'react'
+import React from 'react'
 import { useQuery } from '@tanstack/react-query';
 import { fetchNetflixOriginal } from 'api/movieApi';
 import styled from "styled-components";
-import useLoading from 'hooks/useLoading';
-import { SliderContainer } from 'components/ui/SliderContainer';
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import { settings } from 'components/ui/slider/SliderSettings';
+import { BackdropImage } from 'components/contents/BackdropImage';
+import { useMediaStore } from 'stores/mediaStore';
+
+function Home () {
+
+    const {setMediaType, setOpenContentId, setOpenDetailModal} = useMediaStore()
+    
+    const {data: netflixMovieData, isLoading: netflixMovieLoading, error: netflixMovieError} = useQuery({ queryKey: ['netflix', 'movie'], queryFn: fetchNetflixOriginal })
+    const {data: netflixTvData, isLoading: netflixTvLoading, error: netflixTvError} = useQuery({ queryKey: ['netflix', 'tv'], queryFn: fetchNetflixOriginal })
+
+    if (netflixMovieLoading || netflixTvLoading) return null
+    if (netflixMovieError || netflixTvError) return <p>Error occurred!</p>
+
+    const openModal = (id, mType) => {
+        // console.log('openModal', id, mType);
+        setOpenContentId(id)
+        setMediaType(mType)
+        setOpenDetailModal(true)
+    }
+
+    return (
+        <div>
+            <MainCover/>
+            
+            <div style={{paddingTop: '650px'}}>
+                <div className="slider-container" style={{margin: '3vw 0', width: '100%'}}>
+                    <div style={{padding: "0 60px", position: "relative"}}>
+                        <h2>넷플릭스 오리지널 시리즈</h2>
+                        <Slider {...settings}>
+                            {netflixTvData.map((el, i) => (
+                                <div className={i+el.id} key={el.id} style={{cursor: 'pointer'}}>
+                                    <SlickSlide className='slick-slide' onClick={() => openModal(el.id, 'tv')}>
+                                        <BackdropImage
+                                            id={el.id}
+                                            mType='tv'
+                                            title={el.title || el.name}
+                                            showTitle={true}
+                                            imgPath={el.backdrop_path}
+                                            width='120px'
+                                            height='40px'
+                                        />
+                                    </SlickSlide>
+                                </div>
+                            ))}
+                        </Slider>
+                    </div>
+
+                    <div style={{padding: "0 60px", position: "relative"}}>
+                        <h2>넷플릭스 오리지널 영화</h2>
+                        <Slider {...settings}>
+                            {netflixMovieData.map((el, i) => (
+                                <div className={i+el.id} key={el.id} style={{cursor: 'pointer'}}>
+                                    <SlickSlide className='slick-slide' onClick={() => openModal(el.id, 'movie')}>
+                                        <BackdropImage
+                                            id={el.id}
+                                            mType='movie'
+                                            title={el.title || el.name}
+                                            showTitle={true}
+                                            imgPath={el.backdrop_path}
+                                            width='120px'
+                                            height='40px'
+                                        />
+                                    </SlickSlide>
+                                </div>
+                            ))}
+                        </Slider>
+                    </div>
+                </div>
+            </div>
+        </div>
+    )
+}
 
 const MainCover = styled.div`
     background-image: url(https://assets.nflxext.com/ffe/siteui/vlv3/dadb130d-463b-4e5b-b335-038ed912059e/web_tall_panel/KR-ko-20241118-TRIFECTA-perspective_39e1ee1c-668b-451c-ac1b-2f61698a6a44_large.jpg);
@@ -22,26 +96,14 @@ const MainCover = styled.div`
     z-index: 0;
     width: 100%;
 `
+const SlickSlide = styled.div`
+    margin: 15px 5px;
+    position: sticky;
 
-const Container = styled.div`
-    padding-top: 650px;
+    &:hover {
+        transition: 0.5s;
+        transform: scale(1.2);
+        z-index: 999;
+    }
 `
-
-function Home () {
-    const {data: netflixData, isLoading: netflixLoading, error: netflixError} = useQuery({ queryKey: ['netflix'], queryFn: fetchNetflixOriginal })
-    
-    return (
-        <div>
-            <MainCover/>
-            
-            <Container>
-                {netflixData &&
-                <div>
-                    {/* <SliderContainer mType="netflix" headerTitle="Netflix Original" data={netflixData} /> */}
-                </div>}
-            </Container>
-        </div>
-    )
-}
-
 export default Home

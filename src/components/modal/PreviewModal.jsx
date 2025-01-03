@@ -7,9 +7,10 @@ import { getContentImg } from "utils/CommonFunction";
 import PropTypes from "prop-types";
 import { useMediaStore } from "stores/mediaStore";
 import { useVideoQuery } from "hooks/useReactQuery"
-import MyContentsButton from "components/ui/MyContentsButton";
+import MyContentsButton from "components/ui/button/MyContentsButton";
 import { YouTubePlayer } from "components/contents/YouTubePlayer";
-import { PlayButton } from "components/ui/PlayButton";
+import { PlayButton } from "components/ui/button/PlayButton";
+import { MuteButton } from "components/ui/button/MuteButton";
 
 const getGenresById = (data, genres) => {
     // 장르의 id값으로 name 추출
@@ -60,8 +61,9 @@ const Info = ({id, mType, title, voteAvg, genreIds, videokey=null}) => {
     return (
         <PreviewInfo>
             <div style={{display: 'inline-block', width: '100%'}}>
-                <div style={{float: 'left', marginRight: '8px'}}><PlayButton active={!!videokey && [1,2,3].includes(playerState.state)} type='icon' /></div>
-                <div style={{float: 'left'}}><MyContentsButton id={id} mType={mType} iconSize={30} borderSize={35} /></div>
+                <div style={{float: 'left', marginRight: '5px'}}><PlayButton active={!!videokey && [1,2,3].includes(playerState.state)} type='icon' /></div>
+                <div style={{float: 'left', marginRight: '5px'}}><MyContentsButton id={id} mType={mType} iconSize={30} borderSize={35} /></div>
+                <div style={{float: 'left', marginRight: '5px'}}><MuteButton id={id} mType={mType} iconSize={25} borderSize={35} /></div>
                 <div style={{float: 'right'}}><Border $iconSize={25} $borderSize={35}><GoChevronRight style={{float: 'right', transform: 'rotate(90deg)'}} onClick={() => {setOpenContentId(id); setOpenDetailModal(true)}} /></Border></div>
                 {/* {like ? <AiFillLike onClick={liked} /> : <AiOutlineLike onClick={liked} />} */}
             </div>

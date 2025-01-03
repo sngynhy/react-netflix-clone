@@ -1,8 +1,6 @@
 import { useQueries } from "@tanstack/react-query";
 import { fetchContentDetails } from "api/movieApi";
 import GridContents from "components/contents/GridContents";
-import LoadingOverlay from "components/common/LoadingOverlay";
-import useLoading from "hooks/useLoading";
 import React from "react";
 import { useMediaStore } from "stores/mediaStore"
 
@@ -23,6 +21,7 @@ function MyContents () {
         queries: likeList?.map(el => ({
             queryKey: ['myContents', el[1], el[0]],
             queryFn: fetchContentDetails,
+            select: data => ({...data, media_type: el[1]})
           })),
     })
     // console.log('queries', queries);
@@ -35,19 +34,14 @@ function MyContents () {
     return (
         <div className="my-contents">
             <div style={{padding: '64px 60px 0'}}>
-                {data && <>
-                    <div className="title">
-                        <h1 style={{fontWeight: '400'}}>내가 찜한 리스트</h1>
-                    </div>
-
-                    <div className="contents" style={{marginTop: "5rem"}}>
-                        <GridContents data={data} mType={null} showTitle={true} showOverview={false} gridColumns={6} imgPath='backdrop_path' />
-                    </div>
-                </>}
-                {likes.size === 0 && <div style={{color: '#666', textAlign: 'center', fontSize: '20px', paddingTop: '100px'}}>아직 찜하신 콘텐츠가 없습니다.</div>}
-                {/* <div>
-                    {logoData.map(el => <img src={getContentImg(el.path)} alt="" style={{color: 'white'}}/>)}
-                </div> */}
+                <div className="title">
+                    <h1 style={{fontWeight: '400'}}>내가 찜한 리스트</h1>
+                </div>
+                {likes.size > 0 && data.length > 0 ?
+                <div className="contents" style={{marginTop: "5rem"}}>
+                    <GridContents data={data} mType={null} showTitle={true} showOverview={false} gridColumns={6} imgPath='backdrop_path' />
+                </div>
+                : <div style={{color: '#666', textAlign: 'center', fontSize: '20px', paddingTop: '100px'}}>아직 찜하신 콘텐츠가 없습니다.</div>}
             </div>
         </div>
     )

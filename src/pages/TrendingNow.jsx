@@ -12,7 +12,7 @@ function TrendingNow () {
     const data = queries?.map(query => query.data)
     const weekContents = data?.filter(el => el.period === 'week')
     const dayContents = data?.filter(el => el.period === 'day')
-    console.log('weekContents', weekContents);
+    // console.log('weekContents', weekContents);
     // console.log('dayContents', dayContents);
     
     return (

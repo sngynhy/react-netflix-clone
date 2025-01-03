@@ -1,16 +1,12 @@
 import styled from "styled-components";
 
-export const Wrapper = styled.div`
-    width: 100%;
-    height: 100vh; // 수정 필요
-    // transition: 1s;
-`
 export const Container = styled.div`
     border: none;
     position: absolute;
     z-index: 999;
     top: 0;
     padding: 30px 25% 0;
+    background-color: rgba(0, 0, 0, 0.7);
     // backdrop-filter: blur(5px);
 `
 export const PreviewPlayer = styled.div`
@@ -42,11 +38,6 @@ export const IconsOnPlayer = styled.div`
         bottom: 2rem;
         display: flex;
     }
-`
-export const Detail = styled.div`
-    display: grid;
-    grid-template-columns: minmax(0,2fr) minmax(0,1fr);
-    column-gap: 2rem;
 `
 
 export const MoreDiv = styled.div`

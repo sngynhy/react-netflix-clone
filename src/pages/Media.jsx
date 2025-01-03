@@ -34,13 +34,11 @@ function Media ({scrollTop}) {
     // console.log('✨Media✨', coverData);
     return (
         <div style={{position: openDetailModal ? 'fixed' : '', height: '100%', width: '100%'}}>
-            <div style={{opacity: openDetailModal ? 0.7 : 1}}>
-                {/** 중앙 메인 콘텐츠 */}
-                {coverData && <MainContent scrollTop={scrollTop} mType={mType} name={mediaTypes[mType]} genreId={genreId} coverData={coverData} recieveCoverData={recieveCoverData} />}
+            {/** 중앙 메인 콘텐츠 */}
+            {coverData && <MainContent scrollTop={scrollTop} mType={mType} name={mediaTypes[mType]} genreId={genreId} coverData={coverData} recieveCoverData={recieveCoverData} />}
 
-                {/** 하단 슬라이더 */}
-                {genreId ? <GenreContents mType={mType} genreId={genreId} sendCoverDat={recieveCoverData} /> : <MediaContents mType={mType} sendCoverData={recieveCoverData} />}
-            </div>
+            {/** 하단 슬라이더 */}
+            {genreId ? <GenreContents mType={mType} genreId={genreId} sendCoverDat={recieveCoverData} /> : <MediaContents mType={mType} sendCoverData={recieveCoverData} />}
         </div>
     )
 }

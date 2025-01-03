@@ -5,31 +5,40 @@ import { FiInfo } from "react-icons/fi";
 import { MainCoverImg, Container, SelectBox, CoverContentText, DetailViewButton } from 'styles/MainContentStyle';
 import { fetchGenres } from 'api/movieApi';
 import { useMediaStore } from 'stores/mediaStore';
-import { PlayButton } from 'components/ui/PlayButton';
+import { PlayButton } from 'components/ui/button/PlayButton';
 import { LogoImage } from '../LogoImage';
 import { useVideoQuery } from 'hooks/useReactQuery';
 import { YouTubePlayer } from '../YouTubePlayer';
 import styled from 'styled-components';
-import { MuteButton } from 'components/ui/MuteButton';
-import { ReplayButton } from 'components/ui/ReplayButton';
+import { MuteButton } from 'components/ui/button/MuteButton';
+import { ReplayButton } from 'components/ui/button/ReplayButton';
 
 export const MainContent = React.memo(({scrollTop, mType, genreId, name, coverData}) => {
     // console.log('MainContent', mType, genreId, name, coverData);
-    const { playerState } = useMediaStore()
+    const { playerState, openDetailModal } = useMediaStore()
     const [videokey, setVideokey] = useState()
+
+    useEffect(() => {
+        return () => setVideokey(null)
+    }, [mType, genreId, name])
+    
+    useEffect(() => {
+        if (!openDetailModal && videokey && playerState.state === -1) {
+            // document.getElementById('video-stop-btn').click()
+        }
+    }, [openDetailModal, videokey, playerState])
+
     const recieveVediokey = useCallback((data) => {
         setTimeout(() => {
             setVideokey(data)
         }, 3000)
     }, [])
-    useEffect(() => {
-        return () => setVideokey(null)
-    }, [mType, genreId, name])
     // console.log('🎁 MainContent 🎁', playerState);
     return (
         <>
             <MainCoverImg id="cover-image" $url={coverData.img}>
-                {videokey && <div style={{opacity: playerState.state === 1 ? 1 : 0}}><YouTubePlayer videoId={videokey} width='100%' height='800px' /></div>}
+                {videokey && !openDetailModal && <div style={{opacity: playerState.id === videokey && playerState.state === 1 ? 1 : 0}}><YouTubePlayer videoId={videokey} width='100%' height='800px' /></div>}
+                {/* {videokey && <div style={{opacity: playerState.id === videokey && playerState.state === 1 ? 1 : 0}}><YouTubePlayer videoId={videokey} width='100%' height='800px' /></div>} */}
             </MainCoverImg>
             
             {/* 중앙 콘텐츠 */}
@@ -38,7 +47,7 @@ export const MainContent = React.memo(({scrollTop, mType, genreId, name, coverDa
                 <SelectBoxForGenre scrollTop={scrollTop} mType={mType} genreId={genreId} name={name} />
                 
                 {/* 메인 커버 콘텐츠 */}
-                {coverData && <CoverContent mType={mType} coverData={coverData} sendVideokey={recieveVediokey} endPlay={playerState.state === 0} />}
+                {coverData && <CoverContent mType={mType} coverData={coverData} sendVideokey={recieveVediokey} />}
             </Container>
         </>
     )
@@ -134,34 +143,32 @@ const CoverContent = ({mType, coverData, sendVideokey}) => {
     }, [videokey, sendVideokey])
     
     useEffect(() => {
-        if (playerState.state === 1) setTimeout(() => setLowerTitle(true), 5000)
-        else if (playerState.state === 0) setTimeout(() => setLowerTitle(false), 1000)
-    }, [playerState])
+        if (playerState.id === videokey && playerState.state === 1) setTimeout(() => setLowerTitle(true), 5000)
+        else if (playerState.state === 0 || playerState.err) setTimeout(() => setLowerTitle(false), 1000)
+    }, [playerState, videokey])
     
     if (!coverData || videoLoading) return
     
     const openModal = () => {
         setOpenContentId(coverData.id)
         setOpenDetailModal(true)
-        if (videokey && playerState.state === 1) {
+        if (videokey && playerState.id === videokey && playerState.state === 1) {
             document.getElementById('video-puause-btn').click()
         }
     }
     return (
         <CoverContentText>
-            {coverData &&
-            <h2 style={{width: '60%'}}>
+            {coverData && <h2 style={{width: '60%'}}>
                 <LogoImage id={coverData.id} mType={mType} alt={coverData.title} lowerTitle={lowerTitle} transform='scale(.7) translate(-108px, 190px);' />
             </h2>}
 
             <Overview $lowerTitle={lowerTitle}>{coverData.overview}</Overview>
             <div style={{marginTop: '30px'}}>
                 <div style={{position: 'relative', display: 'flex'}}>
-                    {/* <PlayButton active={!!videokey} />
-                    {videokey && <div style={{position: 'absolute', top: 0, zIndex: -1, opacity: 0}}><YouTubePlayer videoId={videokey} width='119px' height='45px' /></div>} */}
-                    <DetailViewButton className="detailBtn" onClick={openModal}><FiInfo />상세정보</DetailViewButton>
-                    {videokey && !playerState.error && <div>
-                        {/* {playerState.state === 0 ? <ReplayButton /> : playerState.state === 1 ? <MuteButton /> : <></>} */}
+                    <div style={{marginRight: '12px'}}><PlayButton active={videokey && !playerState.error} /></div>
+                    <div style={{marginRight: '12px'}}><DetailViewButton className="detailBtn" onClick={openModal}><FiInfo />상세정보</DetailViewButton></div>
+                    {videokey && !playerState.error &&
+                    <div style={{marginRight: '12px'}}>
                         {playerState.state === 0 ? <ReplayButton /> : <MuteButton />}
                     </div>}
                 </div>

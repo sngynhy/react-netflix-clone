@@ -21,11 +21,13 @@ export const useMediaStore = create(
         
         videoId: null,
         setVideoId: (value) => set({videoId: value}),
-        // 재생 상태 {state: -999, error: null}
+        playable: false,
+        setPlayable: (value) => set({playable: value}),
+        // 재생 상태
         playerState: {state: -999, error: null},
         setPlayerState: (value) => {
-            console.log('STORE > playerState', value);
-            set({playerState: value})
+            console.log('📂 playerState', value);
+            set({playerState: value, playable: [1,2,5,0].includes(value.state)})
             /**
                 PLAYING: 1
                 PAUSED: 2

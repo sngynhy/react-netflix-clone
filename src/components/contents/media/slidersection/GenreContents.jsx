@@ -1,7 +1,7 @@
 import { useConetentsByGenreQuery } from "hooks/useReactQuery";
 import React, { useEffect, useMemo } from "react";
 import { useMediaStore } from "stores/mediaStore";
-import { SliderContainer } from 'components/ui/SliderContainer';
+import { SliderContainer } from 'components/ui/slider/SliderContainer';
 
 export const GenreContents = React.memo(({mType, genreId, sendCoverDat}) => {
     const {genreName} = useMediaStore()

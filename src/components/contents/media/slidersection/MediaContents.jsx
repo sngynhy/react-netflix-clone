@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo } from "react";
 import { useConetentsQueries } from "hooks/useReactQuery";
-import { SliderContainer } from "components/ui/SliderContainer";
+import { SliderContainer } from "components/ui/slider/SliderContainer";
 
 export const MediaContents = React.memo(({ mType, sendCoverData }) => {
     const queries = useConetentsQueries(mType)

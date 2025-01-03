@@ -4,8 +4,6 @@ import { BounceLoader } from "react-spinners";
 
 // 📍 로딩 화면 생성
 function LoadingOverlay () {
-    // const { isFetching } = useLoading()
-    // if (!isFetching) return null
     const { isLoading } = useLoading()
     if (!isLoading) return null
 
@@ -24,6 +22,7 @@ const styles = {
       width: "100%",
       height: "100%",
       backgroundColor: "rgba(0, 0, 0, 0.5)",
+      backdropFilter: 'blur(10px)',
     //   backgroundColor: "black",
       display: "flex",
       justifyContent: "center",

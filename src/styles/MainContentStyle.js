@@ -86,7 +86,6 @@ export const CoverContentText = styled.div`
 `
 
 export const DetailViewButton = styled.button`
-    margin-right: 10px;
     padding: 0.6rem 1.6rem;
     font-size: 20px;
     border-radius: 4px;

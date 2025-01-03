@@ -43,9 +43,9 @@ export const fetchContents = async ({ queryKey }) => { // type: 'movie' or 'tv',
     return res.data.results
 }
 // 넷플릭스 오리지널
-export const fetchNetflixOriginal = async () => {
-    // const url = `${BASE_URL}/discover/tv?with_networks=213&${QUERY_PARAM}`
-    const url = `${BASE_URL}/discover/movie?with_networks=213&${QUERY_PARAM}`
+export const fetchNetflixOriginal = async ({ queryKey }) => {
+    const [, type] = queryKey
+    const url = `${BASE_URL}/discover/${type}?with_networks=213&${QUERY_PARAM}`
     const res = await axios.get(url, options)
     return res.data.results
 }
