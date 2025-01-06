@@ -4,6 +4,7 @@ import MyContentsButton from "components/ui/button/MyContentsButton";
 import { BackdropImage } from "components/contents/BackdropImage";
 import { useMediaStore } from "stores/mediaStore";
 import styled from "styled-components";
+import { useLocation, useNavigate } from "react-router-dom";
 
 GridContents.prototype = {
     data: PropTypes.object.isRequired,
@@ -17,13 +18,21 @@ GridContents.prototype = {
 
 function GridContents ({ mType, data, gridColumns=`repeat(6, 1fr)`, gap=10, showTitle=true, showOverview=true, showPlayButton=false, eventEffect=true, imgPath=`poster_path` }) {
     // console.log('GridContents > mType', mType, data);
-    const {setMediaType, setOpenContentId, setOpenDetailModal} = useMediaStore()
+    const {setMediaType, setOpenContentId, setOpenDetailModal, setOpenSearchModal} = useMediaStore()
+
+    const navigate = useNavigate()
+    const location = useLocation()
 
     const openModal = (id, mType) => {
-        // console.log('openModal', id, mType);
-        setOpenContentId(id)
-        setMediaType(mType)
-        setOpenDetailModal(true)
+        if (mType !== 'person') {
+            setOpenContentId(id)
+            setMediaType(mType)
+            setOpenDetailModal(true)
+        } else {
+            // navigate(`/search/person?personId=${encodeURIComponent(id)}`, {state: { background: location }})
+            navigate(`/search/person?personId=${encodeURIComponent(id)}`, {state: { background: location }})
+            // setOpenSearchModal(true)
+        }
     }
     return (
         <div style={{display: 'grid', gridTemplateColumns: `repeat(${gridColumns}, 1fr)`, gap: `${gap}px`, marginTop: '10px', }}>
@@ -58,7 +67,7 @@ const GridContent = styled.div`
     ${props => props.$hovereffect &&
         `&:hover {
             transform: scale(1.2);
-            transition: 0.7s;
+            transition: 0.5s;
             z-index: 99;
         }`
     }

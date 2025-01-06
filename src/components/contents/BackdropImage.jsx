@@ -8,7 +8,7 @@ export const BackdropImage = ({id, mType, title, showPlayButton=false, showTitle
     return (
         <>
             <div className="backdrop-img" style={{position: 'relative', cursor: 'pointer'}} onMouseEnter={() => setShow(true)} onMouseLeave={() => setShow(false)}>
-                <img loading="lazy" src={getContentImg(imgPath)} alt={title} width='100%'/>
+                <img loading="lazy" src={getContentImg(imgPath)} alt={title} width='100%' />
                 {showPlayButton && show &&
                     <div style={{position: 'absolute', top: 'calc(50% - 30px)', left: 'calc(50% - 30px)', zIndex: 999}}>
                         <PlayButton active={false} type="icon" iconSize={45} />

@@ -14,6 +14,8 @@ export const useMediaStore = create(
         genreName: '',
         setGenreName: (value) => set({ genreName: value}),
         
+        openSearchModal: false,
+        setOpenSearchModal: (value) => set({openSearchModal: value}),
         openDetailModal: false,
         setOpenDetailModal: (value) => set({openDetailModal: value}),
         openContentId: null,

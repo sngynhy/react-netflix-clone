@@ -1,12 +1,10 @@
-import React, { useEffect } from "react";
-import { useLocation } from 'react-router-dom'
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import React from "react";
+import { useLocation, useSearchParams } from 'react-router-dom'
+import { useQuery } from "@tanstack/react-query";
 import { fetchSearchBykeyword } from "api/movieApi";
 import styled from "styled-components";
-import LoadingOverlay from "components/common/LoadingOverlay";
 import { RxTriangleRight } from "react-icons/rx";
 import GridContents from "components/contents/GridContents";
-import useLoading from "hooks/useLoading";
 
 const Wrapper = styled.div`
     width: 100%;
@@ -22,8 +20,10 @@ const Container = styled.div`
     }
 `
 function Search (props) {
-    const { state } = useLocation()
-    const keyword = state.keyword
+    // const { state } = useLocation()
+    // const keyword = state.keyword
+    const [searchParams] = useSearchParams()
+    const keyword = searchParams.get('keyword')
     
     const {data: movieResult, isLoading: movieIsLoading, error: movieError } = useQuery({
         queryKey: ["search", 'movie', keyword],
@@ -59,7 +59,7 @@ function Search (props) {
                     <div>
                         {movieResult.length !== 0
                             ? <GridContents data={movieResult} mType='movie' showTitle={true} showOverview={false} gridColumns={6} imgPath="backdrop_path" />
-                            : <spna>검색 결과가 없습니다.</spna>}
+                            : <span>검색 결과가 없습니다.</span>}
                     </div>
                 
                     {/* TV */}
@@ -71,7 +71,7 @@ function Search (props) {
                     <div>
                         {tvResult.length !== 0
                             ? <GridContents data={tvResult} mType='tv' showTitle={true} showOverview={false} gridColumns={6} imgPath="backdrop_path" />
-                            : <spna>검색 결과가 없습니다.</spna>}
+                            : <span>검색 결과가 없습니다.</span>}
                     </div>
 
                     {/* 인물 */}
@@ -79,7 +79,7 @@ function Search (props) {
                     <div>
                         {personResult.length !== 0
                             ? <GridContents data={personResult} mType='person' showTitle={false} showOverview={false} gridColumns={7} imgPath='profile_path' />
-                            : <spna>검색 결과가 없습니다.</spna>}
+                            : <span>검색 결과가 없습니다.</span>}
                     </div>
                 </div>
             </Container>

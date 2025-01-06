@@ -101,3 +101,11 @@ export const fetchContentsByGenre = async ({ queryKey }) => {
     const res = await axios.get(url, options);
     return res.data.results
 }
+// 인물별 콘텐츠
+export const fetchContentsByPerson = async ({ queryKey }) => {
+    const [, type, personId] = queryKey     
+    const url = `${BASE_URL}/person/${personId}/${type}_credits?${QUERY_PARAM}`
+    const res = await axios.get(url, options);
+    return res.data.results
+}
+

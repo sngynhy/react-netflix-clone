@@ -21,7 +21,6 @@ export const LogoImage = React.memo(({ id, mType, alt, width='500px', height='20
         if (logoDataLoading) return
         const path = logoData?.data?.sort(compareData)[0]?.file_path
         return path ? getContentImg(path) : null
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [logoData])
 
     if (!logoDataLoading && !logoPath) return <div style={{fontSize: '80%'}}>{alt}</div>

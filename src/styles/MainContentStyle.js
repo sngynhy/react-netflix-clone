@@ -84,7 +84,6 @@ export const CoverContentText = styled.div`
         margin: 0 15px 0 0;
     }
 `
-
 export const DetailViewButton = styled.button`
     padding: 0.6rem 1.6rem;
     font-size: 20px;
@@ -100,4 +99,9 @@ export const DetailViewButton = styled.button`
         color: white;
         background-color: rgba(109, 109, 110, 0.4);
     }
+`
+export const Overview = styled.p`
+    transition:  1s;
+    transform: ${props => props.$lowerTitle ? 'translateY(100px)' : 'translateY(0)'};
+    opacity: ${props => props.$lowerTitle ? 0 : 1};
 `

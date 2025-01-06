@@ -9,7 +9,6 @@ export const GenreContents = React.memo(({mType, genreId, sendCoverDat}) => {
     
     useEffect(() => {
         if (!isLoading) sendCoverDat(data[Math.floor(Math.random() * 10)])
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data])
 
     if (isLoading) return

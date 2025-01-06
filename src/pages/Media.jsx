@@ -15,7 +15,7 @@ function Media ({scrollTop}) {
     let { mType, genreId } = useParams()
     const { setMediaType, openDetailModal, setOpenContentId } = useMediaStore()
     
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    
     useEffect(() => setMediaType(mType), [mType])
     
     const [coverData, setCoverData] = useState(null)

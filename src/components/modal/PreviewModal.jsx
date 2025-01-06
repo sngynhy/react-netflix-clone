@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import styled from 'styled-components'
 import { Border } from "styles/IconButtonStyle";
@@ -22,23 +22,43 @@ const getGenresById = (data, genres) => {
 }
 
 export const PreviewModal = ({ id, mType, title, backdrop, voteAvg, genreIds }) => {
+    console.log('👉PreviewModal', id, title);
         
-    const {data: videokey, isLoading, isError} = useVideoQuery({type: mType, id: id})
+    // const {data: videokey, isLoading, isError} = useVideoQuery({type: mType, id: id})
     // console.log('videokey', id, videokey);
     
-    if (isLoading || isError) return
-    console.log('👉PreviewModal', id, title);
+    // if (isLoading || isError) return
+
+    const [videokey, setVideokey] = useState(null)
+    const recieveVideokey = useCallback((key) => {
+        console.log('recieveVideokey', key );
+        setVideokey(key)
+    }, [])
 
     return (
         <Wrapper>
-            <Player backdrop={backdrop} videokey={videokey} />
+            {/* <Player backdrop={backdrop} videokey={videokey} /> */}
+            <Player id={id} mType={mType} backdrop={backdrop} sendVedioKey={recieveVideokey} />
             <Info id={id} mType={mType} title={title} voteAvg={voteAvg} genreIds={genreIds} videokey={videokey} />
         </Wrapper>
     )
 }
 
-const Player = ({backdrop, videokey=null}) => {
+// export const Player = ({backdrop, videokey=null}) => {
+export const Player = ({id, mType, backdrop, sendVedioKey}) => {
+    console.log('Player', id, mType);
     const { playerState } = useMediaStore()
+
+    const {videokey, isLoading, isError} = useVideoQuery({type: mType, id: id})
+    console.log('videokey', videokey);
+    useEffect(() => {
+        if (videokey) {
+            sendVedioKey(videokey)
+        }
+    }, [sendVedioKey, videokey])
+
+    if (isLoading || isError) return
+
     return (
         <PreviewPlayer style={{backgroundImage: `url(${getContentImg(backdrop)})`, backgroundSize: 'cover'}}>
             {videokey && <div style={{opacity: [1,2,3].includes(playerState.state) ? 1 : 0}}><YouTubePlayer videoId={videokey} width="320px" height="180px" /></div>}
@@ -46,7 +66,7 @@ const Player = ({backdrop, videokey=null}) => {
     )
 }
 
-const Info = ({id, mType, title, voteAvg, genreIds, videokey=null}) => {
+export const Info = ({id, mType, title, voteAvg, genreIds, videokey=null}) => {
     const { playerState, setOpenDetailModal, setOpenContentId } = useMediaStore()
 
     const queryClient = useQueryClient(); // 캐시된 데이터 가져오기
@@ -55,7 +75,7 @@ const Info = ({id, mType, title, voteAvg, genreIds, videokey=null}) => {
     
     const genre = useMemo(() => {
         return genres ? getGenresById(genreIds, genres) : []
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+        
     }, [id, genreIds, genres])
 
     return (

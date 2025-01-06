@@ -37,8 +37,8 @@ export const Header = memo(function Header ({ scrollTop }) {
     useEffect(() => {
         // 특정 영역 외 클릭 시 이벤트 발생
     	const outSideClick = (e) => {
-            // console.log('outSideClick', e)
-        	if (searchRef.current && !searchRef.current.contains(e.target)) {
+            // console.log('outSideClick', searchKeyword)
+        	if (searchRef.current && !searchRef.current.contains(e.target) && searchKeyword.length === 0) { // && searchKeyword.length === 0
             	setOpenSearchInput(false)
                 setSearchKeyword('')
             }
@@ -51,7 +51,8 @@ export const Header = memo(function Header ({ scrollTop }) {
     function search (e) {
         // 추가) 검색 페이지 이동 props로 keyword 넘겨주기
         if ((e.keyCode === 13 || e.type === 'click') && searchKeyword.trim().length !== 0) {
-            navigate("/search", { state: {keyword: searchKeyword} })
+            // navigate("/search", { state: {keyword: searchKeyword} })
+            navigate(`/search?keyword=${encodeURIComponent(searchKeyword)}`)
         }
     }
     return (
