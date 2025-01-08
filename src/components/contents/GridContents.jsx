@@ -16,28 +16,24 @@ GridContents.prototype = {
     imgPath: PropTypes.string
 }
 
-function GridContents ({ mType, data, gridColumns=`repeat(6, 1fr)`, gap=10, showTitle=true, showOverview=true, showPlayButton=false, eventEffect=true, imgPath=`poster_path` }) {
-    // console.log('GridContents > mType', mType, data);
-    const {setMediaType, setOpenContentId, setOpenDetailModal, setOpenSearchModal} = useMediaStore()
-
+function GridContents ({ mType, data, gridColumns=`repeat(6, 1fr)`, gap=10, showTitle=true, showOverview=true, showPlayButton=false, hoverEffect=true, imgPath=`backdrop_path` }) {
+    // console.log('GridContents', mType, data);
+    const { setOpenModal } = useMediaStore()
     const navigate = useNavigate()
     const location = useLocation()
-
-    const openModal = (id, mType) => {
-        if (mType !== 'person') {
-            setOpenContentId(id)
-            setMediaType(mType)
-            setOpenDetailModal(true)
+    const openModal = (props) => {
+        console.log('🧮 GridContents > openModal', location);
+        if (mType === 'person') {
+            navigate(`/search/person?id=${encodeURIComponent(props.id)}`, {state: { background: location, condition: 'person', title: props.name }})
         } else {
-            // navigate(`/search/person?personId=${encodeURIComponent(id)}`, {state: { background: location }})
-            navigate(`/search/person?personId=${encodeURIComponent(id)}`, {state: { background: location }})
-            // setOpenSearchModal(true)
+            navigate(`${location.pathname}/detail?id=${encodeURIComponent(props.id)}`, {state: { background: location, mType: mType || props.media_type }})
         }
+        // setOpenModal(true)
     }
     return (
         <div style={{display: 'grid', gridTemplateColumns: `repeat(${gridColumns}, 1fr)`, gap: `${gap}px`, marginTop: '10px', }}>
-            {data.map(el => (
-                    <GridContent className='grid-contents' key={el.id} onClick={() => {if (eventEffect) openModal(el.id, mType || el.media_type)}} $hovereffect={eventEffect}>
+            {data.map((el, i) => (
+                    <GridContent className='grid-contents' key={i} onClick={() => {if (hoverEffect) openModal(el)}} $hovereffect={hoverEffect}>
                         <BackdropImage
                             id={el.id}
                             mType={mType || el.media_type}

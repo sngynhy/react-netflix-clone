@@ -11,7 +11,7 @@ const compareData = (a, b) => {
     return a.height - b.height;
 }
 
-export const LogoImage = React.memo(({ id, mType, alt, width='500px', height='200px', lowerTitle=false, transform=null }) => {
+export const LogoImage = React.memo(({ id, mType, alt, width='500px', height='200px', lowerTitle=false, transform=null, fontSize='80%' }) => {
     // console.log('LogoImage', id, mType, lowerTitle);
     const {data: logoData, isLoading: logoDataLoading, error: logoDataError} = useQuery({ queryKey: ['image', mType, id], queryFn: fetchImage })
     // const logoPath = logoData?.data.sort((a, b) => b.iso_639_1.localeCompare(a.iso_639_1) && a.height - b.height)[0].file_path
@@ -21,9 +21,9 @@ export const LogoImage = React.memo(({ id, mType, alt, width='500px', height='20
         if (logoDataLoading) return
         const path = logoData?.data?.sort(compareData)[0]?.file_path
         return path ? getContentImg(path) : null
-    }, [logoData])
+    }, [logoData, logoDataLoading])
 
-    if (!logoDataLoading && !logoPath) return <div style={{fontSize: '80%'}}>{alt}</div>
+    if (!logoDataLoading && !logoPath) return <div style={{fontSize: fontSize, color: 'white', fontWeight: 'bold'}}>{alt}</div>
 
     return (
         // <div style={{width: `${width}`, height: `${height}`, position: 'relative'}}>

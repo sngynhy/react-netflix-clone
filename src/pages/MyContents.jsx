@@ -5,7 +5,6 @@ import React from "react";
 import { useMediaStore } from "stores/mediaStore"
 
 function MyContents () {
-
     const {likes} = useMediaStore() // likes: { id => mType }
     const likeList = likes.size > 0 ? Array.from(likes) : []
     // const ids = Array.from(likes.keys())
@@ -24,13 +23,12 @@ function MyContents () {
             select: data => ({...data, media_type: el[1]})
           })),
     })
-    // console.log('queries', queries);
 
     if (queries.some((query) => query.isLoading)) return
     if (queries.some((query) => query.isError)) return <div>Error occurred!</div>
 
     const data = queries?.map(query => query.data)
-    // console.log('data', data);
+    // console.log('MyContents > data', data);
     return (
         <div className="my-contents">
             <div style={{padding: '64px 60px 0'}}>
@@ -39,7 +37,7 @@ function MyContents () {
                 </div>
                 {likes.size > 0 && data.length > 0 ?
                 <div className="contents" style={{marginTop: "5rem"}}>
-                    <GridContents data={data} mType={null} showTitle={true} showOverview={false} gridColumns={6} imgPath='backdrop_path' />
+                    <GridContents data={data} mType={null} showTitle={true} showOverview={false} gridColumns={6} />
                 </div>
                 : <div style={{color: '#666', textAlign: 'center', fontSize: '20px', paddingTop: '100px'}}>아직 찜하신 콘텐츠가 없습니다.</div>}
             </div>
@@ -47,4 +45,4 @@ function MyContents () {
     )
 }
 
-export default MyContents
+export default React.memo(MyContents)

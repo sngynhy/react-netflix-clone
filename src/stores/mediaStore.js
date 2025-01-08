@@ -7,23 +7,18 @@ import { devtools } from 'zustand/middleware';
 // create 함수의 콜백이 반환하는 객체에서의 속성은 상태(state)이고, 함수는 액션(Action)이라고 부름
 // create 함수 호출에서 반환하는 Store Hook은, use 접두사와 Store 접미사로 명명하여 사용
 export const useMediaStore = create(
-    devtools((set, get) => ({
-        mediaType: 'movie', // 'movie' or 'tv'
-        setMediaType: (type) => set({mediaType: type}),
+    devtools((set, get) => ({    
+        mediaTypes: { movie: '영화', tv: '시리즈' },
         
         genreName: '',
         setGenreName: (value) => set({ genreName: value}),
         
-        openSearchModal: false,
-        setOpenSearchModal: (value) => set({openSearchModal: value}),
-        openDetailModal: false,
-        setOpenDetailModal: (value) => set({openDetailModal: value}),
-        openContentId: null,
-        setOpenContentId: (value) => set({ openContentId: value }),
-        
+        openModal: false,
+        setOpenModal: (value) => set({openModal: value}),
+                
         videoId: null,
         setVideoId: (value) => set({videoId: value}),
-        playable: false,
+        playable: false, // 영상 재생 가능
         setPlayable: (value) => set({playable: value}),
         // 재생 상태
         playerState: {state: -999, error: null},
@@ -39,14 +34,14 @@ export const useMediaStore = create(
                 UNSTARTED: -1
             */
         },
-        videoCurrentTime: 0,
+        videoCurrentTime: 0, // 재생 영상 현재 시각
         setVideoCurrentTime: (value) => set({videoCurrentTime: value}),
-
         fullScreen: false, // 전체 화면
         setFullScreen: (value) => set({fullScreen: value}),
         isMuted: true, // 음소거
         setIsMuted: (value) => set({isMuted: value}),
 
+        // 찜 기능
         likes: new Map(),
         addLikes: (id, type) => set(state => {
             const updatedMap = new Map(state.likes)

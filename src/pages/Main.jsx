@@ -5,13 +5,13 @@ import { fetchGenres, fetchNetflixOriginal, fetchNowplaying, fetchPopular, fetch
 import LoadingOverlay from 'components/common/LoadingOverlay';
 import SliderContainer from 'components/ui/Slider';
 
-const Wrapper = styled.div`
+const Container = styled.div`
 
 `
 
 const MainCover = styled.div`
     background-image: url(https://assets.nflxext.com/ffe/siteui/vlv3/dadb130d-463b-4e5b-b335-038ed912059e/web_tall_panel/KR-ko-20241118-TRIFECTA-perspective_39e1ee1c-668b-451c-ac1b-2f61698a6a44_large.jpg);
-    height: 800px;
+    height: 1000px;
     margin-bottom: 0px;
     mask-image: linear-gradient(180deg, #181818, transparent 90%); // linear-gradient(to bottom, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.4));
     // mask-image: radial-gradient(circle, rgba(0, 0, 0, 1) 70%, rgba(0, 0, 0, 0) 100%);
@@ -27,7 +27,7 @@ const MainCover = styled.div`
     width: 100%;
 `
 
-const Container = styled.div`
+const Wrapper = styled.div`
     padding-top: 600px;
     // position: absolute;
     // z-index: 1;
@@ -49,7 +49,7 @@ function Main () {
 
 
     return (
-        <Wrapper>
+        <Container>
             <MainCover id="main-cover"/>
             <div style={{position:'absolute', zIndex: 1, margin: '20px 0', padding: '0 60px'}}>
                 <div style={{alignItems: 'center', display: 'flex', flexDirection: 'row', flexGrow: 1, justifyContent: 'flex-start'}}>
@@ -66,7 +66,7 @@ function Main () {
                 </div>
             </div>
 
-            <Container>
+            <Wrapper>
                 {/* <div>
                     <Slider name="현재 상영작" data={nowPlaying} />
                 </div> */}
@@ -81,8 +81,8 @@ function Main () {
                     {/* <h1>인기있는</h1> */}
                     <SliderContainer headerTitle="인기있는" data={popluar.slice(0, 10)} />
                 </div>
-            </Container>
-        </Wrapper>
+            </Wrapper>
+        </Container>
     )
 }
 

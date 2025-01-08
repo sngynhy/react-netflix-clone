@@ -4,34 +4,43 @@ import { fetchCreditDetails, fetchContentDetails, fetchRecommendContents } from 
 import { getContentImg } from "utils/CommonFunction";
 import { useVideoQuery } from "hooks/useReactQuery";
 import { FaStar } from "react-icons/fa6";
-import { IoCloseCircle } from "react-icons/io5";
+import { IoCloseOutline } from "react-icons/io5";
 import { TfiArrowCircleLeft } from "react-icons/tfi";
 import GridContents from "components/contents/GridContents";
 import { useMediaStore } from 'stores/mediaStore';
-import {Container, PreviewPlayer, IconsOnPlayer, MoreDiv} from 'styles/DetailModal'
+import {Wrapper, PreviewPlayer, IconsOnPlayer, MoreDiv, Span} from 'styles/DetailModal'
 import MyContentsButton from "components/ui/button/MyContentsButton";
 import { PlayButton } from 'components/ui/button/PlayButton';
 import { YouTubePlayer } from "components/contents/YouTubePlayer";
 import { LogoImage } from "components/contents/LogoImage";
 import { MuteButton } from "components/ui/button/MuteButton";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 
-function DetailModal () {
-    const { openContentId, mediaType, setOpenDetailModal } = useMediaStore()
-    const id = openContentId, mType = mediaType
+export const DetailModal = () => {
+    const location = useLocation()
+    const navigate = useNavigate()
+    const [searchParams] = useSearchParams()
+    const id = searchParams.get('id'), mType = location.state.mType
+    // console.log('DetailModal', id, mType);
 
+    const { setOpenModal } = useMediaStore()
     const detailModalRef = useRef(null)
     useEffect(() => {
+        setOpenModal(true)
         // 특정 영역 외 클릭 시 이벤트 발생
         const outSideClick = (e) => {
             if (detailModalRef.current && !detailModalRef.current.contains(e.target)) {
-                setOpenDetailModal(false)
+                navigate(-1)
             }
         }
         // 이벤트 리스너에 outSideClick 함수 등록
-        document.addEventListener("mousedown", outSideClick);
-        return () => { document.removeEventListener("mousedown", outSideClick); }
+        document.addEventListener("mousedown", outSideClick)
+        return () => {
+            document.removeEventListener("mousedown", outSideClick)
+            setOpenModal(false)
+        }
         
-    }, [detailModalRef, setOpenDetailModal])
+    }, [detailModalRef, setOpenModal, navigate])
 
     // detail data
     const {data: detailsData, isLoading: detailsLoading, error: detailsError} = useQuery({ queryKey: ['details', mType, id], queryFn: fetchContentDetails })
@@ -67,7 +76,7 @@ function DetailModal () {
             for (let entry of entries) {
                 if (entry.target === targetNode) {
                     const newHeight = entry.contentRect.height // 새로운 높이
-                    console.log("📐Height changed:", newHeight)
+                    // console.log("📐Height changed:", newHeight)
                     setHeight(newHeight + 30 - 241 + 'px')
                 }
             }
@@ -79,16 +88,12 @@ function DetailModal () {
         // 크기 변경 감지
         return () => resizeObserver.disconnect()
     }, [detailsData, creditData])
-
-    // if (detailsLoading || creditLoading) return null
-    // if (detailsError || crditError) return <div>Error</div>
-    
-    // 콘텐츠 정보
-    return (
         
-        <div id="detail-info" style={{width: '100%', height: height}}>
-            <Container className="detail-container">
-                <div className='detailModalRef' ref={detailModalRef}>
+    // if (detailsLoading || creditLoading || detailsError || crditError) return null
+    return (
+        <div id="detail-modal" style={{width: '100%', height: height}}>
+            <Wrapper className="detail-container">
+                <div ref={detailModalRef}>
                 {detailsData && creditData && <>
                     {/* 최상단 커버 영상 */}
                     <PreviewContent id={id} mType={mType} imgPath={detailsData.backdrop_path} title={details.title}/>
@@ -102,37 +107,36 @@ function DetailModal () {
                             <RecommendSection id={id} mType={mType} />
 
                             {/* 하단 디테일 정보 */}
-                            <BottomDetail details={details} detailsData={detailsData} creditData={creditData} />
+                            <BottomDetail mType={mType} details={details} detailsData={detailsData} creditData={creditData} />
                         </div>
                     </div>
                 </>}
                 </div>
-            </Container>
+            </Wrapper>
         </div>
     )
 }
 
-const PreviewContent = ({ id, mType, imgPath, title }) => {
-
-    const { playable, playerState, videoCurrentTime, setOpenDetailModal } = useMediaStore()
-
+const PreviewContent = React.memo(({ id, mType, imgPath, title }) => {
+    const navigate = useNavigate()
+    const { playable, playerState, videoCurrentTime, setOpenModal } = useMediaStore()
     // video
     const {data: videokey, isLoading: videoLoading} = useVideoQuery({type: mType, id: id})
     // console.log('videokey >>', videokey);
-
-    const [lowerTitle, setLowerTitle] = useState(false)
+    
+    // const [lowerTitle, setLowerTitle] = useState(false)
     if (videoLoading) return
 
+    // setTimeout(() => {
+    //     setLowerTitle(true)
+    // }, 3000)
     const closeModal = () => {
-        setOpenDetailModal(false)
         if (videokey && playerState.id === videokey && playerState.state === 1) {
             document.getElementById('video-stop-btn').click()
         }
+        setOpenModal(false)
+        navigate(-1)
     }
-    setTimeout(() => {
-        setLowerTitle(true)
-    }, 3000)
-
     return (
         <PreviewPlayer>
             {/* 영상 or 이미지 콘텐츠 */}
@@ -141,29 +145,41 @@ const PreviewContent = ({ id, mType, imgPath, title }) => {
                     {videokey && <div style={{opacity: playerState.id === videokey && playerState.state === 1 ? 1 : 0}}><YouTubePlayer videoId={videokey} startTime={videoCurrentTime} borderRadius="8px 8px 0 0" /></div>}
                 </div>
                 <div style={{position: 'absolute', width: '60%', bottom : 100, left: '3rem' }}>
-                    <LogoImage id={id} mType={mType} alt={title} width='320px' height='150px' lowerTitle={lowerTitle} transform='scale(.7) translate(-72px, 40px);' />
+                    {/* <LogoImage id={id} mType={mType} alt={title} width='320px' height='150px' lowerTitle={lowerTitle} transform='scale(.7) translate(-72px, 40px);' fontSize='32px' /> */}
+                    <LogoImage id={id} mType={mType} alt={title} width='320px' height='150px' lowerTitle={false} fontSize='32px' />
                 </div>
             </div>
             {/* 버튼 */}
             <IconsOnPlayer>
-                <IoCloseCircle className="closeBtn" onClick={closeModal} />
-                <div style={{height: '46px'}}>
-                    {/* <div style={{marginRight: '10px'}}><PlayButton active={videokey && playerState.id === videokey && playerState.state === 1} /></div> */}
+                <div className="close-btn"><IoCloseOutline onClick={closeModal} /></div>
+                <div className="bottom-btns">
                     <div style={{marginRight: '10px'}}><PlayButton active={videokey && playerState.id === videokey && playable} /></div>
                     <div style={{marginRight: '10px'}}><MyContentsButton id={id} mType={mType} /></div>
-                    {videokey && <div><MuteButton /></div>}
+                    {videokey && <MuteButton />}
                 </div>
             </IconsOnPlayer>
         </PreviewPlayer>
     )
-}
+})
 
-const TopInfo = ({mType, details, creditData}) => {
+const TopInfo = React.memo(({mType, details, creditData}) => {
+    const navigate = useNavigate()
+    const location = useLocation()
+    const { setOpenModal } = useMediaStore()
+
     const scrollToBottom = () => {
         const location = document.querySelector("#bottomDetail").offsetTop
         window.scrollTo({ top: location, behavior: "smooth" })
     }
 
+    const openSearchModal = (type, props) => {
+        if (type === 'person') {
+            navigate(`/search/person?id=${encodeURIComponent(props.id)}`, {state: { background: location, condition: 'person', title: props.name }})
+        } else {
+            navigate(`/search/genre?id=${encodeURIComponent(props.id)}`, {state: { background: location, condition: 'genre', title: props.name, mType: mType }})
+        }
+        // setOpenModal(true)
+    }
     return (
         <div style={{display: 'grid', gridTemplateColumns: 'minmax(0,2fr) minmax(0,1fr)', columnGap: '2rem'}}>
             <div style={{paddingRight: '1rem'}}>
@@ -181,18 +197,18 @@ const TopInfo = ({mType, details, creditData}) => {
             <div style={{fontSize: '14px'}}>
                 {creditData.cast.length !== 0 &&
                 <div style={{marginBottom: '10px'}}>
-                    <span style={{color: '#777777', marginRight: '5px'}}>출연:</span>{creditData.cast.slice(0, 3).map(el => <span key={el.id}>{el.name}, </span>)}
+                    <span style={{color: '#777777', marginRight: '5px'}}>출연:</span>{creditData.cast.slice(0, 3).map(el => <Span key={el.id} onClick={() => openSearchModal('person', el)}>{el.name}, </Span>)}
                     <span className="moreView" onClick={scrollToBottom}style={{cursor: 'pointer', borderBottom: '1px solid', color: 'grey', fontStyle: 'italic'}}>더보기</span>
                 </div> }
                 <div>
-                    <span style={{color: '#777777', marginRight: '5px'}}>장르:</span>{details.genres.map(el => <span key={el.id}>{el.name}, </span>)}
+                    <span style={{color: '#777777', marginRight: '5px'}}>장르:</span>{details.genres.map(el => <Span key={el.id} onClick={() => openSearchModal(mType, el)}>{el.name}, </Span>)}
                 </div>
             </div>
         </div>
     )
-}
+})
 
-const RecommendSection = ({id, mType}) => {
+const RecommendSection = React.memo(({id, mType}) => {
 
     // recommendData data
     const {data: recommendData, isLoading: recommendLoading, error: recommendError} = useQuery({
@@ -217,15 +233,27 @@ const RecommendSection = ({id, mType}) => {
         <div id="recommendSection" style={{margin: '30px 0'}}>
             <h2>추천 콘텐츠</h2>
             <div className="gridBox">
-                <GridContents data={recommendData?.slice(0, 9)} mType={mType} showTitle={true} showPlayButton={true} showOverview={true} gridColumns={3} eventEffect={false} imgPath='backdrop_path' />
-                {moreViewRecommend && <GridContents data={recommendData?.slice(9, recommendData.lenght)} mType={mType} showTitle={true} showPlayButton={true} showOverview={true} gridColumns={3} eventEffect={false} imgPath='backdrop_path' />}
+                <GridContents data={recommendData?.slice(0, 9)} mType={mType} showTitle={true} showPlayButton={true} showOverview={true} gridColumns={3} hoverEffect={false} />
+                {moreViewRecommend && <GridContents data={recommendData?.slice(9, recommendData.lenght)} mType={mType} showTitle={true} showPlayButton={true} showOverview={true} gridColumns={3} hoverEffect={false} />}
                 <MoreDiv $moreview={moreViewRecommend} ><TfiArrowCircleLeft onClick={moreView}/></MoreDiv>
             </div>
         </div>
     )
-}
+})
 
-const BottomDetail = ({details, detailsData, creditData}) => {
+const BottomDetail = React.memo(({mType, details, detailsData, creditData}) => {
+    const navigate = useNavigate()
+    const location = useLocation()
+    const { setOpenModal } = useMediaStore()
+
+    const openSearchModal = (type, props) => {
+        if (type === 'person') {
+            navigate(`/search/person?id=${encodeURIComponent(props.id)}`, {state: { background: location, condition: 'person', title: props.name }})
+        } else {
+            navigate(`/search/genre?id=${encodeURIComponent(props.id)}`, {state: { background: location, condition: 'genre', title: props.name, mType: mType }})
+        }
+        // setOpenModal(true)
+    }
     return (
         <div id="bottomDetail">
             <h2>{details.title} 상세 정보</h2>
@@ -237,11 +265,11 @@ const BottomDetail = ({details, detailsData, creditData}) => {
                 {creditData?.cast?.length > 0 &&
                 <div style={{marginBottom: '10px'}}>
                     <span style={{color: '#777777', marginRight: '5px'}}>출연:</span>
-                    {creditData.cast.length < 30 ? creditData.cast.map(el => <span key={el.id}>{el.name}, </span>) : creditData.cast.slice(0,30).map(el => <span key={el.id}>{el.name}, </span>)}
+                    {creditData.cast.length < 30 ? creditData.cast.map(el => <Span key={el.id} onClick={() => openSearchModal('person', el)}>{el.name}, </Span>) : creditData.cast.slice(0,30).map(el => <Span key={el.id} onClick={() => openSearchModal('person', el)}>{el.name}, </Span>)}
                 </div>}
                 {details?.genres?.length > 0 &&
                 <div style={{marginBottom: '10px'}}>
-                    <span style={{color: '#777777', marginRight: '5px'}}>장르:</span>{details.genres.map(el => <span key={el.id}>{el.name}, </span>)}
+                    <span style={{color: '#777777', marginRight: '5px'}}>장르:</span>{details.genres.map(el => <Span key={el.id} onClick={() => openSearchModal(mType, el)}>{el.name}, </Span>)}
                 </div>}
                 {detailsData?.production_companies?.length > 0 &&
                 <div style={{marginBottom: '10px'}}>
@@ -255,6 +283,4 @@ const BottomDetail = ({details, detailsData, creditData}) => {
             </div>
         </div>
     )
-}
-
-export default React.memo(DetailModal)
+})

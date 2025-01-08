@@ -11,6 +11,7 @@ import MyContentsButton from "components/ui/button/MyContentsButton";
 import { YouTubePlayer } from "components/contents/YouTubePlayer";
 import { PlayButton } from "components/ui/button/PlayButton";
 import { MuteButton } from "components/ui/button/MuteButton";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const getGenresById = (data, genres) => {
     // 장르의 id값으로 name 추출
@@ -22,35 +23,30 @@ const getGenresById = (data, genres) => {
 }
 
 export const PreviewModal = ({ id, mType, title, backdrop, voteAvg, genreIds }) => {
-    console.log('👉PreviewModal', id, title);
+    // console.log('👉PreviewModal', id, title);
         
     // const {data: videokey, isLoading, isError} = useVideoQuery({type: mType, id: id})
-    // console.log('videokey', id, videokey);
     
     // if (isLoading || isError) return
 
     const [videokey, setVideokey] = useState(null)
     const recieveVideokey = useCallback((key) => {
-        console.log('recieveVideokey', key );
         setVideokey(key)
     }, [])
 
     return (
-        <Wrapper>
+        <Container>
             {/* <Player backdrop={backdrop} videokey={videokey} /> */}
             <Player id={id} mType={mType} backdrop={backdrop} sendVedioKey={recieveVideokey} />
             <Info id={id} mType={mType} title={title} voteAvg={voteAvg} genreIds={genreIds} videokey={videokey} />
-        </Wrapper>
+        </Container>
     )
 }
 
 // export const Player = ({backdrop, videokey=null}) => {
 export const Player = ({id, mType, backdrop, sendVedioKey}) => {
-    console.log('Player', id, mType);
     const { playerState } = useMediaStore()
-
     const {videokey, isLoading, isError} = useVideoQuery({type: mType, id: id})
-    console.log('videokey', videokey);
     useEffect(() => {
         if (videokey) {
             sendVedioKey(videokey)
@@ -67,7 +63,9 @@ export const Player = ({id, mType, backdrop, sendVedioKey}) => {
 }
 
 export const Info = ({id, mType, title, voteAvg, genreIds, videokey=null}) => {
-    const { playerState, setOpenDetailModal, setOpenContentId } = useMediaStore()
+    const navigate = useNavigate()
+    const location = useLocation()
+    const { playerState, setOpenModal } = useMediaStore()
 
     const queryClient = useQueryClient(); // 캐시된 데이터 가져오기
     const genres = queryClient.getQueryData(['genres', mType]) // 'genres' 키로 데이터 조회
@@ -76,15 +74,22 @@ export const Info = ({id, mType, title, voteAvg, genreIds, videokey=null}) => {
     const genre = useMemo(() => {
         return genres ? getGenresById(genreIds, genres) : []
         
-    }, [id, genreIds, genres])
+    }, [genreIds, genres])
 
+    const openModal = () => {
+        if (videokey && playerState.id === videokey && playerState.state === 1) {
+            document.getElementById('video-puause-btn').click()
+        }
+        // setOpenModal(true)
+        navigate(`/detail?id=${encodeURIComponent(id)}`, {state: { background: location, mType: mType }})
+    }
     return (
         <PreviewInfo>
             <div style={{display: 'inline-block', width: '100%'}}>
                 <div style={{float: 'left', marginRight: '5px'}}><PlayButton active={!!videokey && [1,2,3].includes(playerState.state)} type='icon' /></div>
                 <div style={{float: 'left', marginRight: '5px'}}><MyContentsButton id={id} mType={mType} iconSize={30} borderSize={35} /></div>
                 <div style={{float: 'left', marginRight: '5px'}}><MuteButton id={id} mType={mType} iconSize={25} borderSize={35} /></div>
-                <div style={{float: 'right'}}><Border $iconSize={25} $borderSize={35}><GoChevronRight style={{float: 'right', transform: 'rotate(90deg)'}} onClick={() => {setOpenContentId(id); setOpenDetailModal(true)}} /></Border></div>
+                <div style={{float: 'right'}}><Border $iconSize={25} $borderSize={35}><GoChevronRight style={{float: 'right', transform: 'rotate(90deg)'}} onClick={openModal} /></Border></div>
                 {/* {like ? <AiFillLike onClick={liked} /> : <AiOutlineLike onClick={liked} />} */}
             </div>
             <div style={{margin: '5px 0 0'}}>
@@ -107,7 +112,7 @@ PreviewModal.prototype = {
     voteAvg: PropTypes.number,
 }
 
-const Wrapper = styled.div`
+const Container = styled.div`
     position: absolute;
     top: 0px;
 `

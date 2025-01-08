@@ -7,9 +7,12 @@ import { LogoImage } from '../LogoImage';
 import { ReplayButton } from "components/ui/button/ReplayButton";
 import { MuteButton } from "components/ui/button/MuteButton";
 import { FiInfo } from "react-icons/fi";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export const CoverContent = ({mType, coverData, sendVideokey}) => {
-    const { playerState, playable, setOpenContentId, setOpenDetailModal } = useMediaStore()
+    const navigate = useNavigate()
+    const location = useLocation()
+    const { playerState, playable, setOpenModal } = useMediaStore()
     const [lowerTitle, setLowerTitle] = useState(false)
 
     useEffect(() => {
@@ -30,11 +33,11 @@ export const CoverContent = ({mType, coverData, sendVideokey}) => {
     if (!coverData || videoLoading) return
     
     const openModal = () => {
-        setOpenContentId(coverData.id)
-        setOpenDetailModal(true)
         if (videokey && playerState.id === videokey && playerState.state === 1) {
             document.getElementById('video-puause-btn').click()
         }
+        // setOpenModal(true)
+        navigate(`/${location.pathname}/detail?id=${encodeURIComponent(coverData.id)}`, {state: { background: location, mType: mType }})
     }
     return (
         <CoverContentText>
@@ -47,7 +50,7 @@ export const CoverContent = ({mType, coverData, sendVideokey}) => {
             <Overview $lowerTitle={lowerTitle}>{coverData.overview}</Overview>
             <div style={{marginTop: '30px'}}>
                 <div style={{position: 'relative', display: 'flex'}}>
-                    <div style={{marginRight: '12px'}}><PlayButton active={videokey && !playerState.error} /></div>
+                    <div style={{marginRight: '12px'}}><PlayButton active={videokey && playable} /></div>
                     <div style={{marginRight: '12px'}}><DetailViewButton className="detailBtn" onClick={openModal}><FiInfo />상세정보</DetailViewButton></div>
                     {videokey && videokey === playerState.id && playable &&
                     <div style={{marginRight: '12px'}}>

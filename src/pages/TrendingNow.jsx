@@ -23,7 +23,7 @@ function TrendingNow () {
                 </div>
                 {weekContents?.map((el, i) => {
                     return (<div key={i} className="contents" style={{marginTop: "1rem"}}>
-                        <GridContents data={el.data} mType={null} showTitle={true} showOverview={false} gridColumns={6} imgPath='backdrop_path' />
+                        <GridContents data={el.data} mType={null} showTitle={true} showOverview={false} gridColumns={6} />
                     </div>)
                 })}
             </div>
@@ -33,7 +33,7 @@ function TrendingNow () {
                 </div>
                 {dayContents?.map((el, i) => {
                     return (<div key={i} className="contents" style={{marginTop: "1rem"}}>
-                        <GridContents data={el.data} mType={null} showTitle={true} showOverview={false} gridColumns={6} imgPath='backdrop_path' />
+                        <GridContents data={el.data} mType={null} showTitle={true} showOverview={false} gridColumns={6} />
                     </div>)
                 })}
             </div>
@@ -41,4 +41,4 @@ function TrendingNow () {
     )
 }
 
-export default TrendingNow
+export default React.memo(TrendingNow)

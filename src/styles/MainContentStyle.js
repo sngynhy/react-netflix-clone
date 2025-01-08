@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const MainCoverImg = styled.div`
     background-image: url(${props => props.$url});
     background-size: cover;
-    height: 800px;
+    height: 1000px;
     width: 100%;
     margin-bottom: 0px;
     mask-image: linear-gradient(180deg, #181818, transparent 90%); // linear-gradient(to bottom, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.4));
@@ -12,11 +12,11 @@ export const MainCoverImg = styled.div`
     position: absolute;
     z-index: 0;
 `
-export const Container = styled.div`
+export const Wrapper = styled.div`
     position: absolute;
     z-index: 1;
     width: 100%;
-    height: 600px;
+    height: 700px;
     margin-top: 64px;
 `
 export const SelectBox = styled.div`
@@ -29,7 +29,7 @@ export const SelectBox = styled.div`
     justify-content: flex-start;
     position: absolute;
     z-index: 2;
-    background-color: ${props => !props.$scrollTop && !props.$openDetailModal ? 'black;' : 'transparent;'}
+    background-color: ${props => !props.$scrollTop ? 'black;' : 'transparent;'}
     position: fixed;
     transition: 0.5s;
     
@@ -76,7 +76,7 @@ export const CoverContentText = styled.div`
 
     & > h2 {
         font-size: 50px;
-        margin: 8px 15px 0 0;
+        margin: 15px 0;
     }
     & > p {
         width: 40%;

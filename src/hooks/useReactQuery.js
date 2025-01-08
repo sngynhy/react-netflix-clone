@@ -60,7 +60,7 @@ export const useConetentsQueries = (type) => {
 export const useConetentsByGenreQuery = (props) => {
     const { type, genreId } = props
     return useQuery({
-        queryKey: [genreId, type, genreId],
+        queryKey: ['genre', type, genreId],
         queryFn: fetchContentsByGenre,
         select: data => data.filter(el => el.backdrop_path !== null && el.poster !== null)
     })
@@ -68,8 +68,9 @@ export const useConetentsByGenreQuery = (props) => {
 export const useConetentsByPersonQuery = (props) => {
     const { type, personId } = props
     return useQuery({
-        queryKey: [type, personId],
+        queryKey: ['person', type, personId],
         queryFn: fetchContentsByPerson,
+        select: data => data.filter(el => el.backdrop_path !== null && el.poster !== null)
     })
 }
 export const useCrditDetailsQuery = (props) => {

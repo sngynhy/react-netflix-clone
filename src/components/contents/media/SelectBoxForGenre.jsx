@@ -5,20 +5,25 @@ import { useNavigate } from "react-router-dom"
 import { SelectBox } from 'styles/MainContentStyle';
 import { fetchGenres } from 'api/movieApi';
 
-export const SelectBoxForGenre = ({scrollTop, mType, genreId, name}) => {
+export const SelectBoxForGenre = ({mType, genreId}) => {
 
-    const [openGenreBox, setOpenGenreBox] = useState(false)
-    const [genre, setGenre] = useState({id: -1, name: '장르'})
+    const { mediaTypes, setGenreName } = useMediaStore()
+
+    const [scrollTop, setScrollTop] = useState(true)
+    useEffect(() => {
+            const handleScroll = () => setScrollTop(window.scrollY === 0)
     
-    const { setGenreName, openDetailModal } = useMediaStore()
+            window.addEventListener('scroll', handleScroll)
+            return () => window.removeEventListener('scroll', handleScroll)
+    }, [])
 
+    const [genre, setGenre] = useState({id: -1, name: '장르'})
     const {data: genres} = useQuery({
         queryKey: ['genres', mType],
         queryFn: fetchGenres,
         staleTime: Infinity, // 데이터는 무기한 신선한 상태로 유지
         cacheTime: Infinity, // 캐시 데이터를 무기한 보관
     })
-
     useEffect(() => {
         if (genres) {
             if (genreId) {
@@ -30,6 +35,7 @@ export const SelectBoxForGenre = ({scrollTop, mType, genreId, name}) => {
         }
     }, [mType, genreId, genres])
 
+    const [openGenreBox, setOpenGenreBox] = useState(false)
     const genreBoxRef = useRef(null)
     useEffect(() => {
         // 특정 영역 외 클릭 시 이벤트 발생
@@ -50,21 +56,21 @@ export const SelectBoxForGenre = ({scrollTop, mType, genreId, name}) => {
             setOpenGenreBox(false)
             navigate(`/media/${mType}/genre/${genre.id}`)
         }
-    
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [genre])
 
     return (
-        <SelectBox $openGenreBox={openGenreBox} $scrollTop={scrollTop} $openDetailModal={openDetailModal}>
+        <SelectBox $openGenreBox={openGenreBox} $scrollTop={scrollTop}>
             {genreId ?
                 <>
                     <div style={{fontSize: '18px', color: 'grey'}}>
-                        <span onClick={() => navigate(`/media/${mType}`)} style={{cursor: 'pointer'}}>{name}</span>
+                        <span onClick={() => navigate(`/media/${mType}`)} style={{cursor: 'pointer'}}>{mediaTypes[mType]}</span>
                         <span style={{margin: '0 8px'}}>></span>
                     </div>
                     <span>{genre.name}</span>
                 </>
                 : <>
-                    <span>{name}</span>
+                    <span>{mediaTypes[mType]}</span>
                     <div className="selectBox" onClick={() => setOpenGenreBox(true)}>
                         <div className="selectIndex">
                             <span style={{paddingRight: "30px"}}>{genre.name}</span>

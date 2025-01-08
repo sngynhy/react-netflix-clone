@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const Container = styled.div`
+export const Wrapper = styled.div`
     border: none;
     position: absolute;
     z-index: 999;
@@ -24,19 +24,30 @@ export const IconsOnPlayer = styled.div`
     background-position: top, bottom;
     border-radius: 8px 8px 0 0;
 
-    & .closeBtn {
+    & > .close-btn {
         position: absolute;
         right: 0;
         width: 36px;
         height: 36px;
         margin: 12px;
         cursor: pointer;
+        border: 1px solid black;
+        border-radius: 50%;
+        background-color: black;
     }
-    & > div {
+    & > .close-btn > svg {
+        width: 32px;
+        height: 32px;
+        position: absolute;
+        top: 2px;
+        left: 2px;
+    }
+    & > .bottom-btns {
         position: absolute;
         left:3rem;
         bottom: 2rem;
         display: flex;
+        height: 46px;
     }
 `
 
@@ -63,5 +74,11 @@ export const MoreDiv = styled.div`
     }
     & > svg:hover {
         color: white;
+    }
+`
+export const Span = styled.span`
+    cursor: pointer;
+    &:hover {
+        border-bottom: 1px solid white;
     }
 `

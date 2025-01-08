@@ -4,7 +4,7 @@ import styled from "styled-components";
 import YouTube from "react-youtube";
 
 export const YouTubePlayer = ({ videoId, startTime=0, width="100%", height="475px", borderRadius="0" }) => {
-    // console.log('🎬🎥📺 YouTubePlayer > videokey', videoId);
+    // // console.log('🎬🎥📺 YouTubePlayer > videokey', videoId);
     const playerRef = useRef(null)
     const {isMuted, setFullScreen, setPlayerState, setVideoCurrentTime} = useMediaStore()
     const opts = {
@@ -25,7 +25,7 @@ export const YouTubePlayer = ({ videoId, startTime=0, width="100%", height="475p
     // ESC 키 충돌 처리
     useEffect(() => {
         // const handleKeyDown = (event) => {
-        //     // console.log('handleKeyDown', event.key);
+        //     // // console.log('handleKeyDown', event.key);
         //     if (event.key === "Escape") {
         //         if (document.fullscreenElement) { // full screen일 때 esc키를 누른 경우
         //             document.exitFullscreen();
@@ -39,60 +39,60 @@ export const YouTubePlayer = ({ videoId, startTime=0, width="100%", height="475p
             // document.removeEventListener("keydown", handleKeyDown)
             if (playerRef.current) {
                 playerRef.current.destroy()
-                // setPlayerState({id: videoId, state: -999, error: null})
-                // console.log('destroy', JSON.parse(JSON.stringify(playerRef.current)));
+                setPlayerState({id: videoId, state: -999, error: null})
+                console.log('destroy', JSON.parse(JSON.stringify(playerRef.current)));
             }
         }
     }, [])
 
     const onReady = (event) => {
-        console.log('🎞🎞 재생 준비', );
+        // console.log('🎞🎞 재생 준비', );
         playerRef.current = event.target;
         if (startTime !== 0) {
-            console.log('startTime', startTime);
+            // console.log('startTime', startTime);
             seekTo(startTime, true)
         }
         setPlayerState({id: videoId, state: -1, desc: 'UNSTARTED', error: null})
     }
     const onPlay = (event) => {
-        console.log('🎞🎞 재생 시작', event);
+        // console.log('🎞🎞 재생 시작', event);
         isMuted ? mute() : unMute()
         setVideoCurrentTime(0)
         setPlayerState({id: videoId, state: event.data, desc: 'PLAYING', error: null})
     }
     const onPause = (event) => {
-        console.log('🎞🎞 재생 일시 정지', );
+        // console.log('🎞🎞 재생 일시 정지', );
         setPlayerState({id: videoId, state: event.data, desc: 'PAUSED', error: null})
     }
     const onEnd = (event) => {
-        console.log('재생 완료 🎞🎞', );
+        // console.log('재생 완료 🎞🎞', );
         setVideoCurrentTime(0)
         setPlayerState({id: videoId, state: event.data, desc: 'ENDED', error: null})
     }
     // 재생 에러
     const onError = (event) => {
-        console.error("에러 발생 🎞🎞", event.data);
+        // console.error("에러 발생 🎞🎞", event.data);
         // 에러 상태에 따라 다르게 처리
         switch (event.data) {
             case 2:
-                console.error("Invalid video ID > 요청한 콘텐츠를 찾을 수 없음");
-                setPlayerState({id: videoId, state: event.data, error: {state: event.data, message: 'Invalid video ID'}})
+                // console.error("Invalid video ID > 요청한 콘텐츠를 찾을 수 없음");
+                setPlayerState({id: videoId, state: -999, error: {state: event.data, message: 'Invalid video ID'}})
                 break
             case 5:
-                console.error("HTML5 player error > HTML5 플레이어에서 지원되지 않는 콘텐츠");
-                setPlayerState({id: videoId, state: event.data, error: {state: event.data, message: 'HTML5 player error'}})
+                // console.error("HTML5 player error > HTML5 플레이어에서 지원되지 않는 콘텐츠");
+                setPlayerState({id: videoId, state: -999, error: {state: event.data, message: 'HTML5 player error'}})
                 break
             case 100:
-                console.error("Video not found or private > 요청한 비디오가 비공개 또는 삭제됨");
-                setPlayerState({id: videoId, state: event.data, error: {state: event.data, message: 'Video not found or private'}})
+                // console.error("Video not found or private > 요청한 비디오가 비공개 또는 삭제됨");
+                setPlayerState({id: videoId, state: -999, error: {state: event.data, message: 'Video not found or private'}})
                 break
             case 101:
             case 150:
-                console.error("Embedding restricted > 요청한 비디오가 특정 도메인에서 재생할 수 없음");
-                setPlayerState({id: videoId, state: event.data, error: {state: event.data, message: 'Embedding restricted'}})
+                // console.error("Embedding restricted > 요청한 비디오가 특정 도메인에서 재생할 수 없음");
+                setPlayerState({id: videoId, state: -999, error: {state: event.data, message: 'Embedding restricted'}})
                 break
             default:
-                setPlayerState({id: videoId, state: event.data, error: {state: event.data, message: 'PLAYER ERROR'}})
+                setPlayerState({id: videoId, state: -999, error: {state: event.data, message: 'PLAYER ERROR'}})
         }
     }
     // 플레이어 상태 변경
@@ -107,31 +107,31 @@ export const YouTubePlayer = ({ videoId, startTime=0, width="100%", height="475p
         */
         switch (event.data) {
             case -1: // 시작되기 전
-                console.log('Player state changed: UNSTARTED', )
+                // console.log('Player state changed: UNSTARTED', )
                 // setPlayerState({id: videoId, state: event.data, desc: 'UNSTARTED', error: null})
                 break
             case 0: // 종료
-                console.log('Player state changed: ENDED', )
+                // console.log('Player state changed: ENDED', )
                 // setPlayerState({id: videoId, state: event.data, desc: 'ENDED', error: null})
                 break
             case 1: // 재생 중
-                console.log('Player state changed: PLAYING', )
+                // console.log('Player state changed: PLAYING', )
                 // setPlayerState({id: videoId, state: event.data, desc: 'PLAYING', error: null})
                 break
             case 2: // 일지 정지
-                console.log('Player state changed: PAUSED', )
+                // console.log('Player state changed: PAUSED', )
                 // setPlayerState({id: videoId, state: event.data, desc: 'PAUSED', error: null})
                 break
             case 3: // 버퍼링
-                console.log('Player state changed: BUFFERING', )
+                // console.log('Player state changed: BUFFERING', )
                 // setPlayerState({id: videoId, state: event.data, desc: 'BUFFERING', error: null})
                 break
             case 5: // 동영상 신호 > 영상이 준비되었으나 아직 재생되지 않은 상태
-                console.log('Player state changed: CUED', )
+                // console.log('Player state changed: CUED', )
                 // setPlayerState({id: videoId, state: event.data, desc: 'CUED', error: null})
                 break
             default:
-                console.log('Player state changed: default', )
+                // console.log('Player state changed: default', )
                 // setPlayerState({id: videoId, state: event.data, desc: '', error: null})
         }
     }
@@ -139,13 +139,13 @@ export const YouTubePlayer = ({ videoId, startTime=0, width="100%", height="475p
     // 재생 관련
     const playVideo = () => {
         if (playerRef.current) {
-            console.log('🎪 playVideo', );
+            // console.log('🎪 playVideo', );
             playerRef.current.playVideo()
         }
     } // 재생
     const pauseVideo = () => { // 일시 정지
         if (playerRef.current) {
-            console.log('🎪 pauseVideo', );
+            // console.log('🎪 pauseVideo', );
             playerRef.current.pauseVideo()
             getCurrentTime()
             // stopVideo()
@@ -153,7 +153,7 @@ export const YouTubePlayer = ({ videoId, startTime=0, width="100%", height="475p
     }
     const stopVideo = () => { // 재생 멈춤
         if (playerRef.current) {
-            console.log('🎪 stopVideo', );
+            // console.log('🎪 stopVideo', );
             playerRef.current.stopVideo()
             setPlayerState({id: videoId, state: 0, desc: 'ENDED', error: null})
         }
@@ -162,19 +162,18 @@ export const YouTubePlayer = ({ videoId, startTime=0, width="100%", height="475p
     // 볼륨 관련
     const mute = () => { // 음소거
         if (playerRef.current) {
-            console.log('🔈 unMute', );
+            // // console.log('🔈 unMute', );
             playerRef.current.mute()
         }
     }
     const unMute = () => { // 음소거 해제
         try {
             if (playerRef.current) {
-                console.log('🔊 unMute', );
+                // // console.log('🔊 unMute', );
                 playerRef.current.unMute()
-                // playerRef.current.playVideo()
             }
         } catch (error) {
-            console.error('Unmuting failed:', error);
+            // console.error('Unmuting failed:', error);
         }
     }
     const setVolume = () => { if (playerRef.current) playerRef.current.setVolume(50) } // 볼륨 설정
@@ -184,7 +183,7 @@ export const YouTubePlayer = ({ videoId, startTime=0, width="100%", height="475p
     const getCurrentTime = () => {
         if (playerRef.current) {
           const currentTime = playerRef.current.getCurrentTime() // 현재 재생 시점 (초 단위)
-        //   console.log(`현재 재생 시점: ${currentTime}초`)
+        //   // console.log(`현재 재생 시점: ${currentTime}초`)
           setVideoCurrentTime(currentTime)
         }
     }
@@ -194,7 +193,6 @@ export const YouTubePlayer = ({ videoId, startTime=0, width="100%", height="475p
     // 전체 화면으로 전환하는 함수
     const enterFullScreen = () => {
         if (playerRef.current) {
-            console.log('enterFullScreen', playerRef.current);
             const iframe = playerRef.current.getIframe() // IFrame 요소 가져오기
             if (iframe.requestFullscreen) {
                 iframe.requestFullscreen()

@@ -2,12 +2,19 @@ import React, { useState } from "react";
 import { getContentImg } from "utils/CommonFunction";
 import { PlayButton } from "components/ui/button/PlayButton";
 import { LogoImage } from "./LogoImage";
+import { useVideoQuery } from "hooks/useReactQuery";
 
 export const BackdropImage = ({id, mType, title, showPlayButton=false, showTitle=false, imgPath, width='120px', height='60px'}) => {
     const [show, setShow] = useState(false)
+
+    // const {data: videokey, isLoading: videoLoading, error: videoError} = useVideoQuery({type: showPlayButton && mType, id: showPlayButton && id})
+    // console.log('videokey', videokey);
+    const play = () => {
+        
+    }
     return (
         <>
-            <div className="backdrop-img" style={{position: 'relative', cursor: 'pointer'}} onMouseEnter={() => setShow(true)} onMouseLeave={() => setShow(false)}>
+            <div className="backdrop-img" style={{position: 'relative', cursor: 'pointer'}} onMouseEnter={() => setShow(true)} onMouseLeave={() => setShow(false)} onClick={play}>
                 <img loading="lazy" src={getContentImg(imgPath)} alt={title} width='100%' />
                 {showPlayButton && show &&
                     <div style={{position: 'absolute', top: 'calc(50% - 30px)', left: 'calc(50% - 30px)', zIndex: 999}}>

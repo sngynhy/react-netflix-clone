@@ -7,9 +7,12 @@ import { BackdropImage } from "components/contents/BackdropImage";
 import styled from "styled-components";
 import { useMediaStore } from "stores/mediaStore";
 import { settings } from './SliderSettings'
+import { useLocation, useNavigate } from "react-router-dom";
 
 export const SliderContainer = React.memo(({mType, headerTitle, data}) => {
-    const { fullScreen, setOpenContentId, setMediaType, setOpenDetailModal } = useMediaStore()
+    const navigate = useNavigate()
+    const location = useLocation()
+    const { setOpenModal } = useMediaStore()
     const [isHovered, setIsHovered] = useState(false)
 
     // const [isInside, setIsInside] = useState(false)
@@ -54,16 +57,14 @@ export const SliderContainer = React.memo(({mType, headerTitle, data}) => {
     // }
 
     const openModal = (id) => {
-        setOpenContentId(id)
-        setMediaType(mType)
-        setOpenDetailModal(true)
-        setIsHovered(true)
+        navigate(`/${location.pathname}/detail?id=${encodeURIComponent(id)}`, {state: { background: location, mType: mType }})
+        // setOpenModal(true)
     }
     // console.log('🎀SliderContainer🎀', headerTitle, data);
     return (
         <div className="slider-container" style={{margin: '3vw 0', width: '100%'}}>
             <div style={{padding: "0 60px", position: "relative"}}>
-                <h2 style={{fontWeight: 400}}>{headerTitle}</h2>
+                <h2 style={{fontWeight: 400, margin: '20px 0 0 0'}}>{headerTitle}</h2>
                 <Slider {...settings}>
                     {data.map((el, i) => (
                         <div className={i+el.id} key={el.id} style={{cursor: 'pointer'}}>
