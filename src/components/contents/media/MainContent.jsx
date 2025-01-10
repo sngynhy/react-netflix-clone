@@ -14,11 +14,11 @@ export const MainContent = React.memo(({mType, coverData, genreId=null}) => {
         return () => setVideokey(null)
     }, [mType, genreId])
     
-    useEffect(() => {
-        if (!openModal && videokey && playerState.state === -1) {
-            // document.getElementById('video-stop-btn').click()
-        }
-    }, [openModal, videokey, playerState])
+    // useEffect(() => {
+    //     if (!openModal && videokey && playerState.state === -1) {
+    //         document.getElementById('video-stop-btn').click()
+    //     }
+    // }, [openModal, videokey, playerState])
 
     const recieveVediokey = useCallback((data) => {
         setTimeout(() => {
@@ -28,9 +28,8 @@ export const MainContent = React.memo(({mType, coverData, genreId=null}) => {
     // console.log('🎁 MainContent 🎁', playerState);
     return (
         <>
-            <MainCoverImg id="cover-image" $url={coverData.img}>
-                {videokey && !openModal && <div style={{opacity: playerState.id === videokey && playerState.state === 1 ? 1 : 0}}><YouTubePlayer videoId={videokey} width='100%' height='1000px' /></div>}
-                {/* {videokey && <div style={{opacity: playerState.id === videokey && playerState.state === 1 ? 1 : 0}}><YouTubePlayer videoId={videokey} width='100%' height='1000px' /></div>} */}
+            <MainCoverImg id="cover-image" $url={coverData.img} $maskeffect={playerState.state !== 1}>
+                {videokey && !openModal && <div style={{opacity: playerState.id === videokey && playerState.state === 1 ? 1 : 0}}><YouTubePlayer videoId={videokey} width='100%' height='952px' /></div>}
             </MainCoverImg>
             
             {/* 중앙 콘텐츠 */}

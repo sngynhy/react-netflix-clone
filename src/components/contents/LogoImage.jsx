@@ -10,8 +10,8 @@ const compareData = (a, b) => {
     if (a.iso_639_1 < b.iso_639_1) return 1;
     return a.height - b.height;
 }
-
-export const LogoImage = React.memo(({ id, mType, alt, width='500px', height='200px', lowerTitle=false, transform=null, fontSize='80%' }) => {
+                                                        // width='500px', height='200px'
+export const LogoImage = React.memo(({ id, mType, alt, width='35vw', height='12vw', lowerTitle=false, transform=null, fontSize='80%' }) => {
     // console.log('LogoImage', id, mType, lowerTitle);
     const {data: logoData, isLoading: logoDataLoading, error: logoDataError} = useQuery({ queryKey: ['image', mType, id], queryFn: fetchImage })
     // const logoPath = logoData?.data.sort((a, b) => b.iso_639_1.localeCompare(a.iso_639_1) && a.height - b.height)[0].file_path

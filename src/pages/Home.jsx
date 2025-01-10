@@ -11,9 +11,12 @@ import { YouTubePlayer } from 'components/contents/YouTubePlayer';
 
 const mType = 'tv'
 function Home () {
-
-    const {playerState, openModal} = useMediaStore()
     
+    const {playerState, openModal} = useMediaStore()
+    useEffect(() => {
+        document.title = '홈 - 넷플릭스'
+        return () => document.title = '넷플릭스'
+    }, [])
     const {data: netflixTvData, isLoading: netflixTvLoading, error: netflixTvError} = useQuery({ queryKey: ['netflix', 'tv'], queryFn: fetchNetflixOriginal })
     const {data: netflixMovieData, isLoading: netflixMovieLoading, error: netflixMovieError} = useQuery({ queryKey: ['netflix', 'movie'], queryFn: fetchNetflixOriginal })
 
@@ -45,15 +48,16 @@ function Home () {
     return (
         <div>
             {coverData && <div>
-                <MainCoverImg id="cover-image" $url={coverData.img}>
-                    {videokey && !openModal && <div style={{opacity: playerState.id === videokey && playerState.state === 1 ? 1 : 0}}><YouTubePlayer videoId={videokey} width='100%' height='1000px' /></div>}
+                <MainCoverImg id="cover-image" $url={coverData.img} $maskeffect={playerState.state !== 1}>
+                    {videokey && !openModal && <div style={{opacity: playerState.id === videokey && playerState.state === 1 ? 1 : 0}}><YouTubePlayer videoId={videokey} width='100%' height='952px' /></div>}
                 </MainCoverImg>
                 <Wrapper id="cover-content">                
                     {coverData && <CoverContent mType={mType} coverData={coverData} sendVideokey={recieveVediokey}/>}
                 </Wrapper>
             </div>}
 
-            <div style={{paddingTop: '700px'}}>
+            <div style={{paddingTop: 'calc(100vh - 150px)'}}>
+            {/* <div style={{paddingTop: '700px'}}> */}
                 <div>
                     {netflixTvData && <SliderContainer mType='tv' headerTitle='넷플릭스 오리지널 시리즈' data={netflixTvData} /> }
                 </div>

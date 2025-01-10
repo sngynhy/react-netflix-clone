@@ -3,7 +3,7 @@ import GridContents from "components/contents/GridContents";
 import { useTrendingContentsQueries } from "hooks/useReactQuery";
 
 function TrendingNow () {
-
+    
     const queries = useTrendingContentsQueries()
     
     if (queries.some((query) => query.isLoading)) return

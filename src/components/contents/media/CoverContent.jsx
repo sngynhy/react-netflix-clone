@@ -37,7 +37,8 @@ export const CoverContent = ({mType, coverData, sendVideokey}) => {
             document.getElementById('video-puause-btn').click()
         }
         // setOpenModal(true)
-        navigate(`/${location.pathname}/detail?id=${encodeURIComponent(coverData.id)}`, {state: { background: location, mType: mType }})
+        // navigate(`/${location.pathname}/detail?id=${encodeURIComponent(coverData.id)}`, {state: { background: location, mType: mType }})
+        navigate(`/detail?id=${encodeURIComponent(coverData.id)}`, {state: { background: location, mType: mType }})
     }
     return (
         <CoverContentText>

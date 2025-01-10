@@ -58,19 +58,18 @@ export const DetailModal = () => {
             temp.totolSeasons = detailsData.number_of_seasons || null
         }
         return temp
-    
     }, [detailsData, id])
 
     // credit data
-    const {data: creditData, isLoading: creditLoading, error: crditError} = useQuery({ queryKey: ['cast', mType, id], queryFn: fetchCreditDetails, enabled: !detailsLoading })
+    const {data: creditData, isLoading: creditLoading, error: crditError} = useQuery({ queryKey: ['cast', mType, id], queryFn: fetchCreditDetails }) // , enabled: !detailsLoading 
     // console.log('creditData', creditData);
 
     const [height, setHeight] = useState('100vh')
     useEffect(() => {
         if (!detailModalRef.current) return
-
+        
         const targetNode = detailModalRef.current
-
+        
         // ResizeObserver 생성
         const resizeObserver = new ResizeObserver((entries) => {
             for (let entry of entries) {
@@ -81,15 +80,19 @@ export const DetailModal = () => {
                 }
             }
         })
-
+        
         // 대상 요소 관찰 시작
         resizeObserver.observe(targetNode)
 
+        document.title = details.title + ' - 넷플릭스'
+        
         // 크기 변경 감지
-        return () => resizeObserver.disconnect()
+        return () => {
+            resizeObserver.disconnect()
+        }
     }, [detailsData, creditData])
         
-    // if (detailsLoading || creditLoading || detailsError || crditError) return null
+    if (detailsLoading || creditLoading || detailsError || crditError) return null
     return (
         <div id="detail-modal" style={{width: '100%', height: height}}>
             <Wrapper className="detail-container">
@@ -146,7 +149,7 @@ const PreviewContent = React.memo(({ id, mType, imgPath, title }) => {
                 </div>
                 <div style={{position: 'absolute', width: '60%', bottom : 100, left: '3rem' }}>
                     {/* <LogoImage id={id} mType={mType} alt={title} width='320px' height='150px' lowerTitle={lowerTitle} transform='scale(.7) translate(-72px, 40px);' fontSize='32px' /> */}
-                    <LogoImage id={id} mType={mType} alt={title} width='320px' height='150px' lowerTitle={false} fontSize='32px' />
+                    <LogoImage id={id} mType={mType} alt={title} width='15rem' height='8rem' lowerTitle={false} fontSize='32px' />
                 </div>
             </div>
             {/* 버튼 */}
@@ -174,9 +177,9 @@ const TopInfo = React.memo(({mType, details, creditData}) => {
 
     const openSearchModal = (type, props) => {
         if (type === 'person') {
-            navigate(`/search/person?id=${encodeURIComponent(props.id)}`, {state: { background: location, condition: 'person', title: props.name }})
+            navigate(`/search/md/person?id=${encodeURIComponent(props.id)}`, {state: { background: location, condition: 'person', title: props.name }})
         } else {
-            navigate(`/search/genre?id=${encodeURIComponent(props.id)}`, {state: { background: location, condition: 'genre', title: props.name, mType: mType }})
+            navigate(`/search/md/genre?id=${encodeURIComponent(props.id)}`, {state: { background: location, condition: 'genre', title: props.name, mType: mType }})
         }
         // setOpenModal(true)
     }
@@ -190,26 +193,25 @@ const TopInfo = React.memo(({mType, details, creditData}) => {
                         ? <div>{details.runtime}분</div>
                         : <div>시즌 {details.totolSeasons}개</div>} {/**  (에피소드 {details.totalEpisodeCnt}개) */}
                 </div>
-                <div>
-                    <div>{details.overview}</div>
-                </div>
+                <div>{details.overview}</div>
             </div>
             <div style={{fontSize: '14px'}}>
                 {creditData.cast.length !== 0 &&
                 <div style={{marginBottom: '10px'}}>
                     <span style={{color: '#777777', marginRight: '5px'}}>출연:</span>{creditData.cast.slice(0, 3).map(el => <Span key={el.id} onClick={() => openSearchModal('person', el)}>{el.name}, </Span>)}
                     <span className="moreView" onClick={scrollToBottom}style={{cursor: 'pointer', borderBottom: '1px solid', color: 'grey', fontStyle: 'italic'}}>더보기</span>
-                </div> }
+                </div>}
+                {details.genres.length !== 0 &&
                 <div>
                     <span style={{color: '#777777', marginRight: '5px'}}>장르:</span>{details.genres.map(el => <Span key={el.id} onClick={() => openSearchModal(mType, el)}>{el.name}, </Span>)}
                 </div>
+                }
             </div>
         </div>
     )
 })
 
 const RecommendSection = React.memo(({id, mType}) => {
-
     // recommendData data
     const {data: recommendData, isLoading: recommendLoading, error: recommendError} = useQuery({
         queryKey: ["recommend", mType, id],
@@ -248,9 +250,9 @@ const BottomDetail = React.memo(({mType, details, detailsData, creditData}) => {
 
     const openSearchModal = (type, props) => {
         if (type === 'person') {
-            navigate(`/search/person?id=${encodeURIComponent(props.id)}`, {state: { background: location, condition: 'person', title: props.name }})
+            navigate(`/search/md/person?id=${encodeURIComponent(props.id)}`, {state: { background: location, condition: 'person', title: props.name }})
         } else {
-            navigate(`/search/genre?id=${encodeURIComponent(props.id)}`, {state: { background: location, condition: 'genre', title: props.name, mType: mType }})
+            navigate(`/search/md/genre?id=${encodeURIComponent(props.id)}`, {state: { background: location, condition: 'genre', title: props.name, mType: mType }})
         }
         // setOpenModal(true)
     }

@@ -6,7 +6,6 @@ import { IoSearch, IoCloseSharp } from "react-icons/io5";
 
 // memo => props가 변경되지 않은 경우 구성 요소를 다시 렌더링하는 것을 건너뜀
 export const Header = memo(function Header () {
-    // console.log('Header', );
     const homeMatch = useMatch('/')
     const movieMatch = useMatch('/media/movie')
     const seriesMatch = useMatch('/media/tv')
@@ -35,7 +34,7 @@ export const Header = memo(function Header () {
         <Container id="header" $scrollTop={scrollTop}>
             <Wrapper>
                 {/* 좌측 넷플릭스 로고 */}
-                <Link to="/"><img loading="lazy" src={logo} style={{width: 120, verticalAlign:'middle'}} alt="로고 아이콘"/></Link>
+                <Link to="/"><img loading="lazy" src={logo} style={{width: '7rem', verticalAlign:'middle'}} alt="로고 아이콘"/></Link>
                 
                 {/* 좌측 카테고리 */}
                 <Nav>

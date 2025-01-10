@@ -6,7 +6,7 @@ export const Container = styled.div`
     background-color: ${props => !props.$scrollTop ? 'black;' : 'transparent;'}
     background-image: linear-gradient(180deg,rgba(0,0,0,.7) 10%,transparent);
     position: fixed;
-    z-index: 10;
+    z-index: 999;
     transition: 0.5s;
 `
 export const Wrapper =  styled.div`
@@ -20,17 +20,17 @@ export const Nav = styled.ul`
 `
 export const NavItem = styled.li`
     display: inline-block;
-    margin: 0 15px;
+    margin: 0 12px;
     vertical-align: middle;
     & > a {
         text-decoration: none;
-        color: white;
-        font-weight: bole;
-        font-size: 17px;
+        color: #e5e5e5;
+        font-size: 16px;
     }
 `
 export const CategoryText = styled.span`
-    border-bottom: ${props => props.$selected ? '2px solid red;' : 'none;'}
+    border-bottom: ${props => props.$selected ? '2px solid red' : 'none'};
+    color: ${props => props.$selected ? 'white' : '#e5e5e5'};
     &:hover {
         color: #b3b3b3;
     }

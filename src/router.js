@@ -6,7 +6,7 @@ import Search from "pages/Search";
 import Media from 'pages/Media'
 import MyContents from "pages/MyContents";
 import TrendingNow from "pages/TrendingNow";
-import Error from "pages/Error";
+import NotFound from "pages/NotFound";
 import { ScrollToTop } from "components/common/ScrollTop";
 import { useMediaStore } from "stores/mediaStore";
 import { SearchModal } from "components/modal/SearchModal";
@@ -31,16 +31,17 @@ function Router () {
                     <Route path="/my-list" element={<MyContents />} />
                     <Route path="/trending-now" element={<TrendingNow />} />
                     <Route path="/search" element={<Search />} />
-                    <Route path="/:not-found" element={<Error />} />
+                    <Route path="*" element={<NotFound />} />
                 </Routes>
             </div>
 
             {/* 모달 라우트 */}
             {backgroundLocation && (
                 <Routes>
-                    <Route path="/search/:condition" element={<SearchModal />} />
-                    <Route path="/:page/detail" element={<DetailModal />} />
-                    <Route path="/:page/:mType/detail" element={<DetailModal />} />
+                    <Route path="/search/md/:condition" element={<SearchModal />} />
+                    <Route path="/detail" element={<DetailModal />} />
+                    {/* <Route path="/:page/detail" element={<DetailModal />} /> */}
+                    {/* <Route path="/:page/:mType/detail" element={<DetailModal />} /> */}
                 </Routes>
             )}
         </RoutesWrapper>

@@ -3,14 +3,14 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { IoWarning } from "react-icons/io5";
 
-function Error () {
+function NotFound () {
     const navigate = useNavigate()
     const goHome = () => {
         navigate('/')
     }
     return (
         <div id="error" style={{position: 'relative'}}>
-            <MainCover id='cover-image' />
+            <MainCover id='cover-image' $maskeffect={true}/>
 
             <Container style={{}}>
                 <Wrapper>
@@ -75,4 +75,4 @@ const Button = styled.div`
     font-weight: 500;
     cursor: pointer;
 `
-export default Error
+export default NotFound

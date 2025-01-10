@@ -57,7 +57,8 @@ export const SliderContainer = React.memo(({mType, headerTitle, data}) => {
     // }
 
     const openModal = (id) => {
-        navigate(`/${location.pathname}/detail?id=${encodeURIComponent(id)}`, {state: { background: location, mType: mType }})
+        // navigate(`/${location.pathname}/detail?id=${encodeURIComponent(id)}`, {state: { background: location, mType: mType }})
+        navigate(`/detail?id=${encodeURIComponent(id)}`, {state: { background: location, mType: mType }})
         // setOpenModal(true)
     }
     // console.log('🎀SliderContainer🎀', headerTitle, data);

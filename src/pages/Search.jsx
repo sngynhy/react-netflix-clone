@@ -9,7 +9,6 @@ import GridContents from "components/contents/GridContents";
 function Search (props) {
     const [searchParams] = useSearchParams()
     const keyword = searchParams.get('keyword')
-    console.log('keyword', keyword);
     
     const {data: movieData, isLoading: movieIsLoading, error: movieError } = useQuery({
         queryKey: ["search", 'movie', keyword],

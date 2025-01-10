@@ -10,6 +10,8 @@ import "styles/index.css";
 const root = ReactDOM.createRoot(document.getElementById('root'));
 const queryClient = new QueryClient()
 
+// console.log('env', process.env.REACT_APP_NODE_ENV);
+
 root.render(
   // <React.StrictMode>
     <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }} basename={process.env.REACT_APP_PUBLIC_URL}> {/** 🚕🚗 basename='react-netflix-clone' << gh-pages를 위한 설정 */}

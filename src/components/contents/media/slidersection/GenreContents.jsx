@@ -17,7 +17,8 @@ export const GenreContents = React.memo(({mType, genreId, sendCoverDat}) => {
     return (
         <>
         {data &&
-            <div style={{paddingTop: '700px'}}>
+            <div style={{paddingTop: 'calc(100vh - 150px)'}}>
+            {/* <div style={{paddingTop: '700px'}}> */}
                 <div>
                     <SliderContainer mType={mType} headerTitle={genreName + ' 콘텐츠'} data={data} />
                 </div>

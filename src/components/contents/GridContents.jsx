@@ -17,18 +17,15 @@ GridContents.prototype = {
 }
 
 function GridContents ({ mType, data, gridColumns=`repeat(6, 1fr)`, gap=10, showTitle=true, showOverview=true, showPlayButton=false, hoverEffect=true, imgPath=`backdrop_path` }) {
-    // console.log('GridContents', mType, data);
-    const { setOpenModal } = useMediaStore()
     const navigate = useNavigate()
     const location = useLocation()
     const openModal = (props) => {
         console.log('🧮 GridContents > openModal', location);
         if (mType === 'person') {
-            navigate(`/search/person?id=${encodeURIComponent(props.id)}`, {state: { background: location, condition: 'person', title: props.name }})
+            navigate(`/search/md/person?id=${encodeURIComponent(props.id)}`, {state: { background: location, condition: 'person', title: props.name }})
         } else {
-            navigate(`${location.pathname}/detail?id=${encodeURIComponent(props.id)}`, {state: { background: location, mType: mType || props.media_type }})
+            navigate(`/detail?id=${encodeURIComponent(props.id)}`, {state: { background: location, mType: mType || props.media_type }})
         }
-        // setOpenModal(true)
     }
     return (
         <div style={{display: 'grid', gridTemplateColumns: `repeat(${gridColumns}, 1fr)`, gap: `${gap}px`, marginTop: '10px', }}>
@@ -90,4 +87,4 @@ const Overview = (props) => {
     )
 }
 
-export default GridContents
+export default React.memo(GridContents)

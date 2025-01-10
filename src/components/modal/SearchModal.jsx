@@ -35,12 +35,9 @@ export const SearchModal = React.memo(() => {
 
     
     const goBack = () => navigate(-1) // 이전 위치로 돌아가기
-    // const closeModal = () => navigate(location.state.background.pathname + location.state.background.search) // 모달 닫기
     const closeModal = () => { // 모달 닫기
         const background = location.state?.background || -1
-        console.log('background', background);
         navigate(background)
-        // navigate(location.state.background.pathname + location.state.background.search)
     }
 
     return (
@@ -66,26 +63,22 @@ export const SearchModal = React.memo(() => {
 export const ContentsByPerson = ({id}) => {
     const {data: movieData, isLoading: isMovieLoading, error: MovieError} = useConetentsByPersonQuery({ type: 'movie', personId: id })
     const {data: tvData, isLoading: isTvLoading, error: TvError} = useConetentsByPersonQuery({ type: 'tv', personId: id })
-    // console.log('movieData', movieData);
-    // console.log('tvData', tvData);
     
     if (isMovieLoading || isTvLoading || MovieError || TvError) return null
     return (
-        <div>
-                <div style={{color: 'white'}}>
-                {movieData?.length > 0 &&
-                    <div style={{marginTop: '40px'}}>
-                        <h1 style={{fontWeight: 300}}>영화</h1>
-                        <GridContents data={movieData} mType='movie' showTitle={true} showPlayButton={false} showOverview={false} gridColumns={5} />
-                    </div>
-                }
-                {tvData?.length > 0 &&
-                    <div style={{marginTop: '40px'}}>
-                        <h1 style={{fontWeight: 300}}>시리즈</h1>
-                        <GridContents data={tvData} mType='tv' showTitle={true} showPlayButton={false} showOverview={false} gridColumns={5} />
-                    </div>
-                }
-                </div>
+        <div style={{color: 'white'}}>
+            {movieData?.length > 0 &&
+            <div style={{marginTop: '40px'}}>
+                <h1 style={{fontWeight: 300}}>영화</h1>
+                <GridContents data={movieData} mType='movie' showTitle={true} showPlayButton={false} showOverview={false} gridColumns={5} />
+            </div>
+            }
+            {tvData?.length > 0 &&
+            <div style={{marginTop: '40px'}}>
+                <h1 style={{fontWeight: 300}}>시리즈</h1>
+                <GridContents data={tvData} mType='tv' showTitle={true} showPlayButton={false} showOverview={false} gridColumns={5} />
+            </div>
+            }
         </div>
     )
 }

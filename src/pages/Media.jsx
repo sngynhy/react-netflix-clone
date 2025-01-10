@@ -1,13 +1,20 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom';
 import { MainContent } from 'components/contents/media/MainContent';
 import { GenreContents } from 'components/contents/media/slidersection/GenreContents';
 import { MediaContents } from 'components/contents/media/slidersection/MediaContents';
 import { getContentImg } from 'utils/CommonFunction';
+import { useMediaStore } from 'stores/mediaStore';
 
 function Media () {
     const { mType, genreId } = useParams()
     const [coverData, setCoverData] = useState(null)
+    const { mediaTypes, genreName } = useMediaStore()
+    useEffect(() => {
+        const genre = genreId && genreName ? genreName + ' ' : ''
+        document.title = genre + mediaTypes[mType] + ' - 넷플릭스'
+        return () => document.title = '넷플릭스'
+    }, [mType, mediaTypes, genreId, genreName])
     const recieveCoverData = useCallback((data) => {
         // console.log('recieveCoverData', data)
         const coverData = {

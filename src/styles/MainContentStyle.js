@@ -2,11 +2,12 @@ import styled from "styled-components";
 
 export const MainCoverImg = styled.div`
     background-image: url(${props => props.$url});
-    background-size: cover;
-    height: 1000px;
+    background-size: 100% 100%; // cover; // 
+    background-position: center center;
+    height: 952px;
     width: 100%;
     margin-bottom: 0px;
-    mask-image: linear-gradient(180deg, #181818, transparent 90%); // linear-gradient(to bottom, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.4));
+    ${props => props.$maskeffect && 'mask-image: linear-gradient(180deg, #181818, transparent 90%);'} // linear-gradient(to bottom, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.4));
     mask-size: 100% 120%;
     mask-repeat: no-repeat;
     position: absolute;
@@ -16,11 +17,12 @@ export const Wrapper = styled.div`
     position: absolute;
     z-index: 1;
     width: 100%;
-    height: 700px;
-    margin-top: 64px;
+    height: calc(100vh - 160px);
+    margin-top: 4rem;
 `
 export const SelectBox = styled.div`
     width: calc(100% - 120px);
+    height: 4rem;
     padding: 0 60px;
     align-items: center;
     display: flex;
@@ -80,7 +82,7 @@ export const CoverContentText = styled.div`
     }
     & > p {
         width: 40%;
-        font-size: 20px;
+        font-size: 1.2vw;
         margin: 0 15px 0 0;
     }
 `
