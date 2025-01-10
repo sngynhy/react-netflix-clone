@@ -8,6 +8,8 @@ export const Wrapper = styled.div`
     padding: 30px 25% 0;
     background-color: rgba(0, 0, 0, 0.7);
     // backdrop-filter: blur(5px);
+    min-width: 50%;
+    min-height: calc(100vh - 30px);
 `
 export const PreviewPlayer = styled.div`
     position: relative;

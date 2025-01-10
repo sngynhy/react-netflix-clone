@@ -12,7 +12,7 @@ export const SearchModal = React.memo(() => {
     const location = useLocation()
     const [searchParams] = useSearchParams()
     const id = searchParams.get('id'), condition = location.state.condition
-    console.log('📋 SearchModal > location', location);
+    // console.log('📋 SearchModal > location', location);
 
     const {setOpenModal} = useMediaStore()
     const searchModalRef = useRef(null)

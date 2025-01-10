@@ -30,7 +30,7 @@ export const DetailModal = () => {
         // 특정 영역 외 클릭 시 이벤트 발생
         const outSideClick = (e) => {
             if (detailModalRef.current && !detailModalRef.current.contains(e.target)) {
-                navigate(-1)
+                navigate(location.state.background || -1)
             }
         }
         // 이벤트 리스너에 outSideClick 함수 등록
@@ -90,7 +90,7 @@ export const DetailModal = () => {
         return () => {
             resizeObserver.disconnect()
         }
-    }, [detailsData, creditData])
+    }, [detailsData, creditData, details])
         
     if (detailsLoading || creditLoading || detailsError || crditError) return null
     return (
@@ -122,23 +122,22 @@ export const DetailModal = () => {
 
 const PreviewContent = React.memo(({ id, mType, imgPath, title }) => {
     const navigate = useNavigate()
+    const location = useLocation()
     const { playable, playerState, videoCurrentTime, setOpenModal } = useMediaStore()
+
     // video
     const {data: videokey, isLoading: videoLoading} = useVideoQuery({type: mType, id: id})
     // console.log('videokey >>', videokey);
     
-    // const [lowerTitle, setLowerTitle] = useState(false)
     if (videoLoading) return
 
-    // setTimeout(() => {
-    //     setLowerTitle(true)
-    // }, 3000)
     const closeModal = () => {
+        // console.log('closeModal', location);
         if (videokey && playerState.id === videokey && playerState.state === 1) {
             document.getElementById('video-stop-btn').click()
         }
         setOpenModal(false)
-        navigate(-1)
+        navigate(location.state.background || -1)
     }
     return (
         <PreviewPlayer>
@@ -148,7 +147,6 @@ const PreviewContent = React.memo(({ id, mType, imgPath, title }) => {
                     {videokey && <div style={{opacity: playerState.id === videokey && playerState.state === 1 ? 1 : 0}}><YouTubePlayer videoId={videokey} startTime={videoCurrentTime} borderRadius="8px 8px 0 0" /></div>}
                 </div>
                 <div style={{position: 'absolute', width: '60%', bottom : 100, left: '3rem' }}>
-                    {/* <LogoImage id={id} mType={mType} alt={title} width='320px' height='150px' lowerTitle={lowerTitle} transform='scale(.7) translate(-72px, 40px);' fontSize='32px' /> */}
                     <LogoImage id={id} mType={mType} alt={title} width='15rem' height='8rem' lowerTitle={false} fontSize='32px' />
                 </div>
             </div>
@@ -168,7 +166,6 @@ const PreviewContent = React.memo(({ id, mType, imgPath, title }) => {
 const TopInfo = React.memo(({mType, details, creditData}) => {
     const navigate = useNavigate()
     const location = useLocation()
-    const { setOpenModal } = useMediaStore()
 
     const scrollToBottom = () => {
         const location = document.querySelector("#bottomDetail").offsetTop
@@ -177,11 +174,10 @@ const TopInfo = React.memo(({mType, details, creditData}) => {
 
     const openSearchModal = (type, props) => {
         if (type === 'person') {
-            navigate(`/search/md/person?id=${encodeURIComponent(props.id)}`, {state: { background: location, condition: 'person', title: props.name }})
+            navigate(`/search/md/person?id=${encodeURIComponent(props.id)}`, {state: { background: location.state.background, condition: 'person', title: props.name }})
         } else {
-            navigate(`/search/md/genre?id=${encodeURIComponent(props.id)}`, {state: { background: location, condition: 'genre', title: props.name, mType: mType }})
+            navigate(`/search/md/genre?id=${encodeURIComponent(props.id)}`, {state: { background: location.state.background, condition: 'genre', title: props.name, mType: mType }})
         }
-        // setOpenModal(true)
     }
     return (
         <div style={{display: 'grid', gridTemplateColumns: 'minmax(0,2fr) minmax(0,1fr)', columnGap: '2rem'}}>
@@ -246,15 +242,12 @@ const RecommendSection = React.memo(({id, mType}) => {
 const BottomDetail = React.memo(({mType, details, detailsData, creditData}) => {
     const navigate = useNavigate()
     const location = useLocation()
-    const { setOpenModal } = useMediaStore()
-
     const openSearchModal = (type, props) => {
         if (type === 'person') {
-            navigate(`/search/md/person?id=${encodeURIComponent(props.id)}`, {state: { background: location, condition: 'person', title: props.name }})
+            navigate(`/search/md/person?id=${encodeURIComponent(props.id)}`, {state: { background: location.state.background, condition: 'person', title: props.name }})
         } else {
-            navigate(`/search/md/genre?id=${encodeURIComponent(props.id)}`, {state: { background: location, condition: 'genre', title: props.name, mType: mType }})
+            navigate(`/search/md/genre?id=${encodeURIComponent(props.id)}`, {state: { background: location.state.background, condition: 'genre', title: props.name, mType: mType }})
         }
-        // setOpenModal(true)
     }
     return (
         <div id="bottomDetail">

@@ -16,8 +16,9 @@ export const CoverContent = ({mType, coverData, sendVideokey}) => {
     const [lowerTitle, setLowerTitle] = useState(false)
 
     useEffect(() => {
+        console.log('ㅇㅗㅐ', );
         setLowerTitle(false)
-    }, [mType])
+    }, [mType, coverData])
 
     // video
     const {data: videokey, isLoading: videoLoading} = useVideoQuery({type: mType, id: coverData.id})

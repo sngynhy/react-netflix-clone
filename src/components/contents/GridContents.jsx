@@ -20,11 +20,11 @@ function GridContents ({ mType, data, gridColumns=`repeat(6, 1fr)`, gap=10, show
     const navigate = useNavigate()
     const location = useLocation()
     const openModal = (props) => {
-        console.log('🧮 GridContents > openModal', location);
+        // console.log('🧮 GridContents > openModal', location);
         if (mType === 'person') {
             navigate(`/search/md/person?id=${encodeURIComponent(props.id)}`, {state: { background: location, condition: 'person', title: props.name }})
         } else {
-            navigate(`/detail?id=${encodeURIComponent(props.id)}`, {state: { background: location, mType: mType || props.media_type }})
+            navigate(`/detail?id=${encodeURIComponent(props.id)}`, {state: { background: location.state?.background || location, mType: mType || props.media_type }})
         }
     }
     return (
