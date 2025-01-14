@@ -19,7 +19,10 @@ function MyContentsButton ({id, mType, borderSize=45, iconSize=30 }) {
 
 // props 유효성 검사
 MyContentsButton.propTypes = {
-    id: PropTypes.number.isRequired
+    id: PropTypes.any.isRequired,
+    mType: PropTypes.string.isRequired,
+    borderSize: PropTypes.number,
+    iconSize: PropTypes.number,
 }
 
 export default MyContentsButton

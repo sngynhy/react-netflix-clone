@@ -5,6 +5,7 @@ import { fetchSearchBykeyword } from "api/movieApi";
 import styled from "styled-components";
 import { RxTriangleRight } from "react-icons/rx";
 import GridContents from "components/contents/GridContents";
+import { Helmet } from "react-helmet";
 
 function Search (props) {
     const [searchParams] = useSearchParams()
@@ -13,21 +14,27 @@ function Search (props) {
     const {data: movieData, isLoading: movieIsLoading, error: movieError } = useQuery({
         queryKey: ["search", 'movie', keyword],
         queryFn: fetchSearchBykeyword,
-        select: data => data.filter(el => el.backdrop_path !== null && el.poster !== null)
+        select: data => data.filter(el => el.backdrop_path !== null && el.poster !== null),
+        enabled: !!keyword
     })
     const {data: tvData, isLoading: tvIsLoading, error: tvError } = useQuery({
         queryKey: ["search", 'tv', keyword],
         queryFn: fetchSearchBykeyword,
-        select: data => data.filter(el => el.backdrop_path !== null && el.poster !== null)
+        select: data => data.filter(el => el.backdrop_path !== null && el.poster !== null),
+        enabled: !!keyword
     })
     const {data: personData, isLoading: personIsLoading, error: personError } = useQuery({
         queryKey: ["search", 'person', keyword],
         queryFn: fetchSearchBykeyword,
-        select: data => data.filter(el => el.profile_path !== null && el.poster !== null)
+        select: data => data.filter(el => el.profile_path !== null && el.poster !== null),
+        enabled: !!keyword
     })
 
     if (!keyword) return (
         <Container>
+            <Helmet>
+                <title>넷플릭스</title>
+            </Helmet>
             <Wrapper>
                 <h2 style={{textAlign: 'center'}}><span>검색 키워드를 입력하세요.</span></h2>
             </Wrapper>
@@ -38,6 +45,10 @@ function Search (props) {
     
     return (
         <Container>
+            <Helmet>
+                <title>넷플릭스</title>
+            </Helmet>
+
             <Wrapper>
                 <h2 style={{textAlign: 'center'}}><span>'{keyword}'</span> 검색 결과입니다.</h2>
                 

@@ -65,7 +65,7 @@ export const Player = ({id, mType, backdrop, sendVedioKey}) => {
 export const Info = ({id, mType, title, voteAvg, genreIds, videokey=null}) => {
     const navigate = useNavigate()
     const location = useLocation()
-    const { playerState, setOpenModal } = useMediaStore()
+    const { playerState } = useMediaStore()
 
     const queryClient = useQueryClient(); // 캐시된 데이터 가져오기
     const genres = queryClient.getQueryData(['genres', mType]) // 'genres' 키로 데이터 조회
@@ -80,7 +80,6 @@ export const Info = ({id, mType, title, voteAvg, genreIds, videokey=null}) => {
         if (videokey && playerState.id === videokey && playerState.state === 1) {
             document.getElementById('video-puause-btn').click()
         }
-        // setOpenModal(true)
         navigate(`/detail?id=${encodeURIComponent(id)}`, {state: { background: location, mType: mType }})
     }
     return (

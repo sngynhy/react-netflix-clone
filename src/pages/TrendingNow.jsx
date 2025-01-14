@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import GridContents from "components/contents/GridContents";
 import { useTrendingContentsQueries } from "hooks/useReactQuery";
+import { Helmet } from "react-helmet";
 
 function TrendingNow () {
     
@@ -17,25 +18,32 @@ function TrendingNow () {
     
     return (
         <div className="trending-now">
+            <Helmet>
+                <title>넷플릭스</title>
+            </Helmet>
+
             <div style={{padding: '64px 60px 0'}}>
-                <div className="title">
-                    <h1 style={{fontWeight: '400'}}>오늘의 인기 콘텐츠</h1>
+                <div>
+                    <div className="title">
+                        <h1 style={{fontWeight: '400'}}>오늘의 인기 콘텐츠</h1>
+                    </div>
+                    {weekContents?.map((el, i) => {
+                        return (<div key={i} className="contents" style={{marginTop: "1rem"}}>
+                            <GridContents data={el.data} mType={null} showTitle={true} showOverview={false} gridColumns={6} />
+                        </div>)
+                    })}
                 </div>
-                {weekContents?.map((el, i) => {
-                    return (<div key={i} className="contents" style={{marginTop: "1rem"}}>
-                        <GridContents data={el.data} mType={null} showTitle={true} showOverview={false} gridColumns={6} />
-                    </div>)
-                })}
-            </div>
-            <div style={{padding: '64px 60px 0'}}>
-                <div className="title">
-                    <h1 style={{fontWeight: '400'}}>이번주 인기 콘텐츠</h1>
+                <br /><br />
+                <div>
+                    <div className="title">
+                        <h1 style={{fontWeight: '400'}}>이번주 인기 콘텐츠</h1>
+                    </div>
+                    {dayContents?.map((el, i) => {
+                        return (<div key={i} className="contents" style={{marginTop: "1rem"}}>
+                            <GridContents data={el.data} mType={null} showTitle={true} showOverview={false} gridColumns={6} />
+                        </div>)
+                    })}
                 </div>
-                {dayContents?.map((el, i) => {
-                    return (<div key={i} className="contents" style={{marginTop: "1rem"}}>
-                        <GridContents data={el.data} mType={null} showTitle={true} showOverview={false} gridColumns={6} />
-                    </div>)
-                })}
             </div>
         </div>
     )

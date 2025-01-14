@@ -9,6 +9,6 @@ import { devtools } from 'zustand/middleware';
 export const useGlobalStore = create(
     devtools((set, get) => ({
         isLoading: false,
-        setIsLoading: (value) => set({isLoading: value})
+        setIsLoading: (value) => set({isLoading: value}),
     }))
 )

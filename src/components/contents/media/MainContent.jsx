@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { MainCoverImg, Wrapper } from 'styles/MainContentStyle';
 import { useMediaStore } from 'stores/mediaStore';
 import { YouTubePlayer } from '../YouTubePlayer';
@@ -11,19 +11,18 @@ export const MainContent = React.memo(({mType, coverData, genreId=null}) => {
     const [videokey, setVideokey] = useState()
 
     useEffect(() => {
-        return () => setVideokey(null)
+        setVideokey(null)
+        // return () => setVideokey(null)
     }, [mType, genreId])
     
-    // useEffect(() => {
-    //     if (!openModal && videokey && playerState.state === -1) {
-    //         document.getElementById('video-stop-btn').click()
-    //     }
-    // }, [openModal, videokey, playerState])
+    useEffect(() => {
+        if (!openModal && videokey && playerState.state === -1) {
+            document.getElementById('video-stop-btn').click()
+        }
+    }, [openModal, videokey, playerState])
 
     const recieveVediokey = useCallback((data) => {
-        setTimeout(() => {
-            setVideokey(data)
-        }, 3000)
+        setVideokey(data)
     }, [])
     // console.log('🎁 MainContent 🎁', playerState);
     return (

@@ -23,7 +23,6 @@ export const MediaContents = React.memo(({ mType, sendCoverData }) => {
     
     return (
         <div style={{paddingTop: 'calc(100vh - 150px)'}}>
-        {/* <div style={{paddingTop: '700px'}}> */}
             <div>
                 {contentsData && contentsData.map((el, i) => <SliderContainer key={i} mType={mType} headerTitle={el.title || el.name} data={el.data} />) }
             </div>

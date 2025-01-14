@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
+import { Helmet } from "react-helmet";
 import { MainContent } from 'components/contents/media/MainContent';
 import { GenreContents } from 'components/contents/media/slidersection/GenreContents';
 import { MediaContents } from 'components/contents/media/slidersection/MediaContents';
@@ -10,11 +11,12 @@ function Media () {
     const { mType, genreId } = useParams()
     const [coverData, setCoverData] = useState(null)
     const { mediaTypes, genreName } = useMediaStore()
-    useEffect(() => {
-        const genre = genreId && genreName ? genreName + ' ' : ''
-        document.title = genre + mediaTypes[mType] + ' - 넷플릭스'
-        return () => document.title = '넷플릭스'
-    }, [mType, mediaTypes, genreId, genreName])
+    const genre = genreId && genreName ? genreName + ' ' : ''
+    // const [genre, setGenre] = useState('')
+    // useEffect(() => {
+    //     setGenre(genreId && genreName ? genreName + ' ' : '')
+    // }, [genreId, genreName])
+
     const recieveCoverData = useCallback((data) => {
         // console.log('recieveCoverData', data)
         const coverData = {
@@ -29,6 +31,9 @@ function Media () {
     // console.log('✨Media✨', coverData);
     return (
         <div style={{height: '100%', width: '100%'}}>
+            <Helmet>
+                <title>{genre + mediaTypes[mType] + ' - 넷플릭스'}</title>
+            </Helmet>
             {/** 중앙 메인 콘텐츠 */}
             {coverData && <MainContent mType={mType} genreId={genreId} coverData={coverData} recieveCoverData={recieveCoverData} />}
 

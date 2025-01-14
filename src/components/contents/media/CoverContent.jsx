@@ -12,33 +12,34 @@ import { useLocation, useNavigate } from "react-router-dom";
 export const CoverContent = ({mType, coverData, sendVideokey}) => {
     const navigate = useNavigate()
     const location = useLocation()
-    const { playerState, playable, setOpenModal } = useMediaStore()
+    const { playerState, playable, openModal } = useMediaStore()
     const [lowerTitle, setLowerTitle] = useState(false)
 
     useEffect(() => {
-        console.log('ㅇㅗㅐ', );
         setLowerTitle(false)
     }, [mType, coverData])
 
     // video
     const {data: videokey, isLoading: videoLoading} = useVideoQuery({type: mType, id: coverData.id})
     useEffect(() => { 
-        if (videokey) sendVideokey(videokey)
+        sendVideokey(videokey)
     }, [videokey, sendVideokey])
     
     useEffect(() => {
-        if (playerState.id === videokey && playerState.state === 1) setTimeout(() => setLowerTitle(true), 5000)
-        else if (playerState.state === 0 || playerState.err) setTimeout(() => setLowerTitle(false), 1000)
-    }, [playerState, videokey])
+        if (playerState.id === videokey && playerState.state === 1) {
+            setTimeout(() => {
+                if (!openModal) setLowerTitle(true)
+            }, 3000)
+        }
+        else setTimeout(() => setLowerTitle(false), 1000)
+    }, [openModal, playerState, videokey])
     
     if (!coverData || videoLoading) return
     
-    const openModal = () => {
+    const openDetailModal = () => {
         if (videokey && playerState.id === videokey && playerState.state === 1) {
             document.getElementById('video-puause-btn').click()
         }
-        // setOpenModal(true)
-        // navigate(`/${location.pathname}/detail?id=${encodeURIComponent(coverData.id)}`, {state: { background: location, mType: mType }})
         navigate(`/detail?id=${encodeURIComponent(coverData.id)}`, {state: { background: location, mType: mType }})
     }
     return (
@@ -53,7 +54,7 @@ export const CoverContent = ({mType, coverData, sendVideokey}) => {
             <div style={{marginTop: '30px'}}>
                 <div style={{position: 'relative', display: 'flex'}}>
                     <div style={{marginRight: '12px'}}><PlayButton active={videokey && playable} /></div>
-                    <div style={{marginRight: '12px'}}><DetailViewButton className="detailBtn" onClick={openModal}><FiInfo />상세정보</DetailViewButton></div>
+                    <div style={{marginRight: '12px'}}><DetailViewButton className="detailBtn" onClick={openDetailModal}><FiInfo />상세정보</DetailViewButton></div>
                     {videokey && videokey === playerState.id && playable &&
                     <div style={{marginRight: '12px'}}>
                         {playerState.state === 0 ? <ReplayButton /> : <MuteButton />}

@@ -8,7 +8,7 @@ export const PlayButton = ({ active=false, type="button", iconSize=35 }) => { //
     const {playable, setFullScreen} = useMediaStore()
     const videoPlay = () => {
         if (active && playable) {
-            setFullScreen(true)
+            // setFullScreen(true)
             document.getElementById('video-fullscreen-btn').click()
             document.getElementById('video-currenttime-btn').click()
         }

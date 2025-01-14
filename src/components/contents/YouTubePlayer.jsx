@@ -40,10 +40,10 @@ export const YouTubePlayer = ({ videoId, startTime=0, width="100%", height="475p
             if (playerRef.current) {
                 playerRef.current.destroy()
                 setPlayerState({id: videoId, state: -999, error: null})
-                console.log('destroy', JSON.parse(JSON.stringify(playerRef.current)));
+                console.log('destroy', videoId, JSON.parse(JSON.stringify(playerRef.current)));
             }
         }
-    }, [])
+    }, [setPlayerState, videoId])
 
     const onReady = (event) => {
         // console.log('🎞🎞 재생 준비', );
@@ -68,6 +68,7 @@ export const YouTubePlayer = ({ videoId, startTime=0, width="100%", height="475p
         // console.log('재생 완료 🎞🎞', );
         setVideoCurrentTime(0)
         setPlayerState({id: videoId, state: event.data, desc: 'ENDED', error: null})
+        if (document.fullscreenElement) document.exitFullscreen();
     }
     // 재생 에러
     const onError = (event) => {

@@ -6,32 +6,38 @@ import { GoArrowLeft } from "react-icons/go";
 import { useConetentsByGenreQuery, useConetentsByPersonQuery } from "hooks/useReactQuery";
 import GridContents from "components/contents/GridContents";
 import { useMediaStore } from "stores/mediaStore";
+import { Helmet } from "react-helmet";
 
 export const SearchModal = React.memo(() => {
     const navigate = useNavigate()
     const location = useLocation()
     const [searchParams] = useSearchParams()
     const id = searchParams.get('id'), condition = location.state.condition
-    // console.log('📋 SearchModal > location', location);
-
     const {setOpenModal} = useMediaStore()
     const searchModalRef = useRef(null)
     useEffect(() => {
         setOpenModal(true)
-
         // 특정 영역 외 클릭 시 이벤트 발생
         const outSideClick = (e) => {
             if (searchModalRef.current && !searchModalRef.current.contains(e.target)) {
-                navigate(-1)
+                navigate(location.state.background || -1)
             }
         }
-        // 이벤트 리스너에 outSideClick 함수 등록
+        // esc 키 입력 시 이벤트 발생
+        const handleKeyDown = (e) => {
+            if (e.key === "Escape") {
+                navigate(location.state.background || -1)
+            }
+        }
+        // 이벤트 리스너에 함수 등록
         document.addEventListener("mousedown", outSideClick)
+        document.addEventListener("keydown", handleKeyDown)
         return () => {
             document.removeEventListener("mousedown", outSideClick)
+            document.removeEventListener("keydown", handleKeyDown)
             setOpenModal(false)
         }
-    }, [searchModalRef, setOpenModal, navigate])
+    }, [searchModalRef, setOpenModal, navigate, location])
 
     
     const goBack = () => navigate(-1) // 이전 위치로 돌아가기
@@ -42,6 +48,10 @@ export const SearchModal = React.memo(() => {
 
     return (
         <Container id="search-modal">
+            <Helmet>
+                <title>넷플릭스</title>
+            </Helmet>
+
             <div style={{padding: '30px 10% 0', position: 'absolute', top: 0, width: '80%'}}>
                 <div ref={searchModalRef} style={{background: 'rgb(24, 24, 24)', padding: '20px', borderRadius: '5px', minHeight: 'calc(100vh - 70px)'}}>
                     <TopButton>

@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { useQuery } from '@tanstack/react-query';
+import { Helmet } from "react-helmet";
 import { fetchNetflixOriginal } from 'api/movieApi';
 import { SliderContainer } from 'components/ui/slider/SliderContainer';
 import { getContentImg } from 'utils/CommonFunction';
@@ -10,13 +11,9 @@ import { Wrapper } from 'styles/MainContentStyle';
 import { YouTubePlayer } from 'components/contents/YouTubePlayer';
 
 const mType = 'tv'
+
 function Home () {
-    
     const {playerState, openModal} = useMediaStore()
-    useEffect(() => {
-        document.title = '홈 - 넷플릭스'
-        return () => document.title = '넷플릭스'
-    }, [])
     const {data: netflixTvData, isLoading: netflixTvLoading, error: netflixTvError} = useQuery({ queryKey: ['netflix', 'tv'], queryFn: fetchNetflixOriginal })
     const {data: netflixMovieData, isLoading: netflixMovieLoading, error: netflixMovieError} = useQuery({ queryKey: ['netflix', 'movie'], queryFn: fetchNetflixOriginal })
 
@@ -44,9 +41,13 @@ function Home () {
     if (netflixMovieLoading || netflixTvLoading) return null
     if (netflixMovieError || netflixTvError) return <p>Error occurred!</p>
     if (!coverData) return null
-
+    
     return (
         <div>
+            <Helmet>
+                <title>홈 - 넷플릭스</title>
+            </Helmet>
+
             {coverData && <div>
                 <MainCoverImg id="cover-image" $url={coverData.img} $maskeffect={playerState.state !== 1}>
                     {videokey && !openModal && <div style={{opacity: playerState.id === videokey && playerState.state === 1 ? 1 : 0}}><YouTubePlayer videoId={videokey} width='100%' height='952px' /></div>}
@@ -57,7 +58,6 @@ function Home () {
             </div>}
 
             <div style={{paddingTop: 'calc(100vh - 150px)'}}>
-            {/* <div style={{paddingTop: '700px'}}> */}
                 <div>
                     {netflixTvData && <SliderContainer mType='tv' headerTitle='넷플릭스 오리지널 시리즈' data={netflixTvData} /> }
                 </div>

@@ -24,7 +24,10 @@ export const useMediaStore = create(
         playerState: {state: -999, error: null},
         setPlayerState: (value) => {
             console.log('📂 playerState', value);
-            set({playerState: value, playable: [1,2,5,0].includes(value.state)})
+            set({
+                playerState: value,
+                playable: [1,2,5,0].includes(value.state)
+            })
             /**
                 PLAYING: 1
                 PAUSED: 2

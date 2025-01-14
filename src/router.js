@@ -18,15 +18,15 @@ function Router () {
     // 이전 위치 확인
     const state = location.state
     const backgroundLocation = state?.background
-    // console.log('state', state);
-    // console.log('backgroundLocation', backgroundLocation);
+    // console.log('🥾 state', state);
+    // console.log('🥾 backgroundLocation', backgroundLocation);
     return (
         <RoutesWrapper id="routes">
             <ScrollToTop />
             <div style={{position: openModal ? 'fixed' : '', width: '100%'}}>
                 <Routes location={backgroundLocation || location}>
                     <Route index element={<Home />} />
-                    <Route index path="/media/:mType" element={<Media />} />
+                    <Route path="/media/:mType" element={<Media />} />
                     <Route path="/media/:mType/genre/:genreId" element={<Media />} />
                     <Route path="/my-list" element={<MyContents />} />
                     <Route path="/trending-now" element={<TrendingNow />} />

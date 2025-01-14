@@ -2,6 +2,7 @@ import { useQueries } from "@tanstack/react-query";
 import { fetchContentDetails } from "api/movieApi";
 import GridContents from "components/contents/GridContents";
 import React from "react";
+import { Helmet } from "react-helmet";
 import { useMediaStore } from "stores/mediaStore"
 
 function MyContents () {
@@ -31,6 +32,10 @@ function MyContents () {
     // console.log('MyContents > data', data);
     return (
         <div className="my-contents">
+            <Helmet>
+                <title>넷플릭스</title>
+            </Helmet>
+
             <div style={{padding: '64px 60px 0'}}>
                 <div className="title">
                     <h1 style={{fontWeight: '400'}}>내가 찜한 리스트</h1>

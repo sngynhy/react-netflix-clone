@@ -19,6 +19,7 @@ GridContents.prototype = {
 function GridContents ({ mType, data, gridColumns=`repeat(6, 1fr)`, gap=10, showTitle=true, showOverview=true, showPlayButton=false, hoverEffect=true, imgPath=`backdrop_path` }) {
     const navigate = useNavigate()
     const location = useLocation()
+    // console.log('GridContents', location);
     const openModal = (props) => {
         // console.log('🧮 GridContents > openModal', location);
         if (mType === 'person') {

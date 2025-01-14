@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { IoWarning } from "react-icons/io5";
+import { Helmet } from "react-helmet";
 
 function NotFound () {
     const navigate = useNavigate()
@@ -10,9 +11,13 @@ function NotFound () {
     }
     return (
         <div id="error" style={{position: 'relative'}}>
+            <Helmet>
+                <title>넷플릭스</title>
+            </Helmet>
+
             <MainCover id='cover-image' $maskeffect={true}/>
 
-            <Container style={{}}>
+            <Container>
                 <Wrapper>
                     <WarnIcon id="wran-icon" style={{width: '100px', height: '100px'}}>
                         <IoWarning />
