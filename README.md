@@ -6,7 +6,7 @@
 <br><br>
 
 ## 프로젝트 소개
-<p>React 기본기 다지기용 넷플릭스 클론 프로젝트</p>
+<p>React 개인 공부용 넷플릭스 클론 프로젝트</p>
 
 ### 목표
 <ol>
@@ -18,7 +18,7 @@
 </ol>
 
 ### 기간
-2024-11-19 ~ 2025-01-14
+2024-11-19 ~ 2025-01-15
 
 <br><br>
 
@@ -27,12 +27,12 @@
 <p>React, Javasctip, React Youtube, React Router Dom, React Query, Zustand, Styled Components 등</p>
 
 ### 도구
-<p>VS Code, GitHub</p>
+<p>VS Code, GitHub, GitHub Pages</p>
 
 <br><br>
 
 ## 추후 개선 사항
 <ol>
-  <li>반응형 적용 (모바일 및 태블릿 버전 추가)</li>
-  <li>미리보기 기능 구현</li>
+  <li>반응형 적용 > 모바일 및 태블릿 버전 추가</li>
+  <li>콘텐츠 정보 미리보기 기능</li>
 </ol>
