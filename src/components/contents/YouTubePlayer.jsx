@@ -3,14 +3,22 @@ import { useMediaStore } from "stores/mediaStore";
 import styled from "styled-components";
 import YouTube from "react-youtube";
 
-export const YouTubePlayer = ({ videoId, startTime=0, width="100%", height="475px", borderRadius="0" }) => {
-    // // console.log('🎬🎥📺 YouTubePlayer > videokey', videoId);
+export const YouTubePlayer = React.memo(({ videoId, startTime=0, width="100%", height="475px", borderRadius="0" }) => {
+    // console.log('🎬🎥📺 YouTubePlayer', videoId);
     const playerRef = useRef(null)
     const {isMuted, setFullScreen, setPlayerState, setVideoCurrentTime} = useMediaStore()
     const opts = {
         height: height,
         width: width,
-        playerVars: { autoplay: 1, controls: 0, mute: 1, modestbranding: 0, rel: 0 }
+        playerVars: {
+            autoplay: 1,
+            controls: 0,
+            mute: 1,
+            modestbranding: 0,
+            rel: 0,
+            enablejsapi: 1, // JavaScript API 사용 권한 활성화
+            origin: window.location.origin, // 현재 사이트 도메인을 origin으로 설정
+        }
     }
     /** playerVars
     자동재생 autoplay = 0 or 1
@@ -22,20 +30,31 @@ export const YouTubePlayer = ({ videoId, startTime=0, width="100%", height="475p
     * 
     */
 
-    // ESC 키 충돌 처리
-    useEffect(() => {
-        // const handleKeyDown = (event) => {
-        //     // // console.log('handleKeyDown', event.key);
-        //     if (event.key === "Escape") {
-        //         if (document.fullscreenElement) { // full screen일 때 esc키를 누른 경우
-        //             document.exitFullscreen();
-        //             setFullScreen(false)
-        //         }
-        //     }
-        // }
+    // 전체화면 상태 감지
+    const handleFullscreenChange = () => setFullScreen(!!document.fullscreenElement);
+    // const handleKeyDown = (event) => {
+    //     if (document.fullscreenElement) {
+    //         switch (event.key) {
+    //             case "ArrowLeft":
+    //                 playerRef.current?.seekTo(playerRef.current?.getCurrentTime() - 10);
+    //                 break;
+    //             case "ArrowRight":
+    //                 playerRef.current?.seekTo(playerRef.current?.getCurrentTime() + 10);
+    //                 break;
+    //             default:
+    //                 console.log('handleKeyDown', event.key);
+    //                 break;
+    //         }
+    //     }
+    // }
 
+    useEffect(() => {
+        // 전체화면 변경 이벤트
+        document.addEventListener("fullscreenchange", handleFullscreenChange)
+        // 키 이벤트
         // document.addEventListener("keydown", handleKeyDown)
         return () => {
+            document.removeEventListener("fullscreenchange", handleFullscreenChange)
             // document.removeEventListener("keydown", handleKeyDown)
             if (playerRef.current) {
                 playerRef.current.destroy()
@@ -224,18 +243,18 @@ export const YouTubePlayer = ({ videoId, startTime=0, width="100%", height="475p
                     onStateChange={onStateChange}
                 />
                 <div className='btns'>
-                    <div id="video-fullscreen-btn" onClick={enterFullScreen} style={{opacity: 0}}></div>
-                    <div id="video-play-btn" onClick={playVideo} style={{opacity: 0}}></div>
-                    <div id="video-stop-btn" onClick={stopVideo} style={{opacity: 0}}></div>
-                    <div id="video-puause-btn" onClick={pauseVideo} style={{opacity: 0}}></div>
-                    <div id="video-mute-btn" onClick={mute} style={{opacity: 0}}></div>
-                    <div id="video-unmute-btn" onClick={unMute} style={{opacity: 0}}></div>
-                    <div id="video-currenttime-btn" onClick={getCurrentTime} style={{opacity: 0}}></div>
+                    <div id={"video-fullscreen-btn-" + videoId} onClick={enterFullScreen} style={{opacity: 0}}></div>
+                    <div id={"video-play-btn-" + videoId} onClick={playVideo} style={{opacity: 0}}></div>
+                    <div id={"video-stop-btn-" + videoId} onClick={stopVideo} style={{opacity: 0}}></div>
+                    <div id={"video-puause-btn-" + videoId} onClick={pauseVideo} style={{opacity: 0}}></div>
+                    <div id={"video-currenttime-btn-" + videoId} onClick={getCurrentTime} style={{opacity: 0}}></div>
+                    <div id={"video-mute-btn"} onClick={mute} style={{opacity: 0}}></div>
+                    <div id={"video-unmute-btn"} onClick={unMute} style={{opacity: 0}}></div>
                 </div>
             </>}
         </Player>
     )
-}
+})
 
 const Player = styled.div`
     width: ${props => props.$width};

@@ -46,7 +46,7 @@ export const PreviewModal = ({ id, mType, title, backdrop, voteAvg, genreIds }) 
 // export const Player = ({backdrop, videokey=null}) => {
 export const Player = ({id, mType, backdrop, sendVedioKey}) => {
     const { playerState } = useMediaStore()
-    const {videokey, isLoading, isError} = useVideoQuery({type: mType, id: id})
+    const {videokey, isLoading, isError} = useVideoQuery({type: mType, id: id, enabled: true})
     useEffect(() => {
         if (videokey) {
             sendVedioKey(videokey)
@@ -78,7 +78,7 @@ export const Info = ({id, mType, title, voteAvg, genreIds, videokey=null}) => {
 
     const openModal = () => {
         if (videokey && playerState.id === videokey && playerState.state === 1) {
-            document.getElementById('video-puause-btn').click()
+            document.getElementById('video-puause-btn-' + videokey).click()
         }
         navigate(`/detail?id=${encodeURIComponent(id)}`, {state: { background: location, mType: mType }})
     }

@@ -74,19 +74,19 @@ export const ContentsByPerson = ({id}) => {
     const {data: movieData, isLoading: isMovieLoading, error: MovieError} = useConetentsByPersonQuery({ type: 'movie', personId: id })
     const {data: tvData, isLoading: isTvLoading, error: TvError} = useConetentsByPersonQuery({ type: 'tv', personId: id })
     
-    if (isMovieLoading || isTvLoading || MovieError || TvError) return null
+    if (isMovieLoading || isTvLoading || MovieError || TvError) return <></>
     return (
         <div style={{color: 'white'}}>
             {movieData?.length > 0 &&
             <div style={{marginTop: '40px'}}>
                 <h1 style={{fontWeight: 300}}>영화</h1>
-                <GridContents data={movieData} mType='movie' showTitle={true} showPlayButton={false} showOverview={false} gridColumns={5} />
+                <GridContents data={movieData} mType='movie' showTitle={true} showOverview={false} gridColumns={5} />
             </div>
             }
             {tvData?.length > 0 &&
             <div style={{marginTop: '40px'}}>
                 <h1 style={{fontWeight: 300}}>시리즈</h1>
-                <GridContents data={tvData} mType='tv' showTitle={true} showPlayButton={false} showOverview={false} gridColumns={5} />
+                <GridContents data={tvData} mType='tv' showTitle={true} showOverview={false} gridColumns={5} />
             </div>
             }
         </div>
@@ -95,14 +95,14 @@ export const ContentsByPerson = ({id}) => {
 export const ContentsByGenre = ({id, mType}) => {
     const { mediaTypes } = useMediaStore()
     const {data, isLoading, error} = useConetentsByGenreQuery({ type: mType, genreId: id })
-    if (isLoading || error) return null
+    if (isLoading || error) return <></>
     return (
         <div>
             <div style={{color: 'white'}}>
                 {data?.length > 0 &&
                     <div style={{marginTop: '40px'}}>
                         <h1 style={{fontWeight: 300}}>{mediaTypes[mType]}</h1>
-                        <GridContents data={data} mType={mType} showTitle={true} showPlayButton={false} showOverview={false} gridColumns={5} />
+                        <GridContents data={data} mType={mType} showTitle={true} showOverview={false} gridColumns={5} />
                     </div>
                 }
             </div>

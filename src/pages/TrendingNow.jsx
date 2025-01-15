@@ -33,7 +33,9 @@ function TrendingNow () {
                         </div>)
                     })}
                 </div>
-                <br /><br />
+
+                <br/><br/>
+                
                 <div>
                     <div className="title">
                         <h1 style={{fontWeight: '400'}}>이번주 인기 콘텐츠</h1>

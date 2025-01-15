@@ -20,8 +20,9 @@ export const CoverContent = ({mType, coverData, sendVideokey}) => {
     }, [mType, coverData])
 
     // video
-    const {data: videokey, isLoading: videoLoading} = useVideoQuery({type: mType, id: coverData.id})
-    useEffect(() => { 
+    const {data: videokey, isLoading: videoLoading} = useVideoQuery({type: mType, id: coverData.id, enabled: true})
+    useEffect(() => {
+        // if (videokey) sendVideokey(videokey)
         sendVideokey(videokey)
     }, [videokey, sendVideokey])
     
@@ -38,7 +39,7 @@ export const CoverContent = ({mType, coverData, sendVideokey}) => {
     
     const openDetailModal = () => {
         if (videokey && playerState.id === videokey && playerState.state === 1) {
-            document.getElementById('video-puause-btn').click()
+            document.getElementById('video-puause-btn-' + videokey).click()
         }
         navigate(`/detail?id=${encodeURIComponent(coverData.id)}`, {state: { background: location, mType: mType }})
     }

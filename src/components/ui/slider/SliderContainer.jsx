@@ -65,51 +65,33 @@ export const SliderContainer = React.memo(({mType, headerTitle, data}) => {
                 <Slider {...settings}>
                     {data.map((el, i) => (
                         <div className={i+el.id} key={el.id} style={{cursor: 'pointer'}}>
-                            <SlickSlide className='slick-slide' onClick={() => openModal(el.id, mType)}>
-                                <BackdropImage
-                                    id={el.id}
-                                    mType={mType}
-                                    title={el.title || el.name}
-                                    showTitle={true}
-                                    imgPath={el.backdrop_path}
-                                    width='120px'
-                                    height='40px'
-                                />
+                            <SlickSlide className='slick-slide'>
+                                <div onClick={() => openModal(el.id, mType)}>
+                                    <BackdropImage
+                                        id={el.id}
+                                        mType={mType}
+                                        title={el.title || el.name}
+                                        showTitle={true}
+                                        imgPath={el.backdrop_path}
+                                        width='120px'
+                                        height='40px'
+                                    />
+                                </div>
                                 {/* <div className="this">
                                     <Info id={el.id} mType={mType} title={el.title || el.name} voteAvg={el.vote_average.toFixed(1)} genreIds={el.genre_ids} />
+                                    <PreviewModal
+                                        id={el.id}
+                                        mType={mType}
+                                        title={el.title || el.name}
+                                        backdrop={el.backdrop_path}
+                                        voteAvg={el.vote_average.toFixed(1)}
+                                        genreIds={el.genre_ids}
+                                    />
                                 </div> */}
                             </SlickSlide>
                         </div>
                     ))}
                 </Slider>
-
-                {/* <Slider {...settings}>
-                    {data.map((el, i) => (
-                        <div className={i+el.id} key={el.id} onMouseEnter={() => openModal(i, el)} onMouseLeave={(e) => { if (!isHovered) setIsInside(false) }} style={{cursor: 'pointer'}}>
-                            <div className='slick-slide' style={{margin: '15px 5px', transition: '0.5s ease', transform: isInside && el.id === previewData.id ? 'scale(1.2)' : 'scale(1)', zIndex: isInside && el.id === previewData.id ? 99 : 0, position: 'sticky'}}>
-                                <BackdropImage
-                                    id={el.id}
-                                    mType={mType}
-                                    title={el.title || el.name}
-                                    showTitle={true}
-                                    imgPath={el.backdrop_path}
-                                    width='120px'
-                                    height='40px'
-                                />
-                            </div>
-                        </div>
-                    ))}
-                </Slider> */}
-                {/* <Preview ref={previewRef} onMouseLeave={() => setIsInside(false)} style={{left: coordinate.left, transform: isHovered ? 'scale(1.2)' : 'scale(0)'}}>
-                    {isHovered && previewData && <PreviewModal
-                        id={previewData.id}
-                        mType={mType}
-                        title={previewData.title}
-                        backdrop={previewData.backdrop}
-                        voteAvg={previewData.voteAvg.toFixed(1)}
-                        genreIds={previewData.genreIds}
-                    />}
-                </Preview> */}
             </div>
         </div>
     )
@@ -123,11 +105,12 @@ const SlickSlide = styled.div`
         opacity: 0;
         height: 0px;
         width: 100%;
+        transition: 0.5s;
     }
 
     &:hover {
         transition: 0.5s;
-        // transform: scale(1.1) translateY(-20px);
+        // transform: scale(1.2) translateY(-20px);
         transform: scale(1.2);
         z-index: 999;
 
@@ -135,17 +118,7 @@ const SlickSlide = styled.div`
             opacity: 1;
             position: absolute;
             z-index: 999;
+            transition: 0.5s;
         }
     }
-`
-
-const Preview = styled.div`
-    position: absolute;
-    width: 262px;
-    height: 147px;
-    top: 0;
-    // left: ${props => props.$left};
-    transition: transform 1s ease;
-    // transform: ${props => props.$isHovered ? 'scale(1.2)' : 'scale(0)'};
-    z-index: 10;
 `

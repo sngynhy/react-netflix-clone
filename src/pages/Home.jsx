@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useQuery } from '@tanstack/react-query';
 import { Helmet } from "react-helmet";
 import { fetchNetflixOriginal } from 'api/movieApi';
@@ -14,10 +14,13 @@ const mType = 'tv'
 
 function Home () {
     const {playerState, openModal} = useMediaStore()
+    const [coverData, setCoverData] = useState()
+    const [videokey, setVideokey] = useState()
+    const [first, setFirst] = useState(true)
+
     const {data: netflixTvData, isLoading: netflixTvLoading, error: netflixTvError} = useQuery({ queryKey: ['netflix', 'tv'], queryFn: fetchNetflixOriginal })
     const {data: netflixMovieData, isLoading: netflixMovieLoading, error: netflixMovieError} = useQuery({ queryKey: ['netflix', 'movie'], queryFn: fetchNetflixOriginal })
 
-    const [coverData, setCoverData] = useState(null)
     useEffect(() => {
         if (!netflixTvLoading && netflixTvData) {
             const random = 0 // Math.floor(Math.random() * 5)
@@ -31,16 +34,16 @@ function Home () {
         }
     }, [netflixTvLoading, netflixTvData])
 
-    const [videokey, setVideokey] = useState()
-    const recieveVediokey = useCallback((key) => {
-        setTimeout(() => {
-            setVideokey(key)
-        }, 3000)
-    }, [])
+    const recieveVediokey = (key) => setVideokey(key)
+    useEffect(() => {
+        if (playerState.state === 1) setFirst(false)
+        else if (!first && playerState.state === -1 && !openModal && videokey) {
+            document.getElementById('video-stop-btn-' + videokey).click()
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [openModal, videokey, playerState])
 
-    if (netflixMovieLoading || netflixTvLoading) return null
-    if (netflixMovieError || netflixTvError) return <p>Error occurred!</p>
-    if (!coverData) return null
+    if (netflixMovieLoading || netflixTvLoading || netflixMovieError || netflixTvError || !coverData) return <></>
     
     return (
         <div>

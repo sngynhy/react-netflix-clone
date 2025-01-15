@@ -9,22 +9,24 @@ export const MainContent = React.memo(({mType, coverData, genreId=null}) => {
     // console.log('MainContent', mType, genreId, name, coverData);
     const { playerState, openModal } = useMediaStore()
     const [videokey, setVideokey] = useState()
-
-    useEffect(() => {
-        setVideokey(null)
-        // return () => setVideokey(null)
-    }, [mType, genreId])
+    const [first, setFirst] = useState(true)
     
     useEffect(() => {
-        if (!openModal && videokey && playerState.state === -1) {
-            document.getElementById('video-stop-btn').click()
+        setVideokey()
+        setFirst(true)
+    }, [mType, genreId])
+
+    useEffect(() => {
+        if (playerState.state === 1) setFirst(false)
+        else if (!first && playerState.state === -1 && !openModal && videokey) {
+            document.getElementById('video-stop-btn-' + videokey).click()
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [openModal, videokey, playerState])
 
-    const recieveVediokey = useCallback((data) => {
-        setVideokey(data)
-    }, [])
-    // console.log('🎁 MainContent 🎁', playerState);
+    const recieveVediokey = (key) => setVideokey(key)
+
+    // console.log('🎁 MainContent 🎁', videokey);
     return (
         <>
             <MainCoverImg id="cover-image" $url={coverData.img} $maskeffect={playerState.state !== 1}>

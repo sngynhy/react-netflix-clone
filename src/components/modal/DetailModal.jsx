@@ -98,7 +98,7 @@ export const DetailModal = () => {
         }
     }, [detailsData, creditData, details, setOpenModal, location])
         
-    if (detailsLoading || creditLoading || detailsError || crditError) return null
+    if (detailsLoading || creditLoading || detailsError || crditError) return <></>
     
     return (
         <div id="detail-modal" style={{width: '100%', height: height}}>
@@ -137,7 +137,7 @@ const PreviewContent = React.memo(({ id, mType, imgPath, title }) => {
     const { playable, playerState, videoCurrentTime } = useMediaStore()
 
     // video
-    const {data: videokey, isLoading: videoLoading} = useVideoQuery({type: mType, id: id})
+    const {data: videokey, isLoading: videoLoading} = useVideoQuery({type: mType, id: id, enabled: true})
     // console.log('videokey >>', videokey);
     
     if (videoLoading) return
@@ -145,7 +145,7 @@ const PreviewContent = React.memo(({ id, mType, imgPath, title }) => {
     const closeModal = () => {
         // console.log('closeModal', location);
         if (videokey && playerState.id === videokey && playerState.state === 1) {
-            document.getElementById('video-stop-btn').click()
+            document.getElementById('video-stop-btn-' + videokey).click()
         }
         navigate(location.state.background || -1)
     }
@@ -235,14 +235,14 @@ const RecommendSection = React.memo(({id, mType}) => {
         setMoreViewRecommend(prev => !prev)
     }
 
-    if (recommendLoading || recommendError) return null
+    if (recommendLoading || recommendError) return <></>
     
     return (
         <div id="recommendSection" style={{margin: '30px 0'}}>
             <h2>추천 콘텐츠</h2>
             <div className="gridBox">
-                <GridContents data={recommendData?.slice(0, 9)} mType={mType} showTitle={true} showPlayButton={true} showOverview={true} gridColumns={3} hoverEffect={false} />
-                {moreViewRecommend && <GridContents data={recommendData?.slice(9, recommendData.lenght)} mType={mType} showTitle={true} showPlayButton={true} showOverview={true} gridColumns={3} hoverEffect={false} />}
+                <GridContents data={recommendData?.slice(0, 9)} mType={mType} showTitle={true} showPlayButton={true} showOverview={true} gridColumns={3} hoverEffect={false} borderRadius='6px 6px 0 0' />
+                {moreViewRecommend && <GridContents data={recommendData?.slice(9, recommendData.lenght)} mType={mType} showTitle={true} showPlayButton={true} showOverview={true} gridColumns={3} hoverEffect={false} borderRadius='6px 6px 0 0' />}
                 <MoreDiv $moreview={moreViewRecommend} ><TfiArrowCircleLeft onClick={moreView}/></MoreDiv>
             </div>
         </div>

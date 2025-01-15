@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { fetchImage } from "api/movieApi";
 import PropTypes from "prop-types";
-import React, { useEffect, useMemo } from "react";
+import React, { useMemo } from "react";
 import styled from "styled-components";
 import { getContentImg } from "utils/CommonFunction";
 
@@ -26,7 +26,6 @@ export const LogoImage = React.memo(({ id, mType, alt, width='35vw', height='12v
     if (!logoDataLoading && !logoPath) return <div style={{fontSize: fontSize, color: 'white', fontWeight: 'bold'}}>{alt}</div>
 
     return (
-        // <div style={{width: `${width}`, height: `${height}`, position: 'relative'}}>
         <Div $width={width} $height={height} $lowerTitle={lowerTitle} $transform={transform}>
             {logoPath && <img src={logoPath} alt={alt + '_로고'} style={{width: '100%', height: '100%', position: 'absolute', bottom: '2px' }}/>}
         </Div>

@@ -2,7 +2,6 @@ import PropTypes from "prop-types";
 import React from "react";
 import MyContentsButton from "components/ui/button/MyContentsButton";
 import { BackdropImage } from "components/contents/BackdropImage";
-import { useMediaStore } from "stores/mediaStore";
 import styled from "styled-components";
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -16,7 +15,7 @@ GridContents.prototype = {
     imgPath: PropTypes.string
 }
 
-function GridContents ({ mType, data, gridColumns=`repeat(6, 1fr)`, gap=10, showTitle=true, showOverview=true, showPlayButton=false, hoverEffect=true, imgPath=`backdrop_path` }) {
+function GridContents ({ mType, data, gridColumns=`repeat(6, 1fr)`, gap=10, showTitle=true, showOverview=true, showPlayButton=false, hoverEffect=true, imgPath=`backdrop_path`, borderRadius=0 }) {
     const navigate = useNavigate()
     const location = useLocation()
     // console.log('GridContents', location);
@@ -41,6 +40,7 @@ function GridContents ({ mType, data, gridColumns=`repeat(6, 1fr)`, gap=10, show
                             imgPath={el[imgPath]}
                             width='120px'
                             height='60px'
+                            borderRadius={borderRadius}
                         />
                         {showOverview &&
                             <Overview

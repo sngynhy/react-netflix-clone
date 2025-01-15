@@ -119,10 +119,11 @@ export const useTrendingContentsQueries = () => {
     return queries
 }
 export const useVideoQuery = (props) => {
-    const { type, id } = props
+    const { type, id, enabled } = props
     return useQuery({
         queryKey: ["video", type, id],
         queryFn: fetchVideo,
+        enabled: !!enabled,
         select: data => {
             return data.length > 0 ? data.find(el => el.type === 'Trailer' || el.type === 'Teaser').key : null
         },

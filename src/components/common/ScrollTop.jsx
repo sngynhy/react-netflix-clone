@@ -9,5 +9,5 @@ export const ScrollToTop = () => {
     }, [pathname])
 
     // UI 렌더링하지 않음
-    return null
+    return <></>
 }

@@ -5,7 +5,7 @@ import { BounceLoader } from "react-spinners";
 // 📍 로딩 화면 생성
 function LoadingOverlay () {
     const { isLoading } = useLoading()
-    if (!isLoading) return null
+    if (!isLoading) return <></>
 
     return (
         <div style={styles.overlay}>

@@ -4,13 +4,12 @@ import { FaCirclePlay } from "react-icons/fa6";
 import styled from "styled-components";
 import { useMediaStore } from "stores/mediaStore"; 
 
-export const PlayButton = ({ active=false, type="button", iconSize=35 }) => { // type: 'button' or 'icon'
-    const {playable, setFullScreen} = useMediaStore()
+export const PlayButton = ({active=false, type="button", iconSize=35}) => { // type: 'button' or 'icon'
+    const {playerState, playable} = useMediaStore()
     const videoPlay = () => {
         if (active && playable) {
-            // setFullScreen(true)
-            document.getElementById('video-fullscreen-btn').click()
-            document.getElementById('video-currenttime-btn').click()
+            document.getElementById('video-fullscreen-btn-' + playerState.id).click()
+            document.getElementById('video-currenttime-btn-' + playerState.id).click()
         }
         // else alert('재생할 수 없는 콘텐츠입니다.')
     }
