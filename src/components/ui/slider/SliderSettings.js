@@ -21,5 +21,14 @@ export const settings = {
                 arrows: false
             } 
         },
+        {  
+            breakpoint: 1024, //화면 사이즈 768px일 때
+            settings: {
+                slidesToShow: 4,
+                slidesToScroll: 4,
+                draggable: true,
+                arrows: false
+            } 
+        },
     ]
 }

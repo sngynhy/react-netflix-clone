@@ -36,6 +36,7 @@ function Home () {
 
     const recieveVediokey = (key) => setVideokey(key)
     useEffect(() => {
+        // console.log('넹', first, playerState);
         if (playerState.state === 1) setFirst(false)
         else if (!first && playerState.state === -1 && !openModal && videokey) {
             document.getElementById('video-stop-btn-' + videokey).click()

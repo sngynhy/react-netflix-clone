@@ -1,9 +1,11 @@
 <img src="https://capsule-render.vercel.app/api?type=waving&height=200&color=gradient&text=Netflix%20Clone&fontAlign=50&desc=with%20React&fontAlignY=35&textBg=false&animation=scaleIn&descAlignY=54" />
 
 ## 데모 사이트
-[https://sngynhy.github.io/react-netflix-clone](https://sngynhy.github.io/react-netflix-clone).
+[https://sngynhy.github.io/react-netflix-clone](https://sngynhy.github.io/react-netflix-clone)
 
-<br><br>
+![screenshot](./src/assets/img/main.png)
+
+<br>
 
 ## 프로젝트 소개
 <p>React 개인 공부용 넷플릭스 클론 프로젝트</p>
@@ -20,7 +22,7 @@
 ### 기간
 2024-11-19 ~ 2025-01-15
 
-<br><br>
+<br>
 
 ## 기술 스택
 ### 라이브러리 & 언어
@@ -29,10 +31,20 @@
 ### 도구
 <p>VS Code, GitHub, GitHub Pages</p>
 
-<br><br>
+<br>
+
+<!--
+## 페이지 구현 설명
+### 1. 홈/영화/시리즈 콘텐츠 화면
+### 2. 모달창
+### 3. 대세 콘텐츠
+### 4. 내가 찜한 리스트
+### 5. 검색 결과 화면
+-->
 
 ## 추후 개선 사항
 <ol>
   <li>반응형 적용 > 모바일 및 태블릿 버전 추가</li>
-  <li>콘텐츠 정보 미리보기 기능</li>
+  <li>콘텐츠 정보 미리보기 기능 > preview modal 구현</li>
+  <li>무한 스크롤 기능으로 검색 콘텐츠 출력</li>
 </ol>

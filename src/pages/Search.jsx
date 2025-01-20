@@ -56,7 +56,8 @@ function Search (props) {
                     {/* 영화 */}
                     <h2><RxTriangleRight />
                         <div style={{display: 'inline-block', marginLeft: '5px'}}>
-                            영화{movieData.length !== 0 && <span style={{marginLeft: '8px', borderBottom: '1px solid #b3b3b3', color: '#b3b3b3', fontSize: '18px', cursor: 'pointer'}}>모두 보기</span>}
+                            영화
+                            {/* {movieData.length !== 0 && <span style={{marginLeft: '8px', borderBottom: '1px solid #b3b3b3', color: '#b3b3b3', fontSize: '18px', cursor: 'pointer'}}>모두 보기</span>} */}
                         </div>
                     </h2>
                     <div>
@@ -68,7 +69,8 @@ function Search (props) {
                     {/* TV */}
                     <h2><RxTriangleRight />
                         <div style={{display: 'inline-block', marginLeft: '5px'}}>
-                            TV{tvData.length !== 0 && <span style={{marginLeft: '8px', borderBottom: '1px solid #b3b3b3', color: '#b3b3b3', fontSize: '18px', cursor: 'pointer'}}>모두 보기</span>}
+                            TV
+                            {/* {tvData.length !== 0 && <span style={{marginLeft: '8px', borderBottom: '1px solid #b3b3b3', color: '#b3b3b3', fontSize: '18px', cursor: 'pointer'}}>모두 보기</span>} */}
                         </div>
                     </h2>
                     <div>
