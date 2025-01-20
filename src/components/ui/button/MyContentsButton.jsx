@@ -27,4 +27,4 @@ MyContentsButton.propTypes = {
     iconSize: PropTypes.number,
 }
 
-// export default MyContentsButton
+export default MyContentsButton
