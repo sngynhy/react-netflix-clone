@@ -1,5 +1,5 @@
 import { useQueries } from "@tanstack/react-query";
-import { fetchContentDetails } from "api/movieApi";
+import { fetchContentDetails } from "api/mediaApi";
 import GridContents from "components/contents/GridContents";
 import React from "react";
 import { Helmet } from "react-helmet";

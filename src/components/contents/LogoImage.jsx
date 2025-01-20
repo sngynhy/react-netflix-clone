@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { fetchImage } from "api/movieApi";
+import { fetchImage } from "api/mediaApi";
 import PropTypes from "prop-types";
 import React, { useMemo } from "react";
 import styled from "styled-components";

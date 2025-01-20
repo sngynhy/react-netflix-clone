@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query"
 import { useMediaStore } from "stores/mediaStore"
 import { useNavigate } from "react-router-dom"
 import { SelectBox } from 'styles/MainContentStyle';
-import { fetchGenres } from 'api/movieApi';
+import { fetchGenres } from 'api/mediaApi';
 
 export const SelectBoxForGenre = ({mType, genreId}) => {
 

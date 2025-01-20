@@ -1,5 +1,5 @@
 import { useQueries, useQuery } from "@tanstack/react-query";
-import { fetchCreditDetails, fetchContents, fetchSimilarContents, fetchRecommendContents, fetchVideo, fetchContentsByGenre, fetchTrendingContents, fetchContentsByPerson } from "api/movieApi";
+import { fetchCreditDetails, fetchContents, fetchSimilarContents, fetchRecommendContents, fetchVideo, fetchContentsByGenre, fetchTrendingContents, fetchContentsByPerson } from "api/mediaApi";
 
 export const useContentsQueryKey = {
     movie: {

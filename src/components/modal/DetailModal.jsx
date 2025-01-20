@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useQuery } from '@tanstack/react-query';
-import { fetchCreditDetails, fetchContentDetails, fetchRecommendContents } from "api/movieApi"; 
+import { fetchCreditDetails, fetchContentDetails, fetchRecommendContents } from "api/mediaApi"; 
 import { getContentImg } from "utils/CommonFunction";
 import { useVideoQuery } from "hooks/useReactQuery";
 import { FaStar } from "react-icons/fa6";
@@ -9,7 +9,7 @@ import { TfiArrowCircleLeft } from "react-icons/tfi";
 import GridContents from "components/contents/GridContents";
 import { useMediaStore } from 'stores/mediaStore';
 import {Wrapper, PreviewPlayer, IconsOnPlayer, MoreDiv, Span} from 'styles/DetailModal'
-import MyContentsButton from "components/ui/button/MyContentsButton";
+import { MyContentsButton } from "components/ui/button/MyContentsButton";
 import { PlayButton } from 'components/ui/button/PlayButton';
 import { YouTubePlayer } from "components/contents/YouTubePlayer";
 import { LogoImage } from "components/contents/LogoImage";

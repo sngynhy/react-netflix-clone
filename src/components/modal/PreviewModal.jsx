@@ -7,7 +7,7 @@ import { getContentImg } from "utils/CommonFunction";
 import PropTypes from "prop-types";
 import { useMediaStore } from "stores/mediaStore";
 import { useVideoQuery } from "hooks/useReactQuery"
-import MyContentsButton from "components/ui/button/MyContentsButton";
+import { MyContentsButton } from "components/ui/button/MyContentsButton";
 import { YouTubePlayer } from "components/contents/YouTubePlayer";
 import { PlayButton } from "components/ui/button/PlayButton";
 import { MuteButton } from "components/ui/button/MuteButton";

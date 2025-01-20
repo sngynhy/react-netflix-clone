@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useQuery } from '@tanstack/react-query';
 import { Helmet } from "react-helmet";
-import { fetchNetflixOriginal } from 'api/movieApi';
+import { fetchNetflixOriginal } from 'api/mediaApi';
 import { SliderContainer } from 'components/ui/slider/SliderContainer';
 import { getContentImg } from 'utils/CommonFunction';
 import { useMediaStore } from 'stores/mediaStore';

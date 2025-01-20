@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React from "react";
-import MyContentsButton from "components/ui/button/MyContentsButton";
+import { MyContentsButton } from "components/ui/button/MyContentsButton";
 import { BackdropImage } from "components/contents/BackdropImage";
 import styled from "styled-components";
 import { useLocation, useNavigate } from "react-router-dom";
