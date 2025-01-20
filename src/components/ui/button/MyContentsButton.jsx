@@ -5,11 +5,14 @@ import { Border } from "styles/IconButtonStyle";
 import { useMediaStore } from 'stores/mediaStore'
 
 function MyContentsButton ({id, mType, borderSize=45, iconSize=30 }) {
+    id = Number(id)
     const {likes, addLikes, removeLikes} = useMediaStore()
     const isLiked = likes.has(id) // 찜 상태 확인
     const setLike = () => {
         isLiked ? removeLikes(id) : addLikes(id, mType)
     }
+    console.log('likes', likes);
+    console.log('id', id, isLiked);
     return (
         <Border $borderSize={borderSize} $iconSize={iconSize} onClick={setLike}>
             {isLiked ? <IoCheckmark /> : <IoAdd />}
@@ -25,4 +28,4 @@ MyContentsButton.propTypes = {
     iconSize: PropTypes.number,
 }
 
-export default MyContentsButton
+export default React.memo(MyContentsButton)
