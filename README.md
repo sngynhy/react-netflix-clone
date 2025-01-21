@@ -26,21 +26,38 @@
 
 ## 기술 스택
 ### 라이브러리 & 언어
-<p>React, Javasctip, React Youtube, React Router Dom, React Query, Zustand, Styled Components 등</p>
+<img alt="Javasctip" src="https://img.shields.io/badge/Javascript-black?&style=flat&logo=javascript&logoColor=F7DF1E" />
+<img alt="React" src="https://img.shields.io/badge/React-black?&style=flat&logo=react&logoColor=61DAFB" />
+<img alt="NPM" src="https://img.shields.io/badge/NPM-black?style=flat&logo=npm&logoColor=CB3837" />
+<img alt="React Router" src="https://img.shields.io/badge/React Router-black?style=flat&logo=reactrouter&logoColor=CA4245" />
+<img alt="React Query" src="https://img.shields.io/badge/React Query-black?style=flat&logo=reactquery&logoColor=FF4154" />
+<img alt="Styled Components" src="https://img.shields.io/badge/Styled Components-black?style=flat&logo=styledcomponents&logoColor=#DB7093" />
+<img alt="Zustand" src="https://img.shields.io/badge/Zustand-black?style=flat&logo=zustand&logoColor=white" />
+<img alt="React Youtube" src="https://img.shields.io/badge/React Youtube-black?style=flat&logo=reactyoutube&logoColor=FF0000" />
 
 ### 도구
-<p>VS Code, GitHub, GitHub Pages</p>
+<img alt="VS Code" src="https://img.shields.io/badge/VS Code-007ACC?style=flat&logo=vscode&logoColor=2088FF" />
+<img alt="GitHub" src="https://img.shields.io/badge/GitHub-181717?style=flat&logo=github&logoColor=white" />
+<img alt="GitHub Pages" src="https://img.shields.io/badge/GitHub Pages-222222?style=flat&logo=githubpages&logoColor=white" />
+
+<!-- <img alt="" src="https://img.shields.io/badge/${아이콘}-${색상}?style=${뱃지스타일}&logo=${텍스트}&logoColor=${텍스트 색상}"
+
+https://simpleicons.org/
+/> -->
 
 <br>
 
-<!--
 ## 페이지 구현 설명
 ### 1. 홈/영화/시리즈 콘텐츠 화면
+
 ### 2. 모달창
+
 ### 3. 대세 콘텐츠
+
 ### 4. 내가 찜한 리스트
+
 ### 5. 검색 결과 화면
--->
+
 
 ## 추후 개선 사항
 <ol>

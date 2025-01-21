@@ -40,8 +40,6 @@ function Router () {
                 <Routes>
                     <Route path="/search/md/:condition" element={<SearchModal />} />
                     <Route path="/detail" element={<DetailModal />} />
-                    {/* <Route path="/:page/detail" element={<DetailModal />} /> */}
-                    {/* <Route path="/:page/:mType/detail" element={<DetailModal />} /> */}
                 </Routes>
             )}
         </RoutesWrapper>

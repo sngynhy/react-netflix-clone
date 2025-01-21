@@ -101,7 +101,7 @@ export const DetailModal = () => {
     if (detailsLoading || creditLoading || detailsError || crditError) return <></>
     
     return (
-        <div id="detail-modal" style={{width: '100%', height: height}}>
+        <div id="detail-modal" style={{width: '100%', height: height - 1}}>
             <Helmet>
                 <title>{details.title + ' - 넷플릭스'}</title>
             </Helmet>
