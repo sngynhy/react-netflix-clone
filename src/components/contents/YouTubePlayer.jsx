@@ -21,12 +21,12 @@ export const YouTubePlayer = React.memo(({ videoId, startTime=0, width="100%", h
         }
     }
     /** playerVars
-    자동재생 autoplay = 0 or 1
-    시작, 끝나는 시간 start = 61 / end = 120
-    영상 컨트롤러 표시 controls = 0 or 1
-    로고 표시 modestbranding = 0 or 1
-    반복 재생 loop = 1 & playlist =비디오_ID
-    관련 영상 표시 rel = 0 or 1
+        자동재생 autoplay = 0 or 1
+        시작, 끝나는 시간 start = 61 / end = 120
+        영상 컨트롤러 표시 controls = 0 or 1
+        로고 표시 modestbranding = 0 or 1
+        반복 재생 loop = 1 & playlist =비디오_ID
+        관련 영상 표시 rel = 0 or 1
     * 
     */
 
@@ -71,7 +71,7 @@ export const YouTubePlayer = React.memo(({ videoId, startTime=0, width="100%", h
             // console.log('startTime', startTime);
             seekTo(startTime, true)
         }
-        setPlayerState({id: videoId, state: -1, desc: 'UNSTARTED', error: null})
+        setPlayerState({id: videoId, state: -1, desc: 'READY', error: null})
     }
     const onPlay = (event) => {
         // console.log('🎞🎞 재생 시작', event);
@@ -178,7 +178,9 @@ export const YouTubePlayer = React.memo(({ videoId, startTime=0, width="100%", h
             setPlayerState({id: videoId, state: 0, desc: 'ENDED', error: null})
         }
     }
-    const seekTo = (seconds, allowSeekAhead=false) => { if (playerRef.current) playerRef.current.seekTo(seconds, allowSeekAhead) } // 특정 시간(seconds)으로 이동
+    const seekTo = (seconds, allowSeekAhead=false) => { // 특정 시간(seconds)으로 이동
+        if (playerRef.current) playerRef.current.seekTo(seconds, allowSeekAhead)
+    }
     // 볼륨 관련
     const mute = () => { // 음소거
         if (playerRef.current) {
@@ -228,7 +230,7 @@ export const YouTubePlayer = React.memo(({ videoId, startTime=0, width="100%", h
     }
     
     return (
-        <Player id="player">
+        <Player id="player" $width={width} $height={height} $borderRadius={borderRadius}>
             {videoId && <>
                 <YouTube
                     videoId={videoId}

@@ -6,7 +6,6 @@ import { SliderContainer } from 'components/ui/slider/SliderContainer';
 export const GenreContents = React.memo(({mType, genreId, sendCoverDat}) => {
     const {genreName, setGenreName} = useMediaStore()
     const {data, isLoading, error} = useConetentsByGenreQuery({ type: mType, genreId: genreId })
-    
     useEffect(() => {
         if (!isLoading) sendCoverDat(data[Math.floor(Math.random() * 10)])
         return () => setGenreName('')

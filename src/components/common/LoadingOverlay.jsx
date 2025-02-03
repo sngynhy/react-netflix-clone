@@ -3,7 +3,7 @@ import useLoading from "hooks/useLoading";
 import { BounceLoader } from "react-spinners";
 
 // 📍 로딩 화면 생성
-function LoadingOverlay () {
+export const LoadingOverlay = () => {
     const { isLoading } = useLoading()
     if (!isLoading) return <></>
 

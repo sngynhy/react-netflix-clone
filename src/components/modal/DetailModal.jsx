@@ -24,7 +24,6 @@ export const DetailModal = () => {
     const id = searchParams.get('id'), mType = location.state.mType
     // console.log('🎈 DetailModal', id, mType, location);
 
-    const { setOpenModal } = useMediaStore()
     const detailModalRef = useRef(null)
     useEffect(() => {
         // 특정 영역 외 클릭 시 이벤트 발생
@@ -47,7 +46,7 @@ export const DetailModal = () => {
             document.removeEventListener("keydown", handleKeyDown)
         }
         
-    }, [detailModalRef, setOpenModal, navigate, location])
+    }, [detailModalRef, navigate, location])
 
     // detail data
     const {data: detailsData, isLoading: detailsLoading, error: detailsError} = useQuery({ queryKey: ['details', mType, id], queryFn: fetchContentDetails })
@@ -82,26 +81,24 @@ export const DetailModal = () => {
             for (let entry of entries) {
                 if (entry.target === targetNode) {
                     const newHeight = entry.contentRect.height // 새로운 높이
-                    setHeight(newHeight + 30 - 241 + 'px')
+                    setHeight(newHeight + 30 - 241 - 1 + 'px')
                 }
             }
         })
         
         // 대상 요소 관찰 시작
         resizeObserver.observe(targetNode)
-        setOpenModal(true)
         
         // 크기 변경 감지
         return () => {
             resizeObserver.disconnect()
-            setOpenModal(false)
         }
-    }, [detailsData, creditData, details, setOpenModal, location])
+    }, [detailsData, creditData, details, location])
         
     if (detailsLoading || creditLoading || detailsError || crditError) return <></>
-    
+
     return (
-        <div id="detail-modal" style={{width: '100%', height: height - 1}}>
+        <div id="detail-modal" style={{width: '100%', height: height}}>
             <Helmet>
                 <title>{details.title + ' - 넷플릭스'}</title>
             </Helmet>

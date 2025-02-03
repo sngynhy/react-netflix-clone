@@ -7,7 +7,7 @@ import { fetchGenres } from 'api/mediaApi';
 
 export const SelectBoxForGenre = ({mType, genreId}) => {
 
-    const { mediaTypes, setGenreName } = useMediaStore()
+    const { mediaTypes, isModalOpen, setGenreName } = useMediaStore()
 
     const [scrollTop, setScrollTop] = useState(true)
     useEffect(() => {
@@ -60,7 +60,7 @@ export const SelectBoxForGenre = ({mType, genreId}) => {
     }, [genre])
 
     return (
-        <SelectBox $openGenreBox={openGenreBox} $scrollTop={scrollTop}>
+        <SelectBox $openGenreBox={openGenreBox} $scrollTop={scrollTop} $isModalOpen={isModalOpen}>
             {genreId ?
                 <>
                     <div style={{fontSize: '18px', color: 'grey'}}>

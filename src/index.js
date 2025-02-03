@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { BrowserRouter } from "react-router-dom"; // 🚕🚗 브라우저 라우터 가져오기
+import { BrowserRouter, HashRouter } from "react-router-dom"; // 🚕🚗 브라우저 라우터 가져오기
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import "styles/index.css";
@@ -19,12 +19,13 @@ if (process.env.REACT_APP_NODE_ENV === 'production') {
 
 root.render(
   // <React.StrictMode>
-    <BrowserRouter future={{ v7_startTransition: true }} basename={process.env.REACT_APP_PUBLIC_URL}> {/** 🚕🚗 basename='react-netflix-clone' << gh-pages를 위한 설정 */}
+    // <BrowserRouter future={{ v7_startTransition: true }} basename={process.env.REACT_APP_PUBLIC_URL}> {/** 🚕🚗 basename='react-netflix-clone' << gh-pages를 위한 설정 */}
+    <HashRouter future={{ v7_startTransition: true }}> {/** 🚕🚗 basename='react-netflix-clone' << gh-pages를 위한 설정 */}
       <QueryClientProvider client={queryClient}> {/** react query 사용 */}
         <App />
         <ReactQueryDevtools /> {/* devtools 사용 시 추가*/}
       </QueryClientProvider>
-    </BrowserRouter>
+    </HashRouter>
   // </React.StrictMode>
 );
 

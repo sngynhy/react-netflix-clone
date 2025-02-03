@@ -6,7 +6,7 @@ import { useGlobalStore } from 'stores/globalStore'
 export const LoadingContext = createContext(false)
 
 // 📍 2. Provider 컴포넌트 > state와 state의 상태를 제어하는 함수 선언
-function LoadingProvider ({ children }) {
+export const LoadingProvider = ({ children }) => {
     const isLoading = useIsFetching(); // React Query의 fetching 상태 감지
     // const [isLoading, setIsLoading] = useState(false);
     // const activeLoading = () => setIsLoading(true)
@@ -20,5 +20,3 @@ function LoadingProvider ({ children }) {
         </LoadingContext.Provider>
     )
 }
-
-export default LoadingProvider

@@ -1,5 +1,5 @@
-import React from "react";
-import {Routes, Route, useLocation} from 'react-router-dom'
+import React, { useEffect } from "react";
+import {Routes, Route, useLocation, Navigate} from 'react-router-dom'
 import styled from "styled-components";
 import Home from "pages/Home";
 import Search from "pages/Search";
@@ -7,25 +7,31 @@ import Media from 'pages/Media'
 import MyContents from "pages/MyContents";
 import TrendingNow from "pages/TrendingNow";
 import NotFound from "pages/NotFound";
-import { ScrollToTop } from "components/common/ScrollTop";
 import { useMediaStore } from "stores/mediaStore";
 import { SearchModal } from "components/modal/SearchModal";
 import { DetailModal } from "components/modal/DetailModal";
 
 function Router () {
-    const { openModal } = useMediaStore()
+    const { setIsModalOpen } = useMediaStore()
     const location = useLocation()
+
     // 이전 위치 확인
     const state = location.state
     const backgroundLocation = state?.background
-    // console.log('🥾 state', state);
-    // console.log('🥾 backgroundLocation', backgroundLocation);
+
+    // 모달 여부 확인
+    const isModalOpen = location.pathname.startsWith('/detail') || location.pathname.startsWith('/search/')
+
+    useEffect(() => {
+        setIsModalOpen(isModalOpen)
+    }, [isModalOpen, setIsModalOpen])
+
     return (
         <RoutesWrapper id="routes">
-            <ScrollToTop />
-            <div style={{position: openModal ? 'fixed' : '', width: '100%'}}>
+            <div style={{position: isModalOpen ? 'fixed' : '', width: '100%'}}>
                 <Routes location={backgroundLocation || location}>
                     <Route index element={<Home />} />
+                    <Route path="/media" element={<Navigate to="/media/movie" replace />} />
                     <Route path="/media/:mType" element={<Media />} />
                     <Route path="/media/:mType/genre/:genreId" element={<Media />} />
                     <Route path="/my-list" element={<MyContents />} />

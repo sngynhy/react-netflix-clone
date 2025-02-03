@@ -10,41 +10,37 @@ export const useMediaStore = create(
     devtools((set, get) => ({    
         mediaTypes: { movie: '영화', tv: '시리즈' },
         
+        // 장르명
         genreName: '',
         setGenreName: (value) => set({ genreName: value}),
+
+        // 모달창 활성 상태
+        isModalOpen: false,
+        setIsModalOpen: (value) => set({isModalOpen: value}),
         
-        openModal: false,
-        setOpenModal: (value) => set({openModal: value}),
-                
-        videoId: null,
-        setVideoId: (value) => set({videoId: value}),
-        playable: false, // 영상 재생 가능
-        setPlayable: (value) => set({playable: value}),
-        // 재생 상태
+        // 영상 플레이어 상태
+        /** PLAYING: 1
+            PAUSED: 2
+            BUFFERING: 3
+            CUED: 5
+            ENDED: 0
+            UNSTARTED: -1 */
         playerState: {state: -999, error: null},
-        setPlayerState: (value) => {
-            console.log('📂 playerState', value);
-            set({
-                playerState: value,
-                playable: [1,2,5,0].includes(value.state)
-            })
-            /**
-                PLAYING: 1
-                PAUSED: 2
-                BUFFERING: 3
-                CUED: 5
-                ENDED: 0
-                UNSTARTED: -1
-            */
-        },
-        videoCurrentTime: 0, // 재생 영상 현재 시각
+        setPlayerState: (value) => set({ playerState: value, playable: [1,2,5,0].includes(value.state) }),
+        // 영상 재생 가능 여부
+        playable: false,
+        setPlayable: (value) => set({playable: value}),
+        // 재생 영상 현재 시각
+        videoCurrentTime: 0,
         setVideoCurrentTime: (value) => set({videoCurrentTime: value}),
-        fullScreen: false, // 전체 화면
+        // 전체 화면
+        fullScreen: false,
         setFullScreen: (value) => set({fullScreen: value}),
-        isMuted: true, // 음소거
+        // 음소거
+        isMuted: true,
         setIsMuted: (value) => set({isMuted: value}),
 
-        // 찜 기능
+        // 찜 리스트
         likes: new Map(),
         addLikes: (id, type) => set(state => {
             const updatedMap = new Map(state.likes)

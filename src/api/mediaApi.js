@@ -2,10 +2,9 @@ import axios from 'axios'
 
 const API_KEY = process.env.REACT_APP_MOVIE_API_KEY;
 const API_TOKEN = process.env.REACT_APP_MOVIE_API_TOKEN
-// const BASE_URL = process.env.REACT_APP_MOVIE_BASE_FETCH
-const BASE_URL = `https://api.themoviedb.org/3`
+const BASE_URL = process.env.REACT_APP_MOVIE_BASE_FETCH
+// const BASE_URL = `https://api.themoviedb.org/3`
 const QUERY_PARAM = `api_key=${API_KEY}&include_adult=false&language=ko&page=1` 
-
 const options = {
     method: 'GET',
     headers: {
@@ -36,7 +35,7 @@ export const fetchCreditDetails = async ({ queryKey }) => {
     return res.data
 }
 // 영화, 시리즈 콘텐츠
-export const fetchContents = async ({ queryKey }) => { // type: 'movie' or 'tv', content: 'nowplaying', 'airingToday', ...
+export const fetchContents = async ({ queryKey }) => { // type: 'movie' or 'tv', content: 'now_playing', 'on_the_air', ...
     const [, type, content] = queryKey
     const url = `${BASE_URL}/${type}/${content}?${QUERY_PARAM}`
     const res = await axios.get(url, options)
@@ -109,3 +108,17 @@ export const fetchContentsByPerson = async ({ queryKey }) => {
     return res.data.cast
 }
 
+export const apis = {
+    fetchGenres,
+    fetchContentDetails,
+    fetchCreditDetails,
+    fetchContents,
+    fetchNetflixOriginal,
+    fetchSimilarContents,
+    fetchTrendingContents,
+    fetchRecommendContents,
+    fetchImage,
+    fetchVideo,
+    fetchContentsByGenre,
+    fetchContentsByPerson,
+}

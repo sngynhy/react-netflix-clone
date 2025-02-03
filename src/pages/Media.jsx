@@ -12,13 +12,8 @@ function Media () {
     const [coverData, setCoverData] = useState(null)
     const { mediaTypes, genreName } = useMediaStore()
     const genre = genreId && genreName ? genreName + ' ' : ''
-    // const [genre, setGenre] = useState('')
-    // useEffect(() => {
-    //     setGenre(genreId && genreName ? genreName + ' ' : '')
-    // }, [genreId, genreName])
 
     const recieveCoverData = useCallback((data) => {
-        // console.log('recieveCoverData', data)
         const coverData = {
             id: data.id,
             title: data.title || data.name,
@@ -35,7 +30,7 @@ function Media () {
                 <title>{genre + mediaTypes[mType] + ' - 넷플릭스'}</title>
             </Helmet>
             {/** 중앙 메인 콘텐츠 */}
-            {coverData && <MainContent mType={mType} genreId={genreId} coverData={coverData} recieveCoverData={recieveCoverData} />}
+            {coverData && <MainContent mType={mType} genreId={genreId} coverData={coverData} />}
 
             {/** 하단 슬라이더 */}
             {genreId ? <GenreContents mType={mType} genreId={genreId} sendCoverDat={recieveCoverData} /> : <MediaContents mType={mType} sendCoverData={recieveCoverData} />}

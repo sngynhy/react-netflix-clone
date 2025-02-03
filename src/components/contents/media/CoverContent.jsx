@@ -12,7 +12,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 export const CoverContent = ({mType, coverData, sendVideokey}) => {
     const navigate = useNavigate()
     const location = useLocation()
-    const { playerState, playable, openModal } = useMediaStore()
+    const { playerState, playable, isModalOpen } = useMediaStore()
     const [lowerTitle, setLowerTitle] = useState(false)
 
     useEffect(() => {
@@ -29,11 +29,11 @@ export const CoverContent = ({mType, coverData, sendVideokey}) => {
     useEffect(() => {
         if (playerState.id === videokey && playerState.state === 1) {
             setTimeout(() => {
-                if (!openModal) setLowerTitle(true)
+                if (!isModalOpen) setLowerTitle(true)
             }, 3000)
         }
         else setTimeout(() => setLowerTitle(false), 1000)
-    }, [openModal, playerState, videokey])
+    }, [isModalOpen, playerState, videokey])
     
     if (!coverData || videoLoading) return
     

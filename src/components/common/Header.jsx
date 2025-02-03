@@ -1,11 +1,13 @@
-import React, { useState, useRef, useEffect, memo, useMemo } from "react";
+import React, { useState, useRef, useEffect, memo } from "react";
 import { Link, useNavigate, useMatch } from 'react-router-dom'
 import logo from 'assets/img/logo/logo.png'
 import {Container, Wrapper, Nav, NavItem, CategoryText, SearchBox, styles} from 'styles/HeaderStyle'
 import { IoSearch, IoCloseSharp } from "react-icons/io5";
+import { useMediaStore } from "stores/mediaStore";
 
 // memo => props가 변경되지 않은 경우 구성 요소를 다시 렌더링하는 것을 건너뜀
 export const Header = memo(function Header () {
+    const { isModalOpen } = useMediaStore()
     const homeMatch = useMatch('/')
     const movieMatch = useMatch('/media/movie')
     const seriesMatch = useMatch('/media/tv')
@@ -31,7 +33,7 @@ export const Header = memo(function Header () {
     }, [])
 
     return (
-        <Container id="header" $scrollTop={scrollTop}>
+        <Container id="header" $scrollTop={scrollTop} $isModalOpen={isModalOpen} >
             <Wrapper>
                 {/* 좌측 넷플릭스 로고 */}
                 <Link to="/"><img loading="lazy" src={logo} style={{width: '7rem', verticalAlign:'middle'}} alt="로고 아이콘"/></Link>

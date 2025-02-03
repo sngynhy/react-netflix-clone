@@ -13,10 +13,8 @@ export const SearchModal = React.memo(() => {
     const location = useLocation()
     const [searchParams] = useSearchParams()
     const id = searchParams.get('id'), condition = location.state.condition
-    const {setOpenModal} = useMediaStore()
     const searchModalRef = useRef(null)
     useEffect(() => {
-        setOpenModal(true)
         // 특정 영역 외 클릭 시 이벤트 발생
         const outSideClick = (e) => {
             if (searchModalRef.current && !searchModalRef.current.contains(e.target)) {
@@ -35,9 +33,8 @@ export const SearchModal = React.memo(() => {
         return () => {
             document.removeEventListener("mousedown", outSideClick)
             document.removeEventListener("keydown", handleKeyDown)
-            setOpenModal(false)
         }
-    }, [searchModalRef, setOpenModal, navigate, location])
+    }, [searchModalRef, navigate, location])
 
     
     const goBack = () => navigate(-1) // 이전 위치로 돌아가기

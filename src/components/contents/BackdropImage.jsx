@@ -30,7 +30,7 @@ const Player = ({id, mType, showPlayButton, show}) => {
     const [play, setPlay] = useState(false)
 
     const {data: videokey, isLoading: videoLoading, error: videoError} = useVideoQuery({type: mType, id: id, enabled: !!showPlayButton})
-    
+
     const onPlay = () => {
         if (videokey && showPlayButton) {
             console.log('onPlay', );

@@ -31,7 +31,7 @@ export const SelectBox = styled.div`
     justify-content: flex-start;
     position: absolute;
     z-index: 2;
-    background-color: ${props => !props.$scrollTop ? 'black;' : 'transparent;'}
+    background-color: ${props => props.$scrollTop || props.$isModalOpen ? 'transparent' : 'black'};
     position: fixed;
     transition: 0.5s;
     

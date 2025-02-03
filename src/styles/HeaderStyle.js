@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const Container = styled.div`
     height: 4rem;
     width: 100%;
-    background-color: ${props => !props.$scrollTop ? 'black;' : 'transparent;'}
+    background-color: ${props => props.$scrollTop || props.$isModalOpen ? 'transparent' : 'black'};
     background-image: linear-gradient(180deg,rgba(0,0,0,.7) 10%,transparent);
     position: fixed;
     z-index: 999;

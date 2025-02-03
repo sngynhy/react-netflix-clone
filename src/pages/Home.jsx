@@ -13,7 +13,7 @@ import { YouTubePlayer } from 'components/contents/YouTubePlayer';
 const mType = 'tv'
 
 function Home () {
-    const {playerState, openModal} = useMediaStore()
+    const {playerState, isModalOpen} = useMediaStore()
     const [coverData, setCoverData] = useState()
     const [videokey, setVideokey] = useState()
     const [first, setFirst] = useState(true)
@@ -38,11 +38,11 @@ function Home () {
     useEffect(() => {
         // console.log('넹', first, playerState);
         if (playerState.state === 1) setFirst(false)
-        else if (!first && playerState.state === -1 && !openModal && videokey) {
+        else if (!first && playerState.state === -1 && !isModalOpen && videokey) {
             document.getElementById('video-stop-btn-' + videokey).click()
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [openModal, videokey, playerState])
+    }, [isModalOpen, videokey, playerState])
 
     if (netflixMovieLoading || netflixTvLoading || netflixMovieError || netflixTvError || !coverData) return <></>
     
@@ -54,7 +54,7 @@ function Home () {
 
             {coverData && <div>
                 <MainCoverImg id="cover-image" $url={coverData.img} $maskeffect={playerState.state !== 1}>
-                    {videokey && !openModal && <div style={{opacity: playerState.id === videokey && playerState.state === 1 ? 1 : 0}}><YouTubePlayer videoId={videokey} width='100%' height='952px' /></div>}
+                    {videokey && !isModalOpen && <div style={{opacity: playerState.id === videokey && playerState.state === 1 ? 1 : 0}}><YouTubePlayer videoId={videokey} width='100%' height='952px' /></div>}
                 </MainCoverImg>
                 <Wrapper id="cover-content">                
                     {coverData && <CoverContent mType={mType} coverData={coverData} sendVideokey={recieveVediokey}/>}

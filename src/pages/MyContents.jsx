@@ -25,8 +25,8 @@ function MyContents () {
           })),
     })
 
-    if (queries.some((query) => query.isLoading)) return
-    if (queries.some((query) => query.isError)) return <div>Error occurred!</div>
+    if (queries.some((query) => query.isLoading)) return <></>
+    if (queries.some((query) => query.isError)) return <></>
 
     const data = queries?.map(query => query.data)
     // console.log('MyContents > data', data);
