@@ -1,6 +1,5 @@
-import React, { createContext, useState } from "react";
+import React, { createContext } from "react";
 import { useIsFetching } from "@tanstack/react-query";
-import { useGlobalStore } from 'stores/globalStore'
 
 // 📍 1. context 생성
 export const LoadingContext = createContext(false)
@@ -11,7 +10,6 @@ export const LoadingProvider = ({ children }) => {
     // const [isLoading, setIsLoading] = useState(false);
     // const activeLoading = () => setIsLoading(true)
     // const deactiveLoading = () => setIsLoading(false)
-    // const { isLoading } = useGlobalStore()
 
     return (
         // <LoadingContext.Provider value={{ isLoading, activeLoading, deactiveLoading }}>

@@ -7,7 +7,7 @@ import { RxTriangleRight } from "react-icons/rx";
 import GridContents from "components/contents/GridContents";
 import { Helmet } from "react-helmet";
 
-function Search (props) {
+function Search () {
     const [searchParams] = useSearchParams()
     const keyword = searchParams.get('keyword')
     
@@ -40,8 +40,7 @@ function Search (props) {
             </Wrapper>
         </Container>
     )
-    if (movieIsLoading || tvIsLoading || personIsLoading) return
-    if (movieError || tvError || personError) return <p>Error occurred!</p>
+    if (movieIsLoading || tvIsLoading || personIsLoading || movieError || tvError || personError) return <></>
     
     return (
         <Container>
@@ -106,4 +105,4 @@ const Wrapper = styled.div`
     }
 `
 
-export default React.memo(Search)
+export default Search

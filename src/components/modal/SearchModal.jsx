@@ -8,7 +8,7 @@ import GridContents from "components/contents/GridContents";
 import { useMediaStore } from "stores/mediaStore";
 import { Helmet } from "react-helmet";
 
-export const SearchModal = React.memo(() => {
+export const SearchModal = () => {
     const navigate = useNavigate()
     const location = useLocation()
     const [searchParams] = useSearchParams()
@@ -42,7 +42,6 @@ export const SearchModal = React.memo(() => {
         const background = location.state?.background || -1
         navigate(background)
     }
-
     return (
         <Container id="search-modal">
             <Helmet>
@@ -65,9 +64,9 @@ export const SearchModal = React.memo(() => {
             </div>
         </Container>
     )
-})
+}
 
-export const ContentsByPerson = ({id}) => {
+const ContentsByPerson = ({id}) => {
     const {data: movieData, isLoading: isMovieLoading, error: MovieError} = useConetentsByPersonQuery({ type: 'movie', personId: id })
     const {data: tvData, isLoading: isTvLoading, error: TvError} = useConetentsByPersonQuery({ type: 'tv', personId: id })
     
@@ -89,7 +88,8 @@ export const ContentsByPerson = ({id}) => {
         </div>
     )
 }
-export const ContentsByGenre = ({id, mType}) => {
+
+const ContentsByGenre = ({id, mType}) => {
     const { mediaTypes } = useMediaStore()
     const {data, isLoading, error} = useConetentsByGenreQuery({ type: mType, genreId: id })
     if (isLoading || error) return <></>

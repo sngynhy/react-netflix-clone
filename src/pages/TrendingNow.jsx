@@ -7,8 +7,7 @@ function TrendingNow () {
     
     const queries = useTrendingContentsQueries()
     
-    if (queries.some((query) => query.isLoading)) return
-    if (queries.some((query) => query.isError)) return <div>Error occurred!</div>
+    if (queries.some((query) => query.isLoading || query.isError)) return <></>
 
     const data = queries?.map(query => query.data)
     const weekContents = data?.filter(el => el.period === 'week')
@@ -51,4 +50,4 @@ function TrendingNow () {
     )
 }
 
-export default React.memo(TrendingNow)
+export default TrendingNow

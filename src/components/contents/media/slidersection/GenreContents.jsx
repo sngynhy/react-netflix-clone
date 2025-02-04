@@ -4,15 +4,13 @@ import { useMediaStore } from "stores/mediaStore";
 import { SliderContainer } from 'components/ui/slider/SliderContainer';
 
 export const GenreContents = React.memo(({mType, genreId, sendCoverDat}) => {
-    const {genreName, setGenreName} = useMediaStore()
+    const {genreName} = useMediaStore()
     const {data, isLoading, error} = useConetentsByGenreQuery({ type: mType, genreId: genreId })
     useEffect(() => {
         if (!isLoading) sendCoverDat(data[Math.floor(Math.random() * 10)])
-        return () => setGenreName('')
-    }, [data, isLoading, sendCoverDat, setGenreName])
+    }, [data, isLoading, sendCoverDat])
 
-    if (isLoading) return
-    if (error) return <p>Error occurred!</p>
+    if (isLoading || error) return <></>
 
     return (
         <>

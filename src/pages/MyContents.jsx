@@ -7,6 +7,7 @@ import { useMediaStore } from "stores/mediaStore"
 
 function MyContents () {
     const {likes} = useMediaStore() // likes: { id => mType }
+    // console.log('likes', likes);
     const likeList = likes.size > 0 ? Array.from(likes) : []
     // const ids = Array.from(likes.keys())
     // ids.map(id => console.log(id, likes.get(id)))
@@ -25,10 +26,9 @@ function MyContents () {
           })),
     })
 
-    if (queries.some((query) => query.isLoading)) return <></>
-    if (queries.some((query) => query.isError)) return <></>
+    if (queries.some((query) => query.isLoading || query.isError)) return <></>
 
-    const data = queries?.map(query => query.data)
+    const data = queries.map(query => query.data)
     // console.log('MyContents > data', data);
     return (
         <div className="my-contents">
@@ -50,4 +50,4 @@ function MyContents () {
     )
 }
 
-export default React.memo(MyContents)
+export default MyContents

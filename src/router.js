@@ -37,7 +37,8 @@ function Router () {
                     <Route path="/my-list" element={<MyContents />} />
                     <Route path="/trending-now" element={<TrendingNow />} />
                     <Route path="/search" element={<Search />} />
-                    <Route path="*" element={<NotFound />} />
+                    {/* <Route path="*" element={<NotFound />} /> */}
+                    <Route path="*" element={<Navigate to="/" replac />} />
                 </Routes>
             </div>
 

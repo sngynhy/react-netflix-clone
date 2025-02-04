@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { MainCoverImg, Wrapper } from 'styles/MainContentStyle';
 import { useMediaStore } from 'stores/mediaStore';
 import { YouTubePlayer } from '../YouTubePlayer';
