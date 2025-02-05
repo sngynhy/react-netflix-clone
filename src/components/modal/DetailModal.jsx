@@ -24,6 +24,10 @@ export const DetailModal = () => {
     const id = searchParams.get('id'), mType = location.state.mType
     // console.log('🎈 DetailModal', id, mType, location);
 
+    useEffect(() => {
+        window.scrollTo(0, 0)
+    }, [])
+    
     const detailModalRef = useRef(null)
     useEffect(() => {
         // 특정 영역 외 클릭 시 이벤트 발생
@@ -81,7 +85,8 @@ export const DetailModal = () => {
             for (let entry of entries) {
                 if (entry.target === targetNode) {
                     const newHeight = entry.contentRect.height // 새로운 높이
-                    setHeight(newHeight + 30 - 241 - 1 + 'px')
+                    // setHeight(newHeight + 30 - 245 - 1 + 'px')
+                    setHeight(newHeight + 30 - 245 + 'px')
                 }
             }
         })

@@ -7,8 +7,7 @@ import { useMediaStore } from "stores/mediaStore"
 
 function MyContents () {
     const {likes} = useMediaStore() // likes: { id => mType }
-    // console.log('likes', likes);
-    const likeList = likes.size > 0 ? Array.from(likes) : []
+    const likeList = Array.from(likes)
     // const ids = Array.from(likes.keys())
     // ids.map(id => console.log(id, likes.get(id)))
 
