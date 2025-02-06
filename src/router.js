@@ -28,8 +28,7 @@ function Router () {
 
     return (
         <RoutesWrapper id="routes">
-            {/* <div style={{position: isModalOpen ? 'fixed' : '', width: '100%', backgroundColor: isModalOpen ? 'black' : ''}}> */}
-            <div style={{position: isModalOpen ? 'fixed' : '', width: '100%', backgroundColor: 'black'}}>
+            <div style={{position: isModalOpen ? 'fixed' : '', width: '100%', backgroundColor: 'black', height: '100%'}}>
                 <Routes location={backgroundLocation || location}>
                     <Route index element={<Home />} />
                     <Route path="/media" element={<Navigate to="/media/movie" replace />} />
