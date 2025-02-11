@@ -26,13 +26,13 @@ export const LogoImage = React.memo(({ id, mType, alt, width='35vw', height='12v
     if (!logoDataLoading && !logoPath) return <div style={{fontSize: fontSize, color: 'white', fontWeight: 'bold'}}>{alt}</div>
 
     return (
-        <Div $width={width} $height={height} $lowerTitle={lowerTitle} $transform={transform}>
+        <Wrapper $width={width} $height={height} $lowerTitle={lowerTitle} $transform={transform}>
             {logoPath && <img src={logoPath} alt={alt + '_로고'} style={{width: '100%', height: '100%', position: 'absolute', bottom: '2px' }}/>}
-        </Div>
+        </Wrapper>
     )
 })
 
-const Div = styled.div`
+const Wrapper = styled.div`
     position: relative;
     width: ${props => props.$width};
     height: ${props => props.$height};

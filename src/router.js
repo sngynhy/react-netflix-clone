@@ -8,8 +8,8 @@ import MyContents from "pages/MyContents";
 import TrendingNow from "pages/TrendingNow";
 import NotFound from "pages/NotFound";
 import { useMediaStore } from "stores/mediaStore";
-import { SearchModal } from "components/modal/SearchModal";
-import { DetailModal } from "components/modal/DetailModal";
+import { SearchModal } from "components/ui/modal/SearchModal";
+import { DetailModal } from "components/ui/modal/DetailModal";
 
 function Router () {
     const { setIsModalOpen } = useMediaStore()

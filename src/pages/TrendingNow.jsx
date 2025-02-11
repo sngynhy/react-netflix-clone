@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import GridContents from "components/contents/GridContents";
+import GridContents from "components/ui/layout/GridContents";
 import { useTrendingContentsQueries } from "hooks/useReactQuery";
 import { Helmet } from "react-helmet";
 

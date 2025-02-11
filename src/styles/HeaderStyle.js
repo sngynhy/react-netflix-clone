@@ -9,7 +9,7 @@ export const Container = styled.div`
     z-index: 999;
     transition: 0.5s;
 `
-export const Wrapper =  styled.div`
+export const Wrapper =  styled.nav`
     padding: 0 60px;
     height: 100%;
 `

@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchSearchBykeyword } from "api/mediaApi";
 import styled from "styled-components";
 import { RxTriangleRight } from "react-icons/rx";
-import GridContents from "components/contents/GridContents";
+import GridContents from "components/ui/layout/GridContents";
 import { Helmet } from "react-helmet";
 
 function Search () {

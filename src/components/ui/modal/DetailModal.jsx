@@ -6,7 +6,7 @@ import { useVideoQuery } from "hooks/useReactQuery";
 import { FaStar } from "react-icons/fa6";
 import { IoCloseOutline } from "react-icons/io5";
 import { TfiArrowCircleLeft } from "react-icons/tfi";
-import GridContents from "components/contents/GridContents";
+import GridContents from "components/ui/layout/GridContents";
 import { useMediaStore } from 'stores/mediaStore';
 import {Wrapper, PreviewPlayer, IconsOnPlayer, MoreDiv, Span} from 'styles/DetailModal'
 import { MyContentsButton } from "components/ui/button/MyContentsButton";
@@ -74,36 +74,36 @@ export const DetailModal = () => {
     const {data: creditData, isLoading: creditLoading, error: crditError} = useQuery({ queryKey: ['cast', mType, id], queryFn: fetchCreditDetails }) // , enabled: !detailsLoading 
     // console.log('creditData', creditData);
 
-    const [height, setHeight] = useState('100vh')
-    useEffect(() => {
-        if (!detailModalRef.current) return
+    // const [height, setHeight] = useState('100vh')
+    // useEffect(() => {
+    //     if (!detailModalRef.current) return
         
-        const targetNode = detailModalRef.current
+    //     const targetNode = detailModalRef.current
         
-        // ResizeObserver 생성
-        const resizeObserver = new ResizeObserver((entries) => {
-            for (let entry of entries) {
-                if (entry.target === targetNode) {
-                    const newHeight = entry.contentRect.height // 새로운 높이
-                    // setHeight(newHeight + 30 - 245 - 1 + 'px')
-                    setHeight(newHeight + 30 - 245 + 'px')
-                }
-            }
-        })
+    //     // ResizeObserver 생성
+    //     const resizeObserver = new ResizeObserver((entries) => {
+    //         for (let entry of entries) {
+    //             if (entry.target === targetNode) {
+    //                 const newHeight = entry.contentRect.height // 새로운 높이
+    //                 // setHeight(newHeight + 30 - 245 - 1 + 'px')
+    //                 setHeight(newHeight + 30 - 245 + 'px')
+    //             }
+    //         }
+    //     })
         
-        // 대상 요소 관찰 시작
-        resizeObserver.observe(targetNode)
+    //     // 대상 요소 관찰 시작
+    //     resizeObserver.observe(targetNode)
         
-        // 크기 변경 감지
-        return () => {
-            resizeObserver.disconnect()
-        }
-    }, [detailsData, creditData, details, location])
+    //     // 크기 변경 감지
+    //     return () => {
+    //         resizeObserver.disconnect()
+    //     }
+    // }, [detailsData, creditData, details, location])
         
     if (detailsLoading || creditLoading || detailsError || crditError) return <></>
 
     return (
-        <div id="detail-modal" style={{width: '100%', height: height}}>
+        <div id="detail-modal" style={{width: '100%'}}>
             <Helmet>
                 <title>{details.title + ' - 넷플릭스'}</title>
             </Helmet>

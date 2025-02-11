@@ -55,14 +55,14 @@ export const Header = memo(function Header () {
 
                 {/* 우측 검색 아이콘 */}
                 <div style={styles.rightItems}>
-                    <Search />
+                    <SearchInput />
                 </div>
             </Wrapper>
         </Container>
     )
 })
 
-export const Search = () => {
+export const SearchInput = () => {
     const [openSearchInput, setOpenSearchInput] = useState(false)
     const [searchKeyword, setSearchKeyword] = useState('')
     const navigate = useNavigate()

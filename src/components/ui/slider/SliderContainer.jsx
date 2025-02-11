@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { Info, PreviewModal } from "components/modal/PreviewModal";
-import { BackdropImage } from "components/contents/BackdropImage";
+import { Info, PreviewModal } from "components/ui/modal/PreviewModal";
+import { ImageCard } from "../layout/ImageCard";
 import styled from "styled-components";
 import { settings } from './SliderSettings'
 import { useLocation, useNavigate } from "react-router-dom";
@@ -67,7 +67,7 @@ export const SliderContainer = React.memo(({mType, headerTitle, data}) => {
                         <div className={i+el.id} key={el.id} style={{cursor: 'pointer'}}>
                             <SlickSlide className='slick-slide'>
                                 <div onClick={() => openModal(el.id, mType)}>
-                                    <BackdropImage
+                                    <ImageCard
                                         id={el.id}
                                         mType={mType}
                                         title={el.title || el.name}

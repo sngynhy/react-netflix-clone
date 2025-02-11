@@ -62,8 +62,6 @@ https://simpleicons.org/
 - Custom Hook으로 구현
 ### 1. Youtube Player
 - react-youtube 라이브러리를 활용해 Youtube 동영상 재생 기능 구현
-- 현재 활성 중인 콘텐츠의 동영상 재생 상태를 store에 저장
-  - 동영상이 동시에 재생되는 등의 이슈 해결
 ### 3. React Router의 모달 라우트 활용
 - 백그라운드가 유지되도록 URL 기반의 모달 상태 관리
 ### 4. Zustand

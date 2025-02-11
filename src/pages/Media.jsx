@@ -33,7 +33,10 @@ function Media () {
             {coverData && <MainContent mType={mType} genreId={genreId} coverData={coverData} />}
 
             {/** 하단 슬라이더 */}
-            {genreId ? <GenreContents mType={mType} genreId={genreId} sendCoverDat={recieveCoverData} /> : <MediaContents mType={mType} sendCoverData={recieveCoverData} />}
+            {genreId
+                ? <GenreContents mType={mType} genreId={genreId} sendCoverDat={recieveCoverData} />
+                : <MediaContents mType={mType} sendCoverData={recieveCoverData} />
+            }
         </div>
     )
 }

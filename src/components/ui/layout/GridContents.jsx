@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React from "react";
 import { MyContentsButton } from "components/ui/button/MyContentsButton";
-import { BackdropImage } from "components/contents/BackdropImage";
+import { ImageCard } from "./ImageCard";
 import styled from "styled-components";
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -31,7 +31,7 @@ function GridContents ({ mType, data, gridColumns=`repeat(6, 1fr)`, gap=10, show
         <div style={{display: 'grid', gridTemplateColumns: `repeat(${gridColumns}, 1fr)`, gap: `${gap}px`, marginTop: '10px', }}>
             {data.map((el, i) => (
                     <GridContent className='grid-contents' key={i} onClick={() => {if (hoverEffect) openModal(el)}} $hovereffect={hoverEffect}>
-                        <BackdropImage
+                        <ImageCard
                             id={el.id}
                             mType={mType || el.media_type}
                             title={el.title || el.name}

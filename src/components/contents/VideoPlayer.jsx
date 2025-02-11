@@ -1,31 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { getContentImg } from "utils/CommonFunction";
-import { LogoImage } from "./LogoImage";
 import { useVideoQuery } from "hooks/useReactQuery";
 import { YouTubePlayer } from "./YouTubePlayer";
 import { useMediaStore } from "stores/mediaStore";
 import { FaPlay } from "react-icons/fa";
 import styled from "styled-components";
 
-export const BackdropImage = React.memo(({id, mType, title, showPlayButton=false, showTitle=false, imgPath, width='120px', height='60px', borderRadius=0}) => {
-    const [show, setShow] = useState(false)
-
-    return (
-        <>
-            <div className="backdrop-img" style={{position: 'relative', cursor: showPlayButton ? 'default' : 'pointer'}} onMouseEnter={() => {if (showPlayButton) setShow(true)}} onMouseLeave={() => {if (showPlayButton)setShow(false)}}>
-                <img loading="lazy" src={getContentImg(imgPath)} alt={title} width='100%' style={{display: 'block', borderRadius: borderRadius}} />
-                {showPlayButton && <Player id={id} mType={mType} showPlayButton={showPlayButton} show={show} />}
-                {showTitle && 
-                    <div className="logo-img" style={{position: 'absolute', bottom : '10px', left: '10px', fontSize: '22px'}}>
-                        <LogoImage id={id} mType={mType} alt={title} width={width} height={height} />
-                    </div>
-                }
-            </div>
-        </>
-    )
-})
-
-const Player = ({id, mType, showPlayButton, show}) => {
+export const VideoPlayer = ({id, mType, showPlayButton, show}) => {
     const {playerState, fullScreen} = useMediaStore()
     const [play, setPlay] = useState(false)
 
@@ -33,7 +13,6 @@ const Player = ({id, mType, showPlayButton, show}) => {
 
     const onPlay = () => {
         if (videokey && showPlayButton) {
-            console.log('onPlay', );
             if (playerState.state === 1 && playerState.id !== videokey) document.getElementById('video-stop-btn-' + playerState.id).click()
             setPlay(true)
         }

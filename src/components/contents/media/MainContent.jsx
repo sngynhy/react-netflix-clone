@@ -21,6 +21,8 @@ export const MainContent = React.memo(({mType, coverData, genreId=null}) => {
         else if (!initial && playerState.state === -1 && !isModalOpen && videokey) {
             document.getElementById('video-stop-btn-' + videokey).click()
         }
+
+        // return () => setInitial(true)
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isModalOpen, videokey, playerState])
 
