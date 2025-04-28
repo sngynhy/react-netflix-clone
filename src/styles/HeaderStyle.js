@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { media } from "./Media";
 
 export const Container = styled.div`
     height: 4rem;
@@ -10,13 +11,29 @@ export const Container = styled.div`
     transition: 0.5s;
 `
 export const Wrapper =  styled.nav`
-    padding: 0 60px;
     height: 100%;
+    padding: 0 60px;
+    
+    ${media.small`
+        padding: 0 30px;
+    `}
 `
 export const Nav = styled.ul`
     display: inline-block;
     list-style: none;
-    padding-inline-start: 20px;
+
+    ${media.large`
+        padding-inline-start: 20px;
+        & > .nav-select {
+            display: none;
+        }
+    `}
+    ${[media.small, media.medium].map((breakpoint) => breakpoint`
+        padding-left: 20px;
+        & > .nav-list {
+            // display: none;
+        }
+    `)}
 `
 export const NavItem = styled.li`
     display: inline-block;

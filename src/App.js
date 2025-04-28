@@ -5,6 +5,7 @@ import { LoadingProvider } from 'context/LoadingContext'
 import { LoadingOverlay } from "components/common/LoadingOverlay";
 import { Header } from 'components/common/Header';
 import { Footer } from "./components/common/Footer";
+import {media} from './styles/Media'
 
 export const Container = styled.div`
     background-color: black; // #000435;

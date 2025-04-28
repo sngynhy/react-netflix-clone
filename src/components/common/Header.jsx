@@ -3,11 +3,14 @@ import { Link, useNavigate, useMatch } from 'react-router-dom'
 import logo from 'assets/img/logo/logo.png'
 import {Container, Wrapper, Nav, NavItem, CategoryText, SearchBox, styles} from 'styles/HeaderStyle'
 import { IoSearch, IoCloseSharp } from "react-icons/io5";
+import { BiCaretRight } from "react-icons/bi";
 import { useMediaStore } from "stores/mediaStore";
 
 // memo => props가 변경되지 않은 경우 구성 요소를 다시 렌더링하는 것을 건너뜀
 export const Header = memo(function Header () {
     const { isModalOpen } = useMediaStore()
+    // const [openNav, setOpenNav] = useState(false)
+
     const homeMatch = useMatch('/')
     const movieMatch = useMatch('/media/movie')
     const seriesMatch = useMatch('/media/tv')
@@ -40,17 +43,36 @@ export const Header = memo(function Header () {
                 
                 {/* 좌측 카테고리 */}
                 <Nav>
-                    {categorys.map((el, i) => {
-                        return (
-                            <NavItem key={i}>
-                                <Link to={el.path}>
-                                    <div>
-                                        <CategoryText $selected={!!el.active}>{el.name}</CategoryText>
-                                    </div>
-                                </Link>
-                            </NavItem>
-                        )
-                    })}
+                    <div className="nav-list">
+                        {categorys.map((el, i) => {
+                            return (
+                                <NavItem key={i}>
+                                    <Link to={el.path}>
+                                        <div>
+                                            <CategoryText $selected={!!el.active}>{el.name}</CategoryText>
+                                        </div>
+                                    </Link>
+                                </NavItem>
+                            )
+                        })}
+                    </div>
+                    {/* <div className="nav-box" onClick={() => setOpenNav(!openNav)}>
+                        <div style={{width: '100%'}}>
+                            <span style={{marginRight: '10px'}}>메뉴</span>
+                            <BiCaretRight style={{transform: 'rotate(90deg)'}} />
+                        </div>
+                    </div>
+                    {openNav && <div className="nav-option">
+                        <div>
+                            {categorys.map((el, i) => {
+                            return (
+                                <div key={i} $selected={!!el.active}>
+                                    <Link to={el.path}>{el.name}</Link>
+                                </div>
+                            )
+                        })}
+                        </div>
+                    </div>} */}
                 </Nav>
 
                 {/* 우측 검색 아이콘 */}
