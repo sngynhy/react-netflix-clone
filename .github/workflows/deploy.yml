@@ -18,6 +18,13 @@ jobs:
         with:
           node-version: 18 # React 프로젝트 Node 버전
 
+      # .env 환경 변수 등록
+      - name: Create .env file
+        run: |
+          echo "REACT_APP_MOVIE_API_KEY=${{ secrets.REACT_APP_MOVIE_API_KEY }}" > .env
+          echo "REACT_APP_MOVIE_API_TOKEN=${{ secrets.REACT_APP_MOVIE_API_TOKEN }}" >> .env
+          echo "REACT_APP_MOVIE_BASE_FETCH=${{ secrets.REACT_APP_MOVIE_BASE_FETCH }}" >> .env
+
       - name: Install dependencies
         run: npm install
 

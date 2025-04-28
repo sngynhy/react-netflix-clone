@@ -10,8 +10,8 @@ export const media = Object.entries(breakpoints).reduce((acc, [key, value]) => {
     return {
         ...acc,
         [key]: (first, ...interpolations) => {
-            console.log('first', first);
-            console.log('interpolations', interpolations);
+            // console.log('first', first);
+            // console.log('interpolations', interpolations);
             return css`
             ${value} {
                 ${css(first, ...interpolations)}

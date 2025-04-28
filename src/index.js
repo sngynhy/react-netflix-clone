@@ -7,17 +7,17 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import "styles/index.css";
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-const queryClient = new QueryClient()
-
-console.log(process.env.REACT_APP_NODE_ENV);
+console.log('📌', process.env.NODE_ENV);
 
 // 배포 환경에서 로그 막기
-if (process.env.REACT_APP_NODE_ENV === 'production') {
+if (process.env.NODE_ENV === 'production') {
   console.log = () => {}
   console.warn = () => {}
   console.error = () => {}
 }
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+const queryClient = new QueryClient()
 
 root.render(
   <React.StrictMode>
