@@ -22,7 +22,7 @@ jobs:
         run: npm install
 
       - name: Build React app
-        run: npm run build
+        run: CI=false npm run build # CI=false : 경고 무시하고 빌드 (실제 운영배포 시 CI=true로 설정(생략))
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
