@@ -10,6 +10,8 @@ import "styles/index.css";
 const root = ReactDOM.createRoot(document.getElementById('root'));
 const queryClient = new QueryClient()
 
+console.log(process.env.REACT_APP_NODE_ENV);
+
 // 배포 환경에서 로그 막기
 if (process.env.REACT_APP_NODE_ENV === 'production') {
   console.log = () => {}
@@ -19,9 +21,8 @@ if (process.env.REACT_APP_NODE_ENV === 'production') {
 
 root.render(
   <React.StrictMode>
-    {/* <BrowserRouter future={{ v7_startTransition: true }} basename={process.env.REACT_APP_PUBLIC_URL}> * 🚕🚗 basename='react-netflix-clone' << gh-pages를 위한 설정 */}
-    <BrowserRouter future={{ v7_startTransition: true }}> {/** 🚕🚗 basename='react-netflix-clone' << gh-pages를 위한 설정 */}
-    {/* <HashRouter> */}
+    <BrowserRouter future={{ v7_startTransition: true }}> {/* basename='react-netflix-clone' gh-pages를 위한 설정 */}
+    {/* // <HashRouter> */}
       <QueryClientProvider client={queryClient}> {/** react query 사용 */}
         <App />
         <ReactQueryDevtools /> {/* devtools 사용 시 추가*/}
