@@ -1,7 +1,9 @@
 <img src="https://capsule-render.vercel.app/api?type=waving&height=200&color=gradient&text=Netflix%20Clone&fontAlign=50&desc=with%20React&fontAlignY=35&textBg=false&animation=scaleIn&descAlignY=54" />
 
 ## 데모 사이트
-[https://sngynhy.github.io/react-netflix-clone](https://sngynhy.github.io/react-netflix-clone)
+<!-- [https://sngynhy.github.io/react-netflix-clone](https://sngynhy.github.io/react-netflix-clone) -->
+[https://d2qzqs43xovcek.cloudfront.net/](https://d2qzqs43xovcek.cloudfront.net/)
+
 
 ![screenshot](./src/assets/img/main.png)
 
