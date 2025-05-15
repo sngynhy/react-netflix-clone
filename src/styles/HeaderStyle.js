@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { media } from "./Media";
+import { media } from "../utils/mediaQuery";
 
 export const Container = styled.div`
     height: 4rem;
@@ -9,31 +9,76 @@ export const Container = styled.div`
     position: fixed;
     z-index: 999;
     transition: 0.5s;
-`
-export const Wrapper =  styled.nav`
-    height: 100%;
-    padding: 0 60px;
-    
-    ${media.small`
-        padding: 0 30px;
-    `}
+
+    & > .navigator {
+        height: 100%;
+        padding: 0 60px;
+        position: relative;
+
+        ${media.large`
+            padding: 0 60px;
+        `}
+        ${media.medium`
+            padding: 0 40px;
+        `}
+        ${media.small`
+            padding: 0 20px;
+        `}
+
+        & > a > img {
+            vertical-align: middle;
+            ${media.large`
+                width: 7rem;
+            `}
+            ${media.medium`
+                width: 7rem;
+            `}
+            ${media.small`
+                width: 4rem;
+            `}
+        }
+    }
 `
 export const Nav = styled.ul`
     display: inline-block;
     list-style: none;
-
-    ${media.large`
+    ${[media.large, media.medium].map((breakpoint) => breakpoint`
         padding-inline-start: 20px;
-        & > .nav-select {
-            display: none;
-        }
-    `}
-    ${[media.small, media.medium].map((breakpoint) => breakpoint`
-        padding-left: 20px;
-        & > .nav-list {
-            // display: none;
-        }
     `)}
+    ${media.small`
+        padding-left: 20px;
+    `}
+`
+export const Toggle = styled.div`
+    position: absolute;
+    left: 0;
+    & > div {
+        text-align: center;
+        width: 15rem;
+        height: 12px;
+        color: rgb(179, 179, 179);
+    }
+`
+export const NavOptions = styled.div`
+    border-top: 2px solid rgb(179, 179, 179);
+    width: 15rem;
+
+    & > ul {
+        background: rgba(0, 0, 0, 0.9);
+        list-style: none;
+        padding: 0;
+        margin: 0;
+
+        & > li {
+            height: 3rem;
+            line-height: 3rem;
+            text-align: center;
+
+            & > a {
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+    }
 `
 export const NavItem = styled.li`
     display: inline-block;
@@ -46,15 +91,33 @@ export const NavItem = styled.li`
     }
 `
 export const CategoryText = styled.span`
-    border-bottom: ${props => props.$selected ? '2px solid red' : 'none'};
-    color: ${props => props.$selected ? 'white' : '#e5e5e5'};
-    &:hover {
-        color: #b3b3b3;
-    }
+    ${[media.large, media.medium].map((breakpoint) => breakpoint`
+        border-bottom: ${props => props.$selected ? '2px solid red' : 'none'};
+        color: ${props => props.$selected ? 'white' : '#e5e5e5'};
+        &:hover {
+            color: #b3b3b3;
+        }
+    `)}
+    ${media.small`
+        color: ${props => props.$selected ? 'white' : '#b3b3b3'};
+        border-bottom: none;
+    `}
+`
+
+export const Search = styled.div`
+    display: flex;
+    float: right;
+    margin: 16px 0;
+    align-items: center;
 `
 export const SearchBox = styled.div`
     border: ${props => props.$open ? '1px solid white' : 'none'};
-    height: 34px;
+    ${[media.large, media.medium].map((breakpoint) => breakpoint`
+        height: 34px;
+    `)}
+    ${media.small`
+        height: 24px;
+    `}
     display: flex;
     align-items: center;
     vertical-align: middle;
@@ -64,20 +127,26 @@ export const SearchBox = styled.div`
         outline: none;
         padding: 10px;
         color: white;
+        ${[media.large, media.medium].map((breakpoint) => breakpoint`
+            width: 182px;
+        `)}
+        ${media.small`
+            width: 100px;
+        `}
     }
 `
-
-export const styles = {
-    rightItems: {
-        display: 'flex',
-        float: 'right',
-        height: '100%',
-        alignItems: 'center'
-    },
-    searchIcon: {
-        cursor: 'Pointer',
-        width: '25px',
-        height: '25px',
-        margin: '5px'
+export const SearchIcon = styled.label`
+    height: inherit;
+    & > svg {
+        cursor: Pointer;
+        ${[media.large, media.medium].map((breakpoint) => breakpoint`
+            width: 25px;
+            height: 25px;
+        `)}
+        ${media.small`
+            width: 15px;
+            height: 15px;
+        `}
+        margin: 5px;
     }
-}
+`

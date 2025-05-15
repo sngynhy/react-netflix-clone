@@ -3,6 +3,7 @@ import { FaPlay } from "react-icons/fa";
 import { FaCirclePlay } from "react-icons/fa6";
 import styled from "styled-components";
 import { useMediaStore } from "stores/mediaStore"; 
+import { media } from "utils/mediaQuery";
 
 export const PlayButton = ({active=false, type="button", iconSize=35}) => { // type: 'button' or 'icon'
     const {playerState, playable} = useMediaStore()
@@ -23,8 +24,18 @@ export const PlayButton = ({active=false, type="button", iconSize=35}) => { // t
 }
 
 const Button = styled.button`
-    padding: 0.6rem 1.6rem;
-    font-size: 20px;
+    ${media.large`
+        padding: 0.6rem 1.6rem;
+        font-size: 20px;
+    `}
+    ${media.medium`
+        padding: 0.6rem 1.6rem;
+        font-size: 20px;
+    `}
+    ${media.small`
+        padding: 0.3rem 0.8rem;
+        font-size: 0.8rem;
+    `}
     border-radius: 4px;
     border: none;
     background-color: ${props => props.$active ? '#ffffff;' : '#ffffffbf;'}

@@ -38,8 +38,6 @@ function GridContents ({ mType, data, gridColumns=`repeat(6, 1fr)`, gap=10, show
                             showTitle={showTitle}
                             showPlayButton={showPlayButton}
                             imgPath={el[imgPath]}
-                            width='120px'
-                            height='60px'
                             borderRadius={borderRadius}
                         />
                         {showOverview &&

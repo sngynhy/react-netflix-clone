@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useConetentsQueries } from "hooks/useReactQuery";
 import { SliderContainer } from "components/ui/slider/SliderContainer";
+import { Container } from "styles/Commonstyle";
 
 export const MediaContents = React.memo(({ mType, sendCoverData }) => {
     const queries = useConetentsQueries(mType)
@@ -19,10 +20,8 @@ export const MediaContents = React.memo(({ mType, sendCoverData }) => {
     // console.log('🍰🍰MediaContents🍰🍰', contentsData);
     
     return (
-        <div style={{paddingTop: 'calc(100vh - 150px)'}}>
-            <div>
-                {contentsData && contentsData.map((el, i) => <SliderContainer key={i} mType={mType} headerTitle={el.title || el.name} data={el.data} />) }
-            </div>
-        </div>
+        <Container>
+            {contentsData && contentsData.map((el, i) => <SliderContainer key={i} mType={mType} headerTitle={el.title || el.name} data={el.data} />) }
+        </Container>
     )
 })

@@ -4,8 +4,14 @@ import GridContents from "components/ui/layout/GridContents";
 import React from "react";
 import { Helmet } from "react-helmet";
 import { useMediaStore } from "stores/mediaStore"
+import { useResponsive } from "hooks/useResponsive";
+import { gridColumns } from "utils/mediaSize";
+import { Container, H1 } from "./TrendingNow";
 
 function MyContents () {
+
+    const { device } = useResponsive()
+
     const {likes} = useMediaStore() // likes: { id => mType }
     const likeList = Array.from(likes)
     // const ids = Array.from(likes.keys())
@@ -35,16 +41,16 @@ function MyContents () {
                 <title>넷플릭스</title>
             </Helmet>
 
-            <div style={{padding: '64px 60px 0'}}>
+            <Container>
                 <div className="title">
-                    <h1 style={{fontWeight: '400'}}>내가 찜한 리스트</h1>
+                    <H1 style={{fontWeight: '400'}}>내가 찜한 리스트</H1>
                 </div>
                 {likes.size > 0 && data.length > 0 ?
                 <div className="contents" style={{marginTop: "5rem"}}>
-                    <GridContents data={data} mType={null} showTitle={true} showOverview={false} gridColumns={6} />
+                    <GridContents data={data} mType={null} showTitle={true} showOverview={false} gridColumns={gridColumns[device]} />
                 </div>
                 : <div style={{color: '#666', textAlign: 'center', fontSize: '20px', paddingTop: '100px'}}>아직 찜하신 콘텐츠가 없습니다.</div>}
-            </div>
+            </Container>
         </div>
     )
 }

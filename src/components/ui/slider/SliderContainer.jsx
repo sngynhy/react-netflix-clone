@@ -7,6 +7,7 @@ import { ImageCard } from "../layout/ImageCard";
 import styled from "styled-components";
 import { settings } from './SliderSettings'
 import { useLocation, useNavigate } from "react-router-dom";
+import { media } from "utils/mediaQuery";
 
 export const SliderContainer = React.memo(({mType, headerTitle, data}) => {
     const navigate = useNavigate()
@@ -59,9 +60,9 @@ export const SliderContainer = React.memo(({mType, headerTitle, data}) => {
     }
     // console.log('🎀SliderContainer🎀', headerTitle, data);
     return (
-        <div className="slider-container" style={{margin: '2vw 0', width: '100%'}}>
-            <div style={{padding: "0 60px", position: "relative"}}>
-                <h2 style={{fontWeight: 400, margin: '20px 0 0 0'}}>{headerTitle}</h2>
+        <Container className="slider-container">
+            <div className="wrap">
+                <h2>{headerTitle}</h2>
                 <Slider {...settings}>
                     {data.map((el, i) => (
                         <div className={i+el.id} key={el.id} style={{cursor: 'pointer'}}>
@@ -73,8 +74,7 @@ export const SliderContainer = React.memo(({mType, headerTitle, data}) => {
                                         title={el.title || el.name}
                                         showTitle={true}
                                         imgPath={el.backdrop_path}
-                                        width='120px'
-                                        height='40px'
+                                        height='2.5rem'
                                     />
                                 </div>
                                 {/* <div className="this">
@@ -93,9 +93,42 @@ export const SliderContainer = React.memo(({mType, headerTitle, data}) => {
                     ))}
                 </Slider>
             </div>
-        </div>
+        </Container>
     )
 })
+
+const Container = styled.div`
+    margin: 2vw 0;
+    width: 100%;
+    & > .wrap {
+        position: relative;
+        ${media.large`
+            padding: 0 60px;
+        `}
+        ${media.medium`
+            padding: 0 40px;
+        `}
+        ${media.small`
+            padding: 0 20px;
+        `}
+
+        & > h2 {
+            margin: 20px 0 0 0;
+            ${media.large`
+                font-weight: 400;
+                font-size: 1.5rem;
+            `}
+            ${media.medium`
+                font-weight: 300;
+                font-size: 1.5rem;
+            `}
+            ${media.small`
+                font-weight: 300;
+                font-size: 1rem;
+            `}
+        }
+    }
+`
 
 const SlickSlide = styled.div`
     margin: 15px 5px;

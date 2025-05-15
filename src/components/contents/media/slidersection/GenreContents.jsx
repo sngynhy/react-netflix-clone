@@ -2,6 +2,7 @@ import { useConetentsByGenreQuery } from "hooks/useReactQuery";
 import React, { useEffect } from "react";
 import { useMediaStore } from "stores/mediaStore";
 import { SliderContainer } from 'components/ui/slider/SliderContainer';
+import { Container } from "styles/Commonstyle";
 
 export const GenreContents = React.memo(({mType, genreId, sendCoverDat}) => {
     const {genreName} = useMediaStore()
@@ -15,11 +16,11 @@ export const GenreContents = React.memo(({mType, genreId, sendCoverDat}) => {
     return (
         <>
         {data &&
-            <div style={{paddingTop: 'calc(100vh - 150px)'}}>
+            <Container>
                 <div>
                     <SliderContainer mType={mType} headerTitle={genreName + ' 콘텐츠'} data={data} />
                 </div>
-            </div>}
+            </Container>}
         </>
     )
 })

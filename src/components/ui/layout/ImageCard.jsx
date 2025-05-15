@@ -3,7 +3,7 @@ import { getContentImg } from "utils/CommonFunction";
 import { LogoImage } from "components/contents/LogoImage";
 import { VideoPlayer } from "components/contents/VideoPlayer";
 
-export const ImageCard = React.memo(({id, mType, title, showPlayButton=false, showTitle=false, imgPath, width='120px', height='60px', borderRadius=0}) => {
+export const ImageCard = React.memo(({id, mType, title, showPlayButton=false, showTitle=false, imgPath, width='7rem', height='3rem', borderRadius=0}) => {
     const [show, setShow] = useState(false)
 
     return (

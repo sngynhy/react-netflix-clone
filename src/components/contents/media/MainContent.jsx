@@ -4,12 +4,17 @@ import { useMediaStore } from 'stores/mediaStore';
 import { YouTubePlayer } from '../YouTubePlayer';
 import { SelectBoxForGenre } from './SelectBoxForGenre';
 import { CoverContent } from './CoverContent';
+import { useResponsive } from "hooks/useResponsive";
+import { videoHeight } from "utils/mediaSize";
 
 export const MainContent = React.memo(({mType, coverData, genreId=null}) => {
-    // console.log('MainContent', mType, genreId, name, coverData);
+    console.log('MainContent', mType, genreId, coverData);
+
     const { playerState, isModalOpen } = useMediaStore()
     const [videokey, setVideokey] = useState()
     const [initial, setInitial] = useState(true)
+
+     const { device } = useResponsive()
     
     useEffect(() => {
         setVideokey()
@@ -23,7 +28,6 @@ export const MainContent = React.memo(({mType, coverData, genreId=null}) => {
         }
 
         // return () => setInitial(true)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isModalOpen, videokey, playerState])
 
     const recieveVediokey = (key) => setVideokey(key)
@@ -32,7 +36,10 @@ export const MainContent = React.memo(({mType, coverData, genreId=null}) => {
     return (
         <>
             <MainCoverImg id="cover-image" $url={coverData.img} $maskeffect={playerState.state !== 1}>
-                {videokey && !isModalOpen && <div style={{opacity: playerState.id === videokey && playerState.state === 1 ? 1 : 0}}><YouTubePlayer videoId={videokey} width='100%' height='952px' /></div>}
+                {videokey && !isModalOpen &&
+                    <div style={{opacity: playerState.id === videokey && playerState.state === 1 ? 1 : 0}}>
+                        <YouTubePlayer videoId={videokey} height={videoHeight[device]} />
+                    </div>}
             </MainCoverImg>
             
             {/* 중앙 콘텐츠 */}

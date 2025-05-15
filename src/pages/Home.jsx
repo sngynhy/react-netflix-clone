@@ -9,6 +9,9 @@ import { CoverContent } from 'components/contents/media/CoverContent';
 import { MainCoverImg } from 'styles/MainContentStyle';
 import { Wrapper } from 'styles/MainContentStyle';
 import { YouTubePlayer } from 'components/contents/YouTubePlayer';
+import { Container } from "styles/Commonstyle";
+import { useResponsive } from "hooks/useResponsive";
+import { videoHeight } from "utils/mediaSize";
 
 const mType = 'tv'
 
@@ -17,6 +20,8 @@ function Home () {
     const [coverData, setCoverData] = useState()
     const [videokey, setVideokey] = useState()
     const [first, setFirst] = useState(true)
+
+    const { device } = useResponsive()
 
     const {data: netflixTvData, isLoading: netflixTvLoading, error: netflixTvError} = useQuery({ queryKey: ['netflix', 'tv'], queryFn: fetchNetflixOriginal })
     const {data: netflixMovieData, isLoading: netflixMovieLoading, error: netflixMovieError} = useQuery({ queryKey: ['netflix', 'movie'], queryFn: fetchNetflixOriginal })
@@ -54,21 +59,17 @@ function Home () {
 
             {coverData && <div>
                 <MainCoverImg id="cover-image" $url={coverData.img} $maskeffect={playerState.state !== 1}>
-                    {videokey && !isModalOpen && <div style={{opacity: playerState.id === videokey && playerState.state === 1 ? 1 : 0}}><YouTubePlayer videoId={videokey} width='100%' height='952px' /></div>}
+                    {videokey && !isModalOpen && <div style={{opacity: playerState.id === videokey && playerState.state === 1 ? 1 : 0}}><YouTubePlayer videoId={videokey} height={videoHeight[device]} /></div>}
                 </MainCoverImg>
                 <Wrapper id="cover-content">                
                     {coverData && <CoverContent mType={mType} coverData={coverData} sendVideokey={recieveVediokey}/>}
                 </Wrapper>
             </div>}
 
-            <div style={{paddingTop: 'calc(100vh - 150px)'}}>
-                <div>
-                    {netflixTvData && <SliderContainer mType='tv' headerTitle='넷플릭스 오리지널 시리즈' data={netflixTvData} /> }
-                </div>
-                <div>
-                    {netflixMovieData && <SliderContainer mType='movie' headerTitle='넷플릭스 오리지널 영화' data={netflixMovieData} /> }
-                </div>
-            </div>
+            <Container>
+                {netflixTvData && <SliderContainer mType='tv' headerTitle='넷플릭스 오리지널 시리즈' data={netflixTvData} /> }
+                {netflixMovieData && <SliderContainer mType='movie' headerTitle='넷플릭스 오리지널 영화' data={netflixMovieData} /> }
+            </Container>
         </div>
     )
 }

@@ -3,8 +3,7 @@ import { useMediaStore } from "stores/mediaStore";
 import styled from "styled-components";
 import YouTube from "react-youtube";
 
-export const YouTubePlayer = React.memo(({ videoId, startTime=0, width="100%", height="475px", borderRadius="0" }) => {
-    // console.log('🎬🎥📺 YouTubePlayer', videoId);
+export const YouTubePlayer = React.memo(({ videoId, startTime=0, width="100%", height="900", borderRadius="0" }) => {
     const playerRef = useRef(null)
     const {isMuted, setFullScreen, setPlayerState, setVideoCurrentTime} = useMediaStore()
     const opts = {
@@ -230,7 +229,7 @@ export const YouTubePlayer = React.memo(({ videoId, startTime=0, width="100%", h
     }
     
     return (
-        <Player id="player" $width={width} $height={height} $borderRadius={borderRadius}>
+        <Player id="player" $width={width} $height={height + 'px'} $borderRadius={borderRadius}>
             {videoId && <>
                 <YouTube
                     videoId={videoId}

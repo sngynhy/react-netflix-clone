@@ -5,7 +5,6 @@ import { LoadingProvider } from 'context/LoadingContext'
 import { LoadingOverlay } from "components/common/LoadingOverlay";
 import { Header } from 'components/common/Header';
 import { Footer } from "./components/common/Footer";
-import { Media } from './styles/Media'
 
 export const Container = styled.div`
     background-color: black; // #000435;
@@ -15,6 +14,7 @@ export const Container = styled.div`
 const queryClient = new QueryClient()
 
 function App() {
+  
   return (
     <QueryClientProvider client={queryClient}>
       {/* 📍 context 사용 */}

@@ -1,15 +1,17 @@
 import React, { useState, useRef, useEffect, memo } from "react";
 import { Link, useNavigate, useMatch } from 'react-router-dom'
 import logo from 'assets/img/logo/logo.png'
-import {Container, Wrapper, Nav, NavItem, CategoryText, SearchBox, styles} from 'styles/HeaderStyle'
+import {Container, Nav, NavItem, NavOptions, CategoryText, SearchBox, Search, SearchIcon, Toggle} from 'styles/HeaderStyle'
 import { IoSearch, IoCloseSharp } from "react-icons/io5";
 import { BiCaretRight } from "react-icons/bi";
 import { useMediaStore } from "stores/mediaStore";
+import { useResponsive } from "hooks/useResponsive";
 
 // memo => props가 변경되지 않은 경우 구성 요소를 다시 렌더링하는 것을 건너뜀
 export const Header = memo(function Header () {
+
     const { isModalOpen } = useMediaStore()
-    // const [openNav, setOpenNav] = useState(false)
+    const { device } = useResponsive()
 
     const homeMatch = useMatch('/')
     const movieMatch = useMatch('/media/movie')
@@ -35,15 +37,38 @@ export const Header = memo(function Header () {
         return () => window.removeEventListener('scroll', handleScroll)
     }, [])
 
+    const navBoxRef = useRef(null)
+    const [openNav, setOpenNav] = useState(false)
+    useEffect(() => {
+        // 특정 영역 외 클릭 시 이벤트 발생
+    	const outSideClick = (e) => {
+        	if (navBoxRef.current && !navBoxRef.current.contains(e.target)) { // && searchKeyword.length === 0
+            	setOpenNav(false)
+            }
+        }
+        // 이벤트 리스너에 outSideClick 함수 등록
+        document.addEventListener("mousedown", outSideClick)
+        return () => document.removeEventListener("mousedown", outSideClick)
+    }, [navBoxRef])
+
     return (
         <Container id="header" $scrollTop={scrollTop} $isModalOpen={isModalOpen} >
-            <Wrapper>
+            <div className="navigator">
                 {/* 좌측 넷플릭스 로고 */}
-                <Link to="/"><img loading="lazy" src={logo} style={{width: '7rem', verticalAlign:'middle'}} alt="로고 아이콘"/></Link>
+                <Link to="/">
+                    <img loading="lazy" src={logo} alt="로고 아이콘"/>
+                </Link>
                 
                 {/* 좌측 카테고리 */}
                 <Nav>
-                    <div className="nav-list">
+                    {device === 'sm'
+                    ? <div className="nav-toggle" onClick={() => {openNav ? setOpenNav(false) : setOpenNav(true)}}>
+                        <div style={{width: '100%', display: 'flex'}}>
+                            <div style={{marginRight: '5px', fontSize: '0.8rem'}}>메뉴</div>
+                            <BiCaretRight style={{transform: 'rotate(90deg)'}} />
+                        </div>
+                    </div>
+                    : <div className="nav-list">
                         {categorys.map((el, i) => {
                             return (
                                 <NavItem key={i}>
@@ -56,30 +81,32 @@ export const Header = memo(function Header () {
                             )
                         })}
                     </div>
-                    {/* <div className="nav-box" onClick={() => setOpenNav(!openNav)}>
-                        <div style={{width: '100%'}}>
-                            <span style={{marginRight: '10px'}}>메뉴</span>
-                            <BiCaretRight style={{transform: 'rotate(90deg)'}} />
-                        </div>
-                    </div>
-                    {openNav && <div className="nav-option">
-                        <div>
-                            {categorys.map((el, i) => {
-                            return (
-                                <div key={i} $selected={!!el.active}>
-                                    <Link to={el.path}>{el.name}</Link>
-                                </div>
-                            )
-                        })}
-                        </div>
-                    </div>} */}
+                    }
                 </Nav>
 
                 {/* 우측 검색 아이콘 */}
-                <div style={styles.rightItems}>
+                <Search>
                     <SearchInput />
-                </div>
-            </Wrapper>
+                </Search>
+
+                {/* 모바일 버전 메뉴 토글 */}
+                {openNav && <Toggle ref={navBoxRef}>
+                    <div><BiCaretRight style={{transform: 'rotate(-90deg)'}} /></div>
+                    <NavOptions>
+                        <ul>
+                            {categorys.map((el, i) => {
+                                return (
+                                    <li key={i}>
+                                        <Link to={el.path}>
+                                            <CategoryText $selected={!!el.active} onClick={() => setOpenNav(false)}>{el.name}</CategoryText>
+                                        </Link>
+                                    </li>
+                                )
+                            })}
+                        </ul>
+                    </NavOptions>
+                </Toggle>}
+            </div>
         </Container>
     )
 })
@@ -111,11 +138,11 @@ export const SearchInput = () => {
     }
     return (
         <SearchBox className="search-box" ref={searchRef} $open={openSearchInput}>
-            <label htmlFor="searchInput" style={{height: 'inherit'}}><IoSearch onClick={(e) => openSearchInput ? search(e) : setOpenSearchInput(true)} style={styles.searchIcon}/></label>
+            <SearchIcon htmlFor="searchInput"><IoSearch onClick={(e) => openSearchInput ? search(e) : setOpenSearchInput(true)} /></SearchIcon>
                 {openSearchInput &&
                     <>
                         <input type="text" id="searchInput" placeholder="제목, 인물" value={searchKeyword} onChange={(e) => setSearchKeyword(e.target.value)} onKeyDown={(e) => search(e)} />
-                        <label htmlFor="searchInput" style={{height: 'inherit'}}><IoCloseSharp onClick={() => setSearchKeyword('')} style={styles.searchIcon}/></label>
+                        <SearchIcon htmlFor="searchInput"><IoCloseSharp onClick={() => setSearchKeyword('')} /></SearchIcon>
                     </>}
         </SearchBox>
     )
