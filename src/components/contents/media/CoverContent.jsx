@@ -8,12 +8,16 @@ import { ReplayButton } from "components/ui/button/ReplayButton";
 import { MuteButton } from "components/ui/button/MuteButton";
 import { FiInfo } from "react-icons/fi";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useResponsive } from "hooks/useResponsive";
+import { buttonSize } from "utils/mediaSize";
 
 export const CoverContent = ({mType, coverData, sendVideokey}) => {
     const navigate = useNavigate()
     const location = useLocation()
     const { playerState, playable, isModalOpen } = useMediaStore()
     const [lowerTitle, setLowerTitle] = useState(false)
+
+    const { device } = useResponsive()
 
     useEffect(() => {
         setLowerTitle(false)
@@ -48,17 +52,17 @@ export const CoverContent = ({mType, coverData, sendVideokey}) => {
             {coverData &&
             // <h2 style={{width: '60%'}}>
             <h2>
-                <LogoImage id={coverData.id} mType={mType} alt={coverData.title} lowerTitle={lowerTitle} transform='scale(.7) translate(-108px, 190px);' />
+                <LogoImage id={coverData.id} mType={mType} alt={coverData.title} lowerTitle={lowerTitle} />
             </h2>}
 
             <Overview $lowerTitle={lowerTitle}>{coverData.overview}</Overview>
-            <div style={{marginTop: '30px'}}>
-                <div style={{position: 'relative', display: 'flex'}}>
-                    <div style={{marginRight: '12px'}}><PlayButton active={videokey && playable} /></div>
+            <div className="bottom-btns">
+                <div style={{position: 'relative', display: 'flex', alignItems: 'center'}}>
+                    <div style={{marginRight: '12px'}}><PlayButton active={videokey && playable} iconSize={buttonSize[device].icon} /></div>
                     <div style={{marginRight: '12px'}}><DetailViewButton className="detailBtn" onClick={openDetailModal}><FiInfo />상세정보</DetailViewButton></div>
                     {videokey && videokey === playerState.id && playable &&
                     <div style={{marginRight: '12px'}}>
-                        {playerState.state === 0 ? <ReplayButton /> : <MuteButton />}
+                        {playerState.state === 0 ? <ReplayButton borderSize={buttonSize[device].border} iconSize={buttonSize[device].icon} /> : <MuteButton borderSize={buttonSize[device].border} iconSize={buttonSize[device].icon} />}
                     </div>}
                 </div>
             </div>

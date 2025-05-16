@@ -1,7 +1,7 @@
 import React from "react";
 import { MdOutlineReplay } from "react-icons/md";
 import { useMediaStore } from "stores/mediaStore";
-import { Border } from "styles/IconButtonStyle";
+import { Border } from "styles/Commonstyle";
 
 export const ReplayButton = ({borderSize=45, iconSize=25}) => {
     const {playerState} = useMediaStore()

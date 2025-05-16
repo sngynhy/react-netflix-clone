@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import styled from 'styled-components'
-import { Border } from "styles/IconButtonStyle";
+import { Border } from "styles/Commonstyle";
 import { GoChevronRight } from "react-icons/go";
 import { getContentImg } from "utils/CommonFunction";
 import PropTypes from "prop-types";

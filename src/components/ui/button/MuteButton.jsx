@@ -1,7 +1,7 @@
 import React from "react";
 import { GoUnmute, GoMute } from "react-icons/go";
 import { useMediaStore } from "stores/mediaStore";
-import { Border } from "styles/IconButtonStyle";
+import { Border } from "styles/Commonstyle";
 
 export const MuteButton = ({borderSize=45, iconSize=25}) => {
     const {isMuted, setIsMuted} = useMediaStore()

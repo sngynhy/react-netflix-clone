@@ -8,13 +8,13 @@ import { useResponsive } from "hooks/useResponsive";
 import { videoHeight } from "utils/mediaSize";
 
 export const MainContent = React.memo(({mType, coverData, genreId=null}) => {
-    console.log('MainContent', mType, genreId, coverData);
+    // console.log('MainContent', mType, genreId, coverData);
 
     const { playerState, isModalOpen } = useMediaStore()
     const [videokey, setVideokey] = useState()
     const [initial, setInitial] = useState(true)
 
-     const { device } = useResponsive()
+    const { device } = useResponsive()
     
     useEffect(() => {
         setVideokey()

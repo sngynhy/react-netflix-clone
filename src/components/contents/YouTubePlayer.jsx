@@ -2,10 +2,14 @@ import React, { useEffect, useRef } from "react";
 import { useMediaStore } from "stores/mediaStore"; 
 import styled from "styled-components";
 import YouTube from "react-youtube";
+import { useResponsive } from "hooks/useResponsive";
 
 export const YouTubePlayer = React.memo(({ videoId, startTime=0, width="100%", height="900", borderRadius="0" }) => {
     const playerRef = useRef(null)
     const {isMuted, setFullScreen, setPlayerState, setVideoCurrentTime} = useMediaStore()
+
+    const { device } = useResponsive()
+
     const opts = {
         height: height,
         width: width,
@@ -14,7 +18,7 @@ export const YouTubePlayer = React.memo(({ videoId, startTime=0, width="100%", h
             controls: 0,
             mute: 1,
             modestbranding: 0,
-            rel: 0,
+            rel: 1,
             enablejsapi: 1, // JavaScript API 사용 권한 활성화
             origin: window.location.origin, // 현재 사이트 도메인을 origin으로 설정
         }

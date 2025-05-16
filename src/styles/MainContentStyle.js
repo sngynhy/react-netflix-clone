@@ -34,7 +34,7 @@ export const Wrapper = styled.div`
         height: ${videoHeight.md - 150}px;
     `}
     ${media.small`
-        height: ${videoHeight.sm}px;
+        height: ${videoHeight.sm - 80}px;
     `}
     margin-top: 4rem;
 `
@@ -105,7 +105,7 @@ export const SelectBox = styled.div`
         `}
         ${media.small`
             padding: 2px 10px;
-            font-size: 0.8rem;
+            font-size: 0.6rem;
         `}
     }
     & > .selectBox > .selectBoxOptions {
@@ -122,6 +122,7 @@ export const SelectBox = styled.div`
         ${media.small`
             top: 24px;
             width: 280px;
+            font-size: 0.8rem;
         `}
         background-color: rgba(0,0,0,.9);
         display: grid;
@@ -132,60 +133,90 @@ export const SelectBox = styled.div`
     }
 `
 export const CoverContentText = styled.div`
-    ${media.large`
-        padding: 0 60px;
-    `}
-    ${media.medium`
-        padding: 0 40px;
-    `}
-    ${media.small`
-        padding: 0 20px;
-    `}
     display: flex;
     flex-direction: column;
     flex-grow: 1;
     justify-content: flex-start;
     position: absolute;
     bottom: 10%;
-
-    & > h2 {
-        font-size: 50px;
-        margin: 15px 0;
-    }
     & > p {
         width: 40%;
         font-size: 1.2vw;
         margin: 0 15px 0 0;
     }
-`
-export const DetailViewButton = styled.button`
+
     ${media.large`
-        padding: 0.6rem 1.6rem;
-        font-size: 20px;
+        padding: 0 60px;
+        & > h2 {
+            font-size: 50px;
+            margin: 15px 0;
+        }
+        & > .bottom-btns {
+            margin-top: 30px;
+        }
     `}
     ${media.medium`
-        padding: 0.6rem 1.6rem;
-        font-size: 20px;
+        padding: 0 40px;
+        & > h2 {
+            font-size: 50px;
+            margin: 15px 0;
+        }
+        & > .bottom-btns {
+            margin-top: 20px;
+        }
     `}
     ${media.small`
-        padding: 0.3rem 0.8rem;
-        font-size: 0.8rem;
+        padding: 0 20px;
+        
+        & > h2 {
+            font-size: 50px;
+            margin: 12px 0;
+        }
+        & > .bottom-btns {
+            margin-top: 12px;
+        }
     `}
-    border-radius: 4px;
-    border: none;
-    cursor: pointer;
-    color: white;
-    background-color: rgba(109, 109, 110, 0.7);
-    & > svg {
-        margin-right: 8px;
-    }
-    &:hover {
-        color: white;
-        background-color: rgba(109, 109, 110, 0.4);
-    }
 `
 export const Overview = styled.p`
     transition:  1s;
     transform: ${props => props.$lowerTitle ? 'translateY(100px)' : 'translateY(0)'};
     opacity: ${props => props.$lowerTitle ? 0 : 1};
+`
+export const DetailViewButton = styled.button`
+    ${media.large`
+        height: 50px;
+        line-height: 50px;
+        padding: 0 1.8rem;
+        font-size: 20px;
+    `}
+    ${media.medium`
+        height: 42px;
+        padding: 0 1.8rem;
+        font-size: 20px;
+        & > span {
+          line-height: 42px;
+        }
+    `}
+    ${media.small`
+        height: 22px;
+        padding: 0 0.6rem;
+        font-size: 0.6rem;
+        & > span {
+          line-height: 22px;
+        }
+    `}
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    background-color: rgba(109, 109, 110, 0.7);
+    color: white;
+    & > svg {
+        margin-right: 8px;
+        width: 12px;
+        height: 12px;
+    }
+    &:hover {
+        color: white;
+        background-color: rgba(109, 109, 110, 0.4);
+    }
 `

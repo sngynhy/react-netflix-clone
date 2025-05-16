@@ -2,8 +2,7 @@ import React, { memo } from "react";
 import styled from "styled-components";
 
 const Container = styled.div`
-    padding-top: 8rem;
-    padding-bottom: 4rem;
+    padding: 8rem 0 4rem;
     text-align: center;
     & > p > a {
         font-size: 15px;

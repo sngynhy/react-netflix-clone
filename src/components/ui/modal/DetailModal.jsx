@@ -8,7 +8,7 @@ import { IoCloseOutline } from "react-icons/io5";
 import { TfiArrowCircleLeft } from "react-icons/tfi";
 import GridContents from "components/ui/layout/GridContents";
 import { useMediaStore } from 'stores/mediaStore';
-import {Wrapper, PreviewPlayer, IconsOnPlayer, MoreDiv, Span} from 'styles/DetailModal'
+import {Wrapper, PreviewPlayer, IconsOnPlayer, MoreDiv, Span, SummaryInfo} from 'styles/DetailModal'
 import { MyContentsButton } from "components/ui/button/MyContentsButton";
 import { PlayButton } from 'components/ui/button/PlayButton';
 import { YouTubePlayer } from "components/contents/YouTubePlayer";
@@ -16,6 +16,8 @@ import { LogoImage } from "components/contents/LogoImage";
 import { MuteButton } from "components/ui/button/MuteButton";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { Helmet } from "react-helmet";
+import { useResponsive } from "hooks/useResponsive";
+import { modalMediaSize, buttonSize } from "utils/mediaSize";
 
 export const DetailModal = () => {
     const location = useLocation()
@@ -137,6 +139,7 @@ const PreviewContent = React.memo(({ id, mType, imgPath, title }) => {
     const navigate = useNavigate()
     const location = useLocation()
     const { playable, playerState, videoCurrentTime } = useMediaStore()
+    const { device } = useResponsive()
 
     // video
     const {data: videokey, isLoading: videoLoading} = useVideoQuery({type: mType, id: id, enabled: true})
@@ -151,24 +154,26 @@ const PreviewContent = React.memo(({ id, mType, imgPath, title }) => {
         }
         navigate(location.state.background || -1)
     }
+
     return (
-        <PreviewPlayer>
+        <PreviewPlayer $videoHeight={modalMediaSize.videoHeight[device]}>
             {/* 영상 or 이미지 콘텐츠 */}
-            <div style={{height: '100%', position: 'relative'}}>
-                <div style={{backgroundImage: `url(${getContentImg(imgPath)})`, backgroundSize: 'cover', width: '100%', height: '479px', borderRadius: "8px 8px 0 0"}}>
-                    {videokey && <div style={{opacity: playerState.id === videokey && playerState.state === 1 ? 1 : 0}}><YouTubePlayer videoId={videokey} startTime={videoCurrentTime} borderRadius="8px 8px 0 0" /></div>}
+            <div className="top-content">
+                <div className="video" style={{backgroundImage: `url(${getContentImg(imgPath)})`}}>
+                    {videokey && <div style={{opacity: playerState.id === videokey && playerState.state === 1 ? 1 : 0}}><YouTubePlayer videoId={videokey} startTime={videoCurrentTime} height={modalMediaSize.videoHeight[device]} borderRadius="8px 8px 0 0" /></div>}
                 </div>
-                <div style={{position: 'absolute', width: '60%', bottom : 100, left: '3rem' }}>
-                    <LogoImage id={id} mType={mType} alt={title} width='15rem' height='8rem' lowerTitle={false} fontSize='32px' />
+                {/* <div className="logo" style={{position: 'absolute', width: '60%', bottom : 100, left: '3rem' }}> */}
+                <div className="logo">
+                    <LogoImage id={id} mType={mType} alt={title} width={modalMediaSize.logoImg[device].width} height={modalMediaSize.logoImg[device].height} lowerTitle={false} fontSize='32px' />
                 </div>
             </div>
             {/* 버튼 */}
             <IconsOnPlayer>
                 <div className="close-btn"><IoCloseOutline onClick={closeModal} /></div>
                 <div className="bottom-btns">
-                    <div style={{marginRight: '10px'}}><PlayButton active={videokey && playerState.id === videokey && playable} /></div>
-                    <div style={{marginRight: '10px'}}><MyContentsButton id={id} mType={mType} /></div>
-                    {videokey && <MuteButton />}
+                    <div><PlayButton active={videokey && playerState.id === videokey && playable} /></div>
+                    <div><MyContentsButton id={id} mType={mType} borderSize={buttonSize[device].border} iconSize={buttonSize[device].icon} /></div>
+                    {videokey && <div><MuteButton borderSize={buttonSize[device].border} iconSize={buttonSize[device].icon} /></div>}
                 </div>
             </IconsOnPlayer>
         </PreviewPlayer>
@@ -178,6 +183,7 @@ const PreviewContent = React.memo(({ id, mType, imgPath, title }) => {
 const TopInfo = React.memo(({mType, details, creditData}) => {
     const navigate = useNavigate()
     const location = useLocation()
+    const { device } = useResponsive()
 
     const scrollToBottom = () => {
         const location = document.querySelector("#bottomDetail").offsetTop
@@ -192,18 +198,18 @@ const TopInfo = React.memo(({mType, details, creditData}) => {
         }
     }
     return (
-        <div style={{display: 'grid', gridTemplateColumns: 'minmax(0,2fr) minmax(0,1fr)', columnGap: '2rem'}}>
-            <div style={{paddingRight: '1rem'}}>
-                <div style={{display: 'flex', marginBottom: '12px'}}>
-                    <div style={{color: '#fbbc04', marginRight: '1rem'}}><FaStar style={{color: '#fbbc04'}}/><span style={{marginLeft: '6px'}}>{details.voteAvg}</span></div>
+        <SummaryInfo>
+            <div className="left-area">
+                <div className="additional-info">
+                    <div style={{color: '#fbbc04', marginRight: '1rem'}}><FaStar style={{color: '#fbbc04', marginRight: '6px'}}/><span>{details.voteAvg}</span></div>
                     <div style={{marginRight: '1rem'}}>{details.releaseDate}</div>
                     {mType === 'movie'
-                        ? <div>{details.runtime}분</div>
-                        : <div>시즌 {details.totolSeasons}개</div>} {/**  (에피소드 {details.totalEpisodeCnt}개) */}
+                    ? <div>{details.runtime}분</div>
+                    : <div>시즌 {details.totolSeasons}개</div>} {/**  (에피소드 {details.totalEpisodeCnt}개) */}
                 </div>
-                <div>{details.overview}</div>
+                <div className="overview">{details.overview.length > 250 && device === 'sm' ? details.overview.slice(0, 250) + '...' : details.overview}</div>
             </div>
-            <div style={{fontSize: '14px'}}>
+            <div className="right-area">
                 {creditData.cast.length !== 0 &&
                 <div style={{marginBottom: '10px'}}>
                     <span style={{color: '#777777', marginRight: '5px'}}>출연:</span>{creditData.cast.slice(0, 3).map(el => <Span key={el.id} onClick={() => openSearchModal('person', el)}>{el.name}, </Span>)}
@@ -215,11 +221,12 @@ const TopInfo = React.memo(({mType, details, creditData}) => {
                 </div>
                 }
             </div>
-        </div>
+        </SummaryInfo>
     )
 })
 
 const RecommendSection = React.memo(({id, mType}) => {
+    const { device } = useResponsive()
     // recommendData data
     const {data: recommendData, isLoading: recommendLoading, error: recommendError} = useQuery({
         queryKey: ["recommend", mType, id],
@@ -243,8 +250,8 @@ const RecommendSection = React.memo(({id, mType}) => {
         <div id="recommendSection" style={{margin: '30px 0'}}>
             <h2>추천 콘텐츠</h2>
             <div className="gridBox">
-                <GridContents data={recommendData?.slice(0, 9)} mType={mType} showTitle={true} showPlayButton={true} showOverview={true} gridColumns={3} hoverEffect={false} borderRadius='6px 6px 0 0' />
-                {moreViewRecommend && <GridContents data={recommendData?.slice(9, recommendData.lenght)} mType={mType} showTitle={true} showPlayButton={true} showOverview={true} gridColumns={3} hoverEffect={false} borderRadius='6px 6px 0 0' />}
+                <GridContents data={recommendData?.slice(0, device === 'lg' ? 9 : 10)} mType={mType} showTitle={true} showPlayButton={true} showOverview={true} gridColumns={modalMediaSize.gridColumns[device]} hoverEffect={false} borderRadius='6px 6px 0 0' />
+                {moreViewRecommend && <GridContents data={recommendData?.slice(device === 'lg' ? 9 : 10, recommendData.lenght)} mType={mType} showTitle={true} showPlayButton={true} showOverview={true} gridColumns={modalMediaSize.gridColumns[device]} hoverEffect={false} borderRadius='6px 6px 0 0' />}
                 <MoreDiv $moreview={moreViewRecommend} ><TfiArrowCircleLeft onClick={moreView}/></MoreDiv>
             </div>
         </div>

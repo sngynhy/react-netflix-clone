@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { useMediaStore } from "stores/mediaStore"; 
 import { media } from "utils/mediaQuery";
 
-export const PlayButton = ({active=false, type="button", iconSize=35}) => { // type: 'button' or 'icon'
+export const PlayButton = ({active=false, type="button", iconSize=25}) => { // type: 'button' or 'icon'
     const {playerState, playable} = useMediaStore()
     const videoPlay = () => {
         if (active && playable) {
@@ -17,7 +17,7 @@ export const PlayButton = ({active=false, type="button", iconSize=35}) => { // t
     return (
         <div onClick={videoPlay}>
             {type === 'button'
-            ? <Button $active={active}><FaPlay />재생</Button>
+            ? <Button $active={active}><FaPlay /><span>재생</span></Button>
             : <Icon $active={active} $width={iconSize} $height={iconSize}><FaCirclePlay /></Icon>}
         </div>
     )
@@ -25,16 +25,28 @@ export const PlayButton = ({active=false, type="button", iconSize=35}) => { // t
 
 const Button = styled.button`
     ${media.large`
-        padding: 0.6rem 1.6rem;
+        height: 50px;
+        padding: 0 1.8rem;
         font-size: 20px;
+        & > span {
+          line-height: 50px;
+        }
     `}
     ${media.medium`
-        padding: 0.6rem 1.6rem;
+        height: 42px;
+        padding: 0 1.8rem;
         font-size: 20px;
+        & > span {
+          line-height: 42px;
+        }
     `}
     ${media.small`
-        padding: 0.3rem 0.8rem;
-        font-size: 0.8rem;
+        height: 22px;
+        padding: 0 0.6rem;
+        font-size: 0.6rem;
+        & > span {
+          line-height: 22px;
+        }
     `}
     border-radius: 4px;
     border: none;

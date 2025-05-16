@@ -22,7 +22,7 @@ export const settings = {
             } 
         },
         {  
-            breakpoint: 1024, //화면 사이즈 768px일 때
+            breakpoint: 1024, //화면 사이즈 1024px일 때
             settings: {
                 slidesToShow: 4,
                 slidesToScroll: 4,

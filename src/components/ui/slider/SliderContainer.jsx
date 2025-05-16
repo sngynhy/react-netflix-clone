@@ -119,7 +119,7 @@ const Container = styled.div`
                 font-size: 1.5rem;
             `}
             ${media.medium`
-                font-weight: 300;
+                font-weight: 400;
                 font-size: 1.5rem;
             `}
             ${media.small`

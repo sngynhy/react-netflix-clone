@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types'
 import { IoAdd, IoCheckmark } from "react-icons/io5";
-import { Border } from "styles/IconButtonStyle";
+import { Border } from "styles/Commonstyle";
 import { useMediaStore } from 'stores/mediaStore'
 
 export const MyContentsButton = ({id, mType, borderSize=45, iconSize=30 }) => {

@@ -6,8 +6,14 @@ import styled from "styled-components";
 import { RxTriangleRight } from "react-icons/rx";
 import GridContents from "components/ui/layout/GridContents";
 import { Helmet } from "react-helmet";
+import { useResponsive } from "hooks/useResponsive";
+import { gridColumns } from "utils/mediaSize";
+import { media } from "utils/mediaQuery";
 
 function Search () {
+
+    const { device } = useResponsive()
+
     const [searchParams] = useSearchParams()
     const keyword = searchParams.get('keyword')
     
@@ -35,9 +41,9 @@ function Search () {
             <Helmet>
                 <title>넷플릭스</title>
             </Helmet>
-            <Wrapper>
+            <Wrap>
                 <h2 style={{textAlign: 'center'}}><span>검색 키워드를 입력하세요.</span></h2>
-            </Wrapper>
+            </Wrap>
         </Container>
     )
     if (movieIsLoading || tvIsLoading || personIsLoading || movieError || tvError || personError) return <></>
@@ -48,10 +54,10 @@ function Search () {
                 <title>넷플릭스</title>
             </Helmet>
 
-            <Wrapper>
-                <h2 style={{textAlign: 'center'}}><span>'{keyword}'</span> 검색 결과입니다.</h2>
+            <Wrap>
+                <h2><span>'{keyword}'</span> 검색 결과입니다.</h2>
                 
-                <div style={{padding: '0 40px'}}>
+                <div className="search-contents">
                     {/* 영화 */}
                     <h2><RxTriangleRight />
                         <div style={{display: 'inline-block', marginLeft: '5px'}}>
@@ -61,7 +67,7 @@ function Search () {
                     </h2>
                     <div>
                         {movieData.length !== 0
-                            ? <GridContents data={movieData} mType='movie' showTitle={true} showOverview={false} gridColumns={6} />
+                            ? <GridContents data={movieData} mType='movie' showTitle={true} showOverview={false} gridColumns={gridColumns[device]} />
                             : <span>검색 결과가 없습니다.</span>}
                     </div>
                 
@@ -74,7 +80,7 @@ function Search () {
                     </h2>
                     <div>
                         {tvData.length !== 0
-                            ? <GridContents data={tvData} mType='tv' showTitle={true} showOverview={false} gridColumns={6} />
+                            ? <GridContents data={tvData} mType='tv' showTitle={true} showOverview={false} gridColumns={gridColumns[device]} />
                             : <span>검색 결과가 없습니다.</span>}
                     </div>
 
@@ -82,11 +88,11 @@ function Search () {
                     <h2><RxTriangleRight /> 인물</h2>
                     <div>
                         {personData.length !== 0
-                            ? <GridContents data={personData} mType='person' showTitle={false} showOverview={false} gridColumns={7} imgPath='profile_path' />
+                            ? <GridContents data={personData} mType='person' showTitle={false} showOverview={false} gridColumns={gridColumns[device]+1} imgPath='profile_path' />
                             : <span>검색 결과가 없습니다.</span>}
                     </div>
                 </div>
-            </Wrapper>
+            </Wrap>
         </Container>
     )
 }
@@ -94,12 +100,54 @@ function Search () {
 const Container = styled.div`
     width: 100%;
 `
-const Wrapper = styled.div`
+const Wrap = styled.div`
     width: 100%;
-    padding-top: 80px;
-    & h2, > div > h2 {
-        font-weight: 400;
-    }
+    ${media.large`
+        padding-top: 80px;
+
+        & > h2 {
+            font-weight: 400;
+            text-align: center;
+        }
+        & > .search-contents {
+            padding: 0 60px;
+            
+            & > h2 {
+                font-weight: 300;
+            }
+        }
+    `}
+    ${media.medium`
+        padding-top: 80px;
+
+        & > h2 {
+            font-weight: 400;
+            text-align: center;
+        }
+        & > .search-contents {
+            padding: 0 40px;
+
+            & > h2 {
+                font-weight: 300;
+            }
+        }
+    `}
+    ${media.small`
+        padding-top: 50px;
+
+        & > h2 {
+            font-weight: 300;
+            text-align: center;
+        }
+        & > .search-contents {
+            padding: 0 20px;
+
+            & > h2 {
+                font-weight: 300;
+            }
+        }
+    `}
+
     & > div > h2 > svg {
         color: red;
     }
